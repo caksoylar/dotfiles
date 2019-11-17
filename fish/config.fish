@@ -1,0 +1,69 @@
+if type -q kak
+    set EDITOR kak
+else
+    set EDITOR vim
+end
+set fish_greeting
+
+# add user bin and lib paths
+for dir in ~/bin ~/.cargo/bin ~/miniconda3/bin
+    if test -d $dir
+        set PATH $dir $PATH
+    end
+end
+
+if test -d ~/lib
+    set LD_LIBRARY_PATH $HOME/lib
+end
+
+# vim for manpager
+function vman
+    man $argv | col -b | vim --clean -c 'runtime! macros/less.vim' -c 'set ft=man ic' --not-a-term -
+end
+
+# more legible symlink folder highlighting
+set LS_COLORS "ow=01;34"
+
+# function fish_user_key_bindings
+    # bind --erase \cx
+    # bind --erase \cv
+# end
+
+# fix conda venv
+if type -q conda >/dev/null
+    source (conda info --root)/etc/fish/conf.d/conda.fish
+end
+
+# trapd00r/LS_COLORS
+if test -f ~/.config/fish/LS_COLORS
+    eval (dircolors -c ~/.config/fish/LS_COLORS)
+end
+
+alias rm="rm -I"
+alias sort="sort -S4G"
+
+# some tmux shortcuts in addition to tm.fish
+alias tl="tmux list-sessions"
+alias ta="tmux attach-session"
+
+# fugitive
+alias gst="vim '+Gedit :'"
+
+# old-style highlighting
+set fish_color_normal normal
+set fish_color_command --bold
+set fish_color_param cyan
+set fish_color_redirection brblue
+set fish_color_comment red
+set fish_color_error brred
+set fish_color_escape bryellow --bold
+set fish_color_operator bryellow
+set fish_color_end brmagenta
+set fish_color_quote yellow
+set fish_color_autosuggestion 555 brblack
+set fish_color_user brgreen
+
+# work stuff
+if test -f ~/.config/fish/work.fish
+    source ~/.config/fish/work.fish
+end
