@@ -1,0 +1,19 @@
+start https://github.com/jeetsukumaran/vim-indentwise
+start https://github.com/caksoylar/vim-lion
+start https://github.com/tpope/vim-commentary
+start https://github.com/tpope/vim-rsi
+# start https://github.com/tpope/vim-apathy
+start https://github.com/tpope/vim-fugitive
+start https://github.com/romainl/vim-cool
+start https://github.com/justinmk/vim-dirvish
+start https://github.com/caksoylar/vim-fish
+opt   https://github.com/rickhowe/diffchar.vim
+opt   https://github.com/mbbill/undotree
+opt   https://github.com/AndrewRadev/linediff.vim
+start https://github.com/prabirshrestha/async.vim
+start https://github.com/prabirshrestha/vim-lsp
+start https://github.com/caksoylar/vim-smooth-scroll
+start https://github.com/caksoylar/vim-mysticaltutor
+# start https://github.com/romainl/Apprentice
+# opt   https://github.com/lifepillar/vim-colortemplate
+# opt   https://github.com/chrisbra/Colorizer

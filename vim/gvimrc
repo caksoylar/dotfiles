@@ -1,0 +1,5 @@
+set lines=40 columns=120
+set guioptions=
+set renderoptions=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:5,taamode:1
+set guifont=DejaVu\ Sans\ Mono:h10,Fira_Mono:h11,Consolas:h11
+set linespace=3

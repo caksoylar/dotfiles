@@ -1,0 +1,268 @@
+set encoding=utf-8
+scriptencoding utf-8
+
+let s:lite = (&term ==? 'cygwin' || &term ==? 'win32' || exists('g:gui_oni'))
+let s:vimdir = expand('<sfile>:p:h')
+
+filetype plugin indent on
+syntax enable
+
+" Various preferences
+set laststatus=2
+set shortmess=oOtT
+set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
+set backspace=indent,eol,start
+set autoindent breakindent
+set formatoptions+=j
+set cursorline
+set scrolloff=2 sidescroll=1 sidescrolloff=5
+set display=lastline
+set foldlevel=99
+set wildmenu wildmode=longest,list:full
+set completeopt+=popup
+set splitbelow splitright
+set clipboard^=unnamed
+set hidden
+set fileencoding=utf-8 fileformats=unix,dos
+set nrformats-=octal
+set isfname-==
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:␣,space:·,eol:↲
+set noswapfile
+set ttyfast
+set lazyredraw
+set synmaxcol=8000
+set history=2000
+set title
+set showcmd
+set hlsearch
+set ttimeoutlen=100
+set mouse=a
+if exists('+shellslash')
+    set shellslash
+endif
+if has('patch-8.1.0360')
+    set diffopt+=algorithm:patience,indent-heuristic,hiddenoff
+endif
+
+" Custom statusline
+set statusline=
+set statusline+=\ %f\ %<%m%r%y\ 
+set statusline+=%=\ %{&fileencoding}[%{&fileformat}]\ \|
+set statusline+=\ %3l/%L:%2v\ \|\ %P\ 
+
+" Prettify
+if !s:lite
+    if &term =~# '^tmux'
+        let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+        let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    endif
+    set termguicolors
+endif
+colorscheme mysticaltutor
+
+" Don't save swap files on remote etc and set undodir
+let &directory = s:vimdir .. '/temp//'
+let &undodir = s:vimdir .. '/undo//'
+
+augroup UndoTypes
+    autocmd!
+    autocmd FileType c,cpp,python,sh,fish,perl,dosbatch,vim setlocal swapfile undofile
+augroup END
+
+" Easier command mode
+nnoremap <CR> :
+xnoremap <CR> :
+augroup CRExceptions
+    autocmd!
+    autocmd BufWinEnter quickfix noremap <buffer> <CR> <CR>
+    autocmd CmdwinEnter * noremap <buffer> <CR> <CR>
+augroup END
+
+" Buffer nav shortcuts
+nnoremap <Bslash> :ls<CR>:buffer 
+nnoremap <BS> <C-^>
+nnoremap Q :bwipe<CR>
+nnoremap [b :bprev<CR>
+nnoremap ]b :bnext<CR>
+nnoremap [B :bfirst<CR>
+nnoremap ]B :blast<CR>
+
+" Refresh buffer and 'tail'
+nnoremap <F5> :e<CR>G
+
+" Show non-ascii characters
+command! NonAscii normal! /[^\x00-\x7F]<CR>
+
+" Alternate windows
+nnoremap <Space><Space> <C-w>p
+
+" Toggles for some options
+nnoremap <Space>h :set invhlsearch <Bar> set hlsearch?<CR>
+nnoremap <Space>w :set invwrap <Bar> set wrap?<CR>
+nnoremap <Space>l :set invlist <Bar> set list?<CR>
+
+" Quick edit config files
+nnoremap <Space>v :edit $MYVIMRC<CR>
+nnoremap <Space>gv :edit $MYGVIMRC<CR>
+
+" Quick diff
+nnoremap <silent> <Space>dd :call misc#toggle_diff()<CR>
+
+" Saner yank shortcut
+nnoremap Y y$
+
+" Continue indenting in visual mode
+xnoremap < <gv
+xnoremap > >gv
+
+" * and # in visual mode
+xnoremap * "jy/<C-r>j<CR>
+xnoremap # "jy?<C-r>j<CR>
+
+" vim-unimpaired inspired shortcuts
+nnoremap [q :cprev<CR>
+nnoremap ]q :cnext<CR>
+nnoremap [Q :cfirst<CR>
+nnoremap ]Q :clast<CR>
+nnoremap [l :lbefore<CR>
+nnoremap ]l :lafter<CR>
+nnoremap [L :lfirst<CR>
+nnoremap ]L :llast<CR>
+nnoremap [a :previous<CR>
+nnoremap ]a :next<CR>
+nnoremap [A :first<CR>
+nnoremap ]A :last<CR>
+
+" Place custom signs and display marks
+nnoremap <silent> <Space>m :call misc#place_sign(0)<CR>
+nnoremap <silent> <Space>M :call misc#remove_signs()<CR>
+nnoremap <silent> m :call misc#place_sign(1)<CR>
+
+" Redirect command outputs
+command! -nargs=1 -complete=command Redir silent call misc#redir(<f-args>)
+
+" MRU
+nnoremap <silent> <F3> :call misc#MRU()<CR>
+
+" Quick sum
+command! -range Sum execute "echo " .. join(getline(<line1>, <line2>), " + ")
+
+" Goto last position when opening file
+augroup LastPos
+    autocmd!
+    autocmd BufReadPost *
+                \ if line("'\"") >= 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
+augroup END
+
+" Highlight yanked region
+augroup HlYank
+    autocmd!
+    autocmd TextYankPost * if v:event.operator ==# 'y' | call misc#hl_yank() | endif
+augroup END
+
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
+endif
+
+" Tmux mouse and yank support
+if exists('$TMUX')
+    if !has('nvim')
+        set ttymouse=sgr
+    endif
+    augroup TmuxYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system('tmux set-buffer ' .. shellescape(@0)) | endif
+    augroup END
+endif
+
+" Disable netrw
+let loaded_netrwPlugin = 1
+
+" plugin for :[CL]filter[!]
+packadd! cfilter
+
+" vim-lion shortcut for whole file alignment, e.g. 'gl%<Tab>'
+nnoremap <silent> gl% :call misc#align_buffer(nr2char(getchar()))<CR>
+
+" Undotree
+let g:undotree_SetFocusWhenToggle = 1
+nnoremap <Space>u :packadd undotree <Bar> UndotreeToggle<CR>
+
+" DiffChar settings
+let g:DiffModeSync = 0
+let g:DiffUnit = 'Word1'
+let g:DiffSplitTime = 1000
+nnoremap <Space>dc :packadd diffchar.vim <Bar> %TDChar<CR>
+xnoremap <Space>dc :<C-u>packadd diffchar.vim <Bar> '<,'>TDChar<CR>
+
+" Work stuff
+silent! runtime work.vim
+
+" Tab and CR behavior when completing
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <C-c> pumvisible() ? "\<C-e>" : "\<C-c>"
+
+" Complete from buffer with tab when searching
+if has('patch-8.0.1206') || has('nvim')
+    augroup SearchCompletion
+        autocmd!
+        autocmd CmdlineEnter /,\? cnoremap <Tab> <C-f>a<C-n>
+        autocmd CmdlineLeave /,\? silent! cunmap <Tab>
+    augroup END
+endif
+
+" Terminal normal mode shortcut
+if has('patch-8.0.1108') || has('nvim')
+    tnoremap <C-q> <C-\><C-n>
+endif
+
+" Faster grep
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+    set grepformat^=%f:%l:%c:%m
+endif
+
+" Recolor inactive windows
+augroup WindowHl
+    autocmd!
+    autocmd WinLeave * set wincolor=Cursorline
+    autocmd WinEnter * set wincolor&
+augroup END
+
+if !s:lite
+    " mintty settings for variable cursor type
+    if !has('nvim')
+        let &t_ti.="\e[1 q"
+        let &t_SI.="\e[5 q"
+        let &t_EI.="\e[1 q"
+        let &t_te.="\e[0 q"
+        let &t_Cs="\<Esc>[4:3m"
+        let &t_Ce="\<Esc>[4:0m"
+    endif
+
+    " Smooth scroll
+    nnoremap <silent> <C-u> :call smooth_scroll#scroll('u', &scroll, 10, 2)<CR>
+    nnoremap <silent> <C-d> :call smooth_scroll#scroll('d', &scroll, 10, 2)<CR>
+    nnoremap <silent> <C-b> :call smooth_scroll#scroll('u', &scroll*2, 10, 4)<CR>
+    nnoremap <silent> <C-f> :call smooth_scroll#scroll('d', &scroll*2, 10, 4)<CR>
+
+    " do not auto-enable vim-lsp
+    let g:lsp_auto_enable = 0
+endif
+
+" Smart predict
+let s:predict_folder = '/mnt/d/Hack/hack-2018'
+if isdirectory(s:predict_folder)
+    let g:predict_server_command =
+                \ s:predict_folder .. '/../venv/bin/python '
+                \ .. s:predict_folder .. '/predict-server.py -d '
+                \ .. s:predict_folder .. '/../data -n 10'
+    packadd! predict
+endif
