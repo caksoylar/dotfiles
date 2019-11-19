@@ -5,7 +5,7 @@ ln -s "$(readlink -f ~/.config/kak/kak-lsp)" ~/.config/kak-lsp
 
 mkdir -p ~/.config/kak/autoload/remote
 
-ln -s "$(type -p kak)"/../share/kak/autoload ~/.config/kak/autoload/system
+ln -s $(readlink -f "$(dirname $(type -p kak))"/../share/kak/autoload) ~/.config/kak/autoload/system
 for url in \
     "https://raw.githubusercontent.com/alexherbo2/auto-pairs.kak/master/rc/auto-pairs.kak" \
     "https://raw.githubusercontent.com/Delapouite/kakoune-buffers/master/buffers.kak" \
