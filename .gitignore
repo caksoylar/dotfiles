@@ -1,4 +1,6 @@
 /fish/fish_variables
+/fish/functions/work
+/fish/work.fish
 /kak/autoload/system
 /kak/autoload/remote
 /vim/vjp
