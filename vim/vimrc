@@ -19,7 +19,9 @@ set scrolloff=2 sidescroll=1 sidescrolloff=5
 set display=lastline
 set foldlevel=99
 set wildmenu wildmode=longest,list:full
-set completeopt+=popup
+if !has('nvim')
+    set completeopt+=popup
+endif
 set splitbelow splitright
 set clipboard^=unnamed
 set hidden
@@ -227,11 +229,15 @@ if executable('rg')
 endif
 
 " Recolor inactive windows
-augroup WindowHl
-    autocmd!
-    autocmd WinLeave * set wincolor=Cursorline
-    autocmd WinEnter * set wincolor&
-augroup END
+if !has('nvim')
+    augroup WindowHl
+        autocmd!
+        autocmd WinLeave * set wincolor=Cursorline
+        autocmd WinEnter * set wincolor&
+    augroup END
+else
+    hi! link NormalNC Cursorline
+endif
 
 if !s:lite
     " mintty settings for variable cursor type
