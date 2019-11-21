@@ -8,6 +8,7 @@ set-option global tabstop 4
 map global normal <backspace> <\>  # \ mapped to buffers mode
 map global normal <space> <semicolon>
 map global normal <semicolon> <space>
+map global normal <ret> <:>
 
 # highlight delimiter matches
 add-highlighter global/match show-matching
@@ -17,7 +18,7 @@ map global normal '#'   ': comment-line<ret>'  -docstring "comment line"
 map global normal <a-#> ': comment-block<ret>' -docstring "comment block"
 
 # find non-ascii chars quickly
-define-command non-ascii -docstring 'search for non-ascii characters' %{
+define-command non-ascii -docstring "search for non-ascii characters" %{
     set-register / '[^\x00-\x7f]'
     execute-keys n
 }
@@ -60,8 +61,8 @@ tabnew -params .. -command-completion %{
 }
 
 # buffers
-map global normal <\>   ': enter-buffers-mode<ret>'            -docstring 'buffers…'
-map global normal <a-\> ': enter-user-mode -lock buffers<ret>' -docstring 'buffers (lock)…'
+map global normal <\>   ': enter-buffers-mode<ret>'            -docstring "buffers…"
+map global normal <a-\> ': enter-user-mode -lock buffers<ret>' -docstring "buffers (lock)…"
 alias global bd delete-buffer
 alias global bf buffer-first
 alias global bl buffer-last
@@ -71,18 +72,18 @@ hook global WinDisplay .* info-buffers
 
 # kak-tree mode
 declare-user-mode tree
-map global tree h ': tree-select-previous-node<ret>'  -docstring 'select previous'
-map global tree l ': tree-select-next-node<ret>'      -docstring 'select next'
-map global tree k ': tree-select-parent-node<ret>'    -docstring 'select parent'
-map global tree j ': tree-select-children<ret>'       -docstring 'select children'
-map global tree f ': tree-select-first-child<ret>'    -docstring 'select first child'
-map global tree s ': tree-node-sexp<ret>'             -docstring 'show info'
+map global tree h ': tree-select-previous-node<ret>'  -docstring "select previous"
+map global tree l ': tree-select-next-node<ret>'      -docstring "select next"
+map global tree k ': tree-select-parent-node<ret>'    -docstring "select parent"
+map global tree j ': tree-select-children<ret>'       -docstring "select children"
+map global tree f ': tree-select-first-child<ret>'    -docstring "select first child"
+map global tree s ': tree-node-sexp<ret>'             -docstring "show info"
 
-map global user t ': enter-user-mode tree<ret>'       -docstring 'tree sitter…'
-map global user T ': enter-user-mode -lock tree<ret>' -docstring 'tree sitter… (lock)'
+map global user t ': enter-user-mode tree<ret>'       -docstring "tree sitter…"
+map global user T ': enter-user-mode -lock tree<ret>' -docstring "tree sitter… (lock)"
 
 # auto-pairs
-map global user s ': auto-pairs-surround<ret>' -docstring 'surround'
+map global user s ': auto-pairs-surround<ret>' -docstring "surround"
 
 # vertical-selection
 map global normal ^     ': vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
