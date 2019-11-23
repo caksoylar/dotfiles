@@ -5,6 +5,8 @@
 #define _RAISE 2
 
 #define LW_SPC LT(_LOWER, KC_SPC)
+#define LC_MIN LCTL_T(KC_MINS)
+#define LA_EQL LALT_T(KC_EQL)
 #define CT_DEL LCTL(KC_DEL)
 #define ST_DEL LSFT(KC_DEL)
 #define ST_INS LSFT(KC_INS)
@@ -24,7 +26,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          KC_NO,   KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MO(_RAISE),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_LCTL, KC_LGUI, KC_LALT,                   LW_SPC,  KC_ENT,  KC_RSFT
+                                    LC_MIN,  KC_LGUI, LA_EQL,                    LW_SPC,  KC_ENT,  KC_RSFT
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -62,13 +64,13 @@ void encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
         switch (biton32(layer_state)) {
             case _LOWER:
-                clockwise ? tap_code(KC_AUDIO_VOL_DOWN) : tap_code(KC_AUDIO_VOL_UP);
+                clockwise ? tap_code(KC_AUDIO_VOL_UP) : tap_code(KC_AUDIO_VOL_DOWN);
                 break;
             case _RAISE:
-                clockwise ? rgblight_decrease_hue() : rgblight_increase_hue();
+                clockwise ? rgblight_increase_hue() : rgblight_decrease_hue();
                 break;
             default:
-                clockwise ? tap_code(KC_MS_WH_UP) : tap_code(KC_MS_WH_DOWN);
+                clockwise ? tap_code(KC_MS_WH_DOWN) : tap_code(KC_MS_WH_UP);
                 break;
         }
     }
