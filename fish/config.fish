@@ -22,7 +22,7 @@ function vman
 end
 
 # more legible symlink folder highlighting
-set LS_COLORS "ow=01;34"
+set -x LS_COLORS "ow=01;34"
 
 # function fish_user_key_bindings
     # bind --erase \cx
