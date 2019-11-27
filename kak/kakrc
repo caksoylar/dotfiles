@@ -88,3 +88,15 @@ map global user s ': auto-pairs-surround<ret>' -docstring "surround"
 # vertical-selection
 map global normal ^     ': vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
 map global normal <a-^> ': vertical-selection-up<ret>'   -docstring "select matching pattern from the lines above"
+
+# state-save save command history
+hook global KakBegin .* %{
+    state-save-reg-sync colon
+    state-save-reg-sync pipe
+    state-save-reg-sync slash
+}
+hook global KakEnd .* %{
+    state-save-reg-sync colon
+    state-save-reg-sync pipe
+    state-save-reg-sync slash
+}
