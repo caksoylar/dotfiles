@@ -1,0 +1,72 @@
+DIR := ${CURDIR}
+
+PKG_CONFIG_PATH := $(DIR)/share/pkgconfig
+
+CPPFLAGS = -Iinclude -Iinclude/ncursesw
+LDFLAGS = -Llib
+LIBS = "-lncursesw"
+
+DLDIR = dl
+SRC = src
+
+all: tmux fish nvim kak
+
+lib/libevent.so: | $(DLDIR) $(SRC)
+	pkg-config --exists libevent && exit; \
+	wget --hsts-file= -nv https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz -O $(DLDIR)/libevent.tar.gz \
+	&& tar xzf $(DLDIR)/libevent.tar.gz -C $(SRC) \
+	&& cd $(SRC)/libevent-2.1.11-stable/ \
+	&& ./configure -q --prefix="$(DIR)" \
+	&& make -s -j8 \
+	&& make -s install
+
+lib/libncursesw.so: | $(DLDIR) $(SRC)
+	pkg-config --exists ncursesw && exit; \
+	wget --hsts-file= -nv https://invisible-mirror.net/archives/ncurses/ncurses-6.1.tar.gz -O $(DLDIR)/ncurses.tar.gz \
+	&& tar xzf $(DLDIR)/ncurses.tar.gz -C $(SRC) \
+	&& cd $(SRC)/ncurses-6.1 \
+	&& ./configure -q --prefix="$(DIR)" --with-shared --enable-pc-files --enable-widec --with-pkg-config-libdir="$(PKG_CONFIG_PATH)" \
+	&& make -s -j8 \
+	&& make -s install
+
+tmux: bin/tmux
+bin/tmux: lib/libncursesw.so lib/libevent.so
+	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.0/tmux-3.0.tar.gz -O $(DLDIR)/tmux.tar.gz \
+	&& tar xzf $(DLDIR)/tmux.tar.gz -C $(SRC) \
+	&& cd $(SRC)/tmux-3.0 \
+	&& ./configure -q --prefix="$(DIR)" \
+	&& make -s -j8 \
+	&& make -s install
+
+fish: bin/fish
+bin/fish: lib/libncursesw.so
+	wget --hsts-file= -nv https://github.com/fish-shell/fish-shell/releases/download/3.0.2/fish-3.0.2.tar.gz -O $(DLDIR)/fish.tar.gz \
+	&& tar xzf $(DLDIR)/fish.tar.gz -C $(SRC)\
+	&& cd $(SRC)/fish-3.0.2/ \
+	&& ./configure -q --prefix="$(DIR)" \
+	&& make -s -j8 \
+	&& make -s install
+
+nvim: bin/nvim
+bin/nvim: | $(DLDIR) $(SRC)
+	wget --hsts-file= -nv https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz -O $(DLDIR)/nvim.tar.gz \
+	&& tar xzf $(DLDIR)/nvim.tar.gz --directory="$(DIR)" --strip-components=1
+
+kak: bin/kak
+bin/kak: lib/libncursesw.so
+	git clone --quiet https://github.com/mawww/kakoune $(SRC)/kakoune \
+	&& cd $(SRC)/kakoune/ \
+	&& make -s -j8 \
+	&& PREFIX="$(DIR)" make -s install
+
+$(DLDIR):
+	mkdir $(DLDIR)
+
+$(SRC):
+	mkdir $(SRC)
+
+clean:
+	rm -rf $(DLDIR) $(SRC) bin/ etc/ include/ share/
+
+.PHONY:
+	tmux fish nvim kak
