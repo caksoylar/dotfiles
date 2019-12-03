@@ -6,14 +6,16 @@ end
 set fish_greeting
 
 # add user bin and lib paths
-for dir in ~/bin ~/.cargo/bin ~/miniconda3/bin
-    if test -d $dir
+for dir in ~/miniconda3/bin ~/.cargo/bin ~/.local/bin ~/bin
+    if test -d $dir; and not contains $dir $PATH
         set PATH $dir $PATH
     end
 end
 
-if test -d ~/lib
-    set LD_LIBRARY_PATH $HOME/lib
+for dir in ~/.local/lib ~/lib
+    if test -d $dir; and not contains $dir $LD_LIBRARY_PATH
+        set LD_LIBRARY_PATH $dir
+    end
 end
 
 # vim for manpager
