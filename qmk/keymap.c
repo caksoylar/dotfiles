@@ -77,13 +77,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (IS_LAYER_ON(_TMUX)) {
-        if (record->event.pressed) {
+        if (record->event.pressed && keycode != TM_GRV) {
             tap_code16(LCTL(KC_SPC));
             wait_ms(10);
             tap_code(keycode);
+        } else if (keycode == TM_GRV) {
+            layer_off(_TMUX);
         }
-        /*else
-            layer_off(_TMUX);*/
         return false;
     }
     return true;
