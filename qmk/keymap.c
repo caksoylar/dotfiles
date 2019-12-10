@@ -80,9 +80,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed && keycode != TM_GRV) {
             tap_code16(LCTL(KC_SPC));
             wait_ms(10);
-        } else if (keycode == TM_GRV) {
-            layer_off(_TMUX);
-            return false;
         }
     }
     return true;
