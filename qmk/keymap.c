@@ -8,9 +8,11 @@
 #define LW_SPC LT(_LOWER, KC_SPC)
 #define TM_GRV LT(_TMUX, KC_GRV)
 #define LC_MIN LCTL_T(KC_MINS)
-#define LA_EQL LALT_T(KC_EQL)
+#define RA_EQL RALT_T(KC_EQL)
+#define RS_DEL RSFT_T(KC_DEL)
+
 #define CT_DEL LCTL(KC_DEL)
-#define ST_DEL LSFT(KC_DEL)
+#define CT_INS LCTL(KC_INS)
 #define ST_INS LSFT(KC_INS)
 #define CT_F4 LCTL(KC_F4)
 #define ALT_F4 LALT(KC_F4)
@@ -28,7 +30,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          KC_NO,   KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MO(_RAISE),
     //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                      LC_MIN,  KC_LGUI, LA_EQL,                    LW_SPC,  KC_ENT,  KC_RSFT
+                                      LC_MIN,  KC_LGUI, RA_EQL,                    LW_SPC,  KC_ENT,  RS_DEL
                                   // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
     ),
 
@@ -40,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
        _______, LCG_LT,  _______, LCG_RT,  _______, _______,                            KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_HOME, KC_PGUP,
     //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-       _______, _______, CT_DEL,  ST_DEL,  ST_INS,  KC_LCBR, _______,          _______, KC_RCBR, _______, _______, _______, KC_END,  KC_PGDN,
+       _______, _______, CT_DEL,  CT_INS,  ST_INS,  KC_LCBR, _______,          _______, KC_RCBR, _______, _______, _______, KC_END,  KC_PGDN,
     //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                       _______, _______, _______,                   KC_TRNS, _______, KC_APP
                                   // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
