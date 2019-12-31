@@ -258,6 +258,10 @@ if !s:lite
 
     " do not auto-enable vim-lsp
     let g:lsp_auto_enable = 0
+    augroup lsp_install
+        autocmd!
+        autocmd User lsp_buffer_enabled call lspconfig#config()
+    augroup END
 endif
 
 " Smart predict

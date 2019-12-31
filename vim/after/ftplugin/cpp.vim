@@ -1,5 +1,4 @@
 if executable('cquery') && g:lsp_loaded
-    setlocal omnifunc=lsp#complete
     augroup LspCpp
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
@@ -10,5 +9,4 @@ if executable('cquery') && g:lsp_loaded
                     \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp', 'cc']})
     augroup END
     call lsp#enable()
-    call lspconfig#config()
 endif

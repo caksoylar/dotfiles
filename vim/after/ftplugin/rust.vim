@@ -1,5 +1,4 @@
 if executable('rls') && g:lsp_loaded
-    setlocal omnifunc=lsp#complete
     augroup LspRust
         autocmd!
         autocmd User lsp_setup call lsp#register_server({
@@ -8,5 +7,4 @@ if executable('rls') && g:lsp_loaded
                     \ 'whitelist': ['rust']})
     augroup END
     call lsp#enable()
-    call lspconfig#config()
 endif
