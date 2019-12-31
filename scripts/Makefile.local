@@ -41,7 +41,7 @@ bin/tmux: lib/libncursesw.so lib/libevent.so
 fish: bin/fish
 bin/fish: lib/libncursesw.so
 	wget --hsts-file= -nv https://github.com/fish-shell/fish-shell/releases/download/3.0.2/fish-3.0.2.tar.gz -O $(DLDIR)/fish.tar.gz \
-	&& tar xzf $(DLDIR)/fish.tar.gz -C $(SRC)\
+	&& tar xzf $(DLDIR)/fish.tar.gz -C $(SRC) \
 	&& cd $(SRC)/fish-3.0.2/ \
 	&& ./configure -q --prefix="$(DIR)" \
 	&& make -s -j8 \
@@ -59,6 +59,13 @@ bin/kak: lib/libncursesw.so
 	&& make -s -j8 \
 	&& PREFIX="$(DIR)" make -s install
 
+kak-lsp: bin/kak-lsp
+bin/kak-lsp: | $(DLDIR) $(SRC)
+	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v7.0.0/kak-lsp-v7.0.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
+	&& mkdir $(SRC)/kak-lsp bin \
+	&& tar xzf $(DLDIR)/kak-lsp.tar.gz -C $(SRC)/kak-lsp \
+	&& cp $(SRC)/kak-lsp/kak-lsp bin/
+
 $(DLDIR):
 	mkdir $(DLDIR)
 
@@ -69,4 +76,4 @@ clean:
 	rm -rf $(DLDIR) $(SRC) bin/ etc/ include/ share/
 
 .PHONY:
-	tmux fish nvim kak
+	tmux fish nvim kak kak-lsp
