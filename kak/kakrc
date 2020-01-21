@@ -82,8 +82,8 @@ map global tree s ': tree-node-sexp<ret>'             -docstring "show info"
 map global user t ': enter-user-mode tree<ret>'       -docstring "tree sitter…"
 map global user T ': enter-user-mode -lock tree<ret>' -docstring "tree sitter… (lock)"
 
-# auto-pairs
-map global user s ': auto-pairs-surround<ret>' -docstring "surround"
+# surround
+map global user s ': surround<ret>' -docstring 'enter surround mode'
 
 # vertical-selection
 map global normal ^     ': vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
