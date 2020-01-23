@@ -5,8 +5,7 @@ shell](https://fishshell.com), [Kakoune](https://kakoune.org) and
 [Vim](https://www.vim.org) text editors, sometimes in
 [tmux](https://github.com/tmux/tmux/wiki), in a Ubuntu or Debian native install
 or [WSL](https://docs.microsoft.com/en-us/windows/wsl/about). I also use an
-[Iris rev4 split
-keyboard](https://keeb.io/products/iris-keyboard-split-ergonomic-keyboard)
+[Iris keyboard](https://keeb.io/products/iris-keyboard-split-ergonomic-keyboard)
 which is configured with [QMK](https://qmk.fm).
 
 ## Potentially interesting stuff
@@ -17,7 +16,7 @@ which is configured with [QMK](https://qmk.fm).
   directories to ignore git prompt customizable with a `ignore_git` function
 
 ### Kakoune
-- [Vim cursorline emulation](kak/kakrc#L39)
+- [A crude emulation](kak/kakrc#L39) of Vim cursorline
 - [Kakoune version](kak/colors/mysticaltutor.kak) of
   [vim-mysticaltutor](https://github.com/caksoylar/vim-mysticaltutor)
 - [Plugin](kak/autoload/gzip.kak) to edit gzipped files
@@ -28,6 +27,3 @@ which is configured with [QMK](https://qmk.fm).
   files
 - A basic [scrollbar-in-your-statusline
   implementation](vim/pack/self/start/scrollbar)
-
-### Other
-- [Script](scripts/install_local.sh) to install above tools without root access
