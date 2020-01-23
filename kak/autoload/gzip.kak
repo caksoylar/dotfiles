@@ -1,45 +1,35 @@
 # Enable kakoune to open, edit, write files compressed with gzip
 
 hook -group gzip global BufOpenFile .*\.gz %{
-    set-option buffer autoreload no
     evaluate-commands %sh{
-        f="${kak_buffile%.gz}"
-        umask 066
-        gzip -dk "${kak_buffile}"
-
-        if [ 0 -eq $? ]; then
-            printf %s\\n "
-                edit! -existing '$f'
-                hook -group gzip buffer BufWritePost %val{buffile} gzip-compress
-                hook -group gzip buffer BufClose %val{buffile} gzip-cleanup
-                echo -markup {Information}Decompressed: ${kak_buffile}
-            "
-        else
-            printf %s\\n "fail Failed to decompress ${kak_buffile}"
+        if ! command -v truncate >/dev/null; then
+            printf %s\\n 'fail "Need truncate tool to work with gzip files"'
         fi
+    }
+    gzip-decompress
+    hook -group gzip buffer BufWritePre %val{buffile} gzip-precompress
+    hook -group gzip buffer BufWritePost %val{buffile} gzip-postcompress
+    echo -markup {Information}Decompressed: %val{buffile}
+}
+
+define-command -hidden gzip-decompress %{
+    execute-keys -draft '%d<a-!>gzip -dc ' %val{buffile} '<ret>d'
+}
+
+define-command -hidden gzip-precompress %{
+    nop %sh{ mv "${kak_buffile}" "${kak_buffile}~" }
+    try %{
+        execute-keys -draft '%|gzip -c<ret>'
+    } catch %{
+        nop %sh{ mv "${kak_buffile}~" "${kak_buffile}" }
+        fail Unable to compress: %val{buffile}
     }
 }
 
-define-command -hidden gzip-compress %{
-    evaluate-commands %sh{
-        mv "${kak_buffile}.gz" "${kak_buffile}.gz~"
-        gzip -k "${kak_buffile}"
-
-        if [ 0 -eq $? ]; then
-            printf %s\\n "echo -markup {Information}Compressed: ${kak_buffile}.gz"
-            rm -f "${kak_buffile}.gz~"
-        else
-            printf %s\\n "fail Failed to compress: ${kak_buffile}.gz"
-            mv "${kak_buffile}.gz~" "${kak_buffile}.gz"
-        fi
-    }
-}
-
-define-command -hidden gzip-cleanup %{
-    evaluate-commands %sh{
-        if [ -f "${kak_buffile}" ]; then
-            rm "${kak_buffile}"
-        fi
-    }
-    try %{ delete-buffer "%val{buffile}.gz" }
+define-command -hidden gzip-postcompress %{
+    nop %sh{ truncate -s-1 "${kak_buffile}" }  # get rid of the NL kak forces at the end of file
+    nop %sh{ rm "${kak_buffile}~" }
+    echo -markup {Information}Compressed: %val{buffile}
+    edit!
+    gzip-decompress
 }
