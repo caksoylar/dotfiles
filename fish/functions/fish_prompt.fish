@@ -34,11 +34,15 @@ end
 function fish_prompt
     set -l last_status $status
 
-    if test "$CMD_DURATION" -gt 300000
-        _print_in_color "INFO: The last command took "(math "$CMD_DURATION/60000")" minutes\n" yellow
+    # if test "$CMD_DURATION" -gt 300000
+    #     _print_in_color "INFO: The last command took "(math "$CMD_DURATION/60000")" minutes\n" yellow
+    # end
+
+    printf "\n"
+    if test -n "$fish_private_mode"
+        _print_in_color "private " brblack
     end
-    
-    _print_in_color "\n"(whoami)"@"(hostname) cyan
+    _print_in_color (whoami)"@"(hostname) cyan
     _print_in_color " "(prompt_pwd) blue
     if not type -q ignore_git; or not ignore_git
         __fish_git_prompt " %s"
