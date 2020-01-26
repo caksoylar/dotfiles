@@ -178,7 +178,7 @@ if exists('$TMUX')
     endif
     augroup TmuxYank
         autocmd!
-        autocmd TextYankPost * if v:event.operator ==# 'y' | call system('tmux set-buffer ' .. shellescape(@0)) | endif
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system('tmux set-buffer -- ' .. shellescape(@0)) | endif
     augroup END
 endif
 
