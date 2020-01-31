@@ -70,6 +70,9 @@ alias global bo buffer-only
 alias global bo! buffer-only-force
 hook global WinDisplay .* info-buffers
 
+# readline
+hook global WinCreate .* readline-enable
+
 # kak-tree mode
 declare-user-mode tree
 map global tree h ': tree-select-previous-node<ret>'  -docstring "select previous"
