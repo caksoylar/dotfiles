@@ -9,7 +9,7 @@ hook -group gzip global BufOpenFile .*\.gz %{
     gzip-decompress
     hook -group gzip buffer BufWritePre %val{buffile} gzip-precompress
     hook -group gzip buffer BufWritePost %val{buffile} gzip-postcompress
-    echo -markup {Information}Decompressed: %val{buffile}
+    info "Decompressed: %val{buffile}"
 }
 
 define-command -hidden gzip-decompress %{
@@ -29,7 +29,7 @@ define-command -hidden gzip-precompress %{
 define-command -hidden gzip-postcompress %{
     nop %sh{ truncate -s-1 "${kak_buffile}" }  # get rid of the NL kak forces at the end of file
     nop %sh{ rm "${kak_buffile}~" }
-    echo -markup {Information}Compressed: %val{buffile}
+    info "Compressed: %val{buffile}"
     edit!
     gzip-decompress
 }
