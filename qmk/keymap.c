@@ -6,8 +6,10 @@
 #define _TMUX 3
 
 #define LW_SPC LT(_LOWER, KC_SPC)
+#define RA_RBR LT(_RAISE, KC_RBRC)
 #define TM_GRV LT(_TMUX, KC_GRV)
 #define LC_MIN LCTL_T(KC_MINS)
+#define LS_LBR LSFT_T(KC_LBRC)
 #define RA_EQL RALT_T(KC_EQL)
 #define RS_DEL RSFT_T(KC_DEL)
 
@@ -28,7 +30,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
        KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-       KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          KC_NO,   KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MO(_RAISE),
+       LS_LBR,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          KC_NO,   KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RA_RBR,
     //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                       LC_MIN,  KC_LGUI, RA_EQL,                    LW_SPC,  KC_ENT,  RS_DEL
                                   // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -81,7 +83,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (IS_LAYER_ON(_TMUX)) {
         if (record->event.pressed && keycode != TM_GRV) {
             tap_code16(LCTL(KC_SPC));
-            wait_ms(10);
+            wait_ms(50);
         }
     }
     return true;
