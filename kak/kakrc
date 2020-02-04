@@ -1,4 +1,4 @@
-set-option -add global autoinfo normal
+# set-option -add global autoinfo normal
 set-option global scrolloff 3,3
 set-option global ui_options ncurses_wheel_down_button=64
 set-option global ui_options ncurses_assistant=off
@@ -8,7 +8,7 @@ set-option global tabstop 4
 map global normal <backspace> <\>  # \ mapped to buffers mode
 map global normal <space> <semicolon>
 map global normal <semicolon> <space>
-map global normal <ret> <:>
+# map global normal <ret> <:>
 
 # highlight delimiter matches
 add-highlighter global/match show-matching
