@@ -43,13 +43,14 @@ end
 
 alias rm="rm -I"
 alias sort="sort -S4G"
+alias start="explorer.exe"
 
 # some tmux shortcuts in addition to tm.fish
 alias tl="tmux list-sessions"
 alias ta="tmux attach-session"
 
 # fugitive
-alias gst="vim '+Gedit :'"
+alias gst="vim '+G | only'"
 
 # old-style highlighting
 set fish_color_normal normal
