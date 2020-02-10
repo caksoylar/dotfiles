@@ -2,9 +2,9 @@ DIR := ${CURDIR}
 
 PKG_CONFIG_PATH := $(DIR)/share/pkgconfig
 
-CPPFLAGS = -Iinclude -Iinclude/ncursesw
+CPPFLAGS = -Iinclude -Iinclude/ncurses
 LDFLAGS = -Llib
-LIBS = "-lncursesw"
+LIBS = "-lncurses"
 
 DLDIR = dl
 SRC = src
@@ -20,17 +20,17 @@ lib/libevent.so: | $(DLDIR) $(SRC)
 	&& make -s -j8 \
 	&& make -s install
 
-lib/libncursesw.so: | $(DLDIR) $(SRC)
-	pkg-config --exists ncursesw && exit; \
+lib/libncurses.so: | $(DLDIR) $(SRC)
+	pkg-config --exists ncurses && exit; \
 	wget --hsts-file= -nv https://invisible-mirror.net/archives/ncurses/ncurses-6.1.tar.gz -O $(DLDIR)/ncurses.tar.gz \
 	&& tar xzf $(DLDIR)/ncurses.tar.gz -C $(SRC) \
 	&& cd $(SRC)/ncurses-6.1 \
-	&& ./configure -q --prefix="$(DIR)" --with-shared --enable-pc-files --enable-widec --with-pkg-config-libdir="$(PKG_CONFIG_PATH)" \
+	&& ./configure -q --prefix="$(DIR)" --with-shared --enable-pc-files --with-pkg-config-libdir="$(PKG_CONFIG_PATH)" \
 	&& make -s -j8 \
 	&& make -s install
 
 tmux: bin/tmux
-bin/tmux: lib/libncursesw.so lib/libevent.so
+bin/tmux: lib/libncurses.so lib/libevent.so
 	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.0a/tmux-3.0a.tar.gz -O $(DLDIR)/tmux.tar.gz \
 	&& tar xzf $(DLDIR)/tmux.tar.gz -C $(SRC) \
 	&& cd $(SRC)/tmux-3.0a \
@@ -39,7 +39,7 @@ bin/tmux: lib/libncursesw.so lib/libevent.so
 	&& make -s install
 
 fish: bin/fish
-bin/fish: lib/libncursesw.so
+bin/fish: lib/libncurses.so
 	wget --hsts-file= -nv https://github.com/fish-shell/fish-shell/releases/download/3.0.2/fish-3.0.2.tar.gz -O $(DLDIR)/fish.tar.gz \
 	&& tar xzf $(DLDIR)/fish.tar.gz -C $(SRC) \
 	&& cd $(SRC)/fish-3.0.2/ \
@@ -53,8 +53,8 @@ bin/nvim: | $(DLDIR) $(SRC)
 	&& tar xzf $(DLDIR)/nvim.tar.gz --directory="$(DIR)" --strip-components=1
 
 kak: bin/kak
-bin/kak: lib/libncursesw.so
-	git clone --quiet https://github.com/mawww/kakoune $(SRC)/kakoune \
+bin/kak: | $(SRC)
+	git clone --branch builtin-terminal-ui --quiet https://github.com/mawww/kakoune $(SRC)/kakoune \
 	&& cd $(SRC)/kakoune/ \
 	&& make -s -j8 \
 	&& PREFIX="$(DIR)" make -s install
