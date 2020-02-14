@@ -27,3 +27,6 @@ which is configured with [QMK](https://qmk.fm).
   files
 - A basic [scrollbar-in-your-statusline
   implementation](vim/pack/self/start/scrollbar)
+
+### QMK
+- A ["tmux" layer](qmk/keymap.c#L83) which sends a prefix before any pressed key
