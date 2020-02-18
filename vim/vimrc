@@ -43,7 +43,7 @@ if exists('+shellslash')
     set shellslash
 endif
 if has('patch-8.1.0360')
-    set diffopt+=algorithm:patience,indent-heuristic,hiddenoff
+    set diffopt+=vertical,algorithm:patience,indent-heuristic,hiddenoff
 endif
 
 " Custom statusline
