@@ -1,10 +1,13 @@
 #include QMK_KEYBOARD_H
 
-#define _QWERTY 0
-#define _LOWER 1
-#define _RAISE 2
-#define _TMUX 3
+enum layers {
+	_QWERTY = 0,
+	_LOWER,
+	_RAISE,
+	_TMUX
+};
 
+// layer-tap and mod-tap definitions
 #define LW_SPC LT(_LOWER, KC_SPC)
 #define RA_RBR LT(_RAISE, KC_RBRC)
 #define TM_GRV LT(_TMUX, KC_GRV)
@@ -13,6 +16,7 @@
 #define RA_EQL RALT_T(KC_EQL)
 #define RS_DEL RSFT_T(KC_DEL)
 
+// shortcut definitions
 #define CT_DEL LCTL(KC_DEL)
 #define CT_INS LCTL(KC_INS)
 #define ST_INS LSFT(KC_INS)
@@ -20,6 +24,9 @@
 #define ALT_F4 LALT(KC_F4)
 #define LCG_LT LCTL(LGUI(KC_LEFT))
 #define LCG_RT LCTL(LGUI(KC_RGHT))
+
+// prefix for tmux layer
+#define TMUX_P LCTL(KC_SPC)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT(
@@ -30,7 +37,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
        KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-       LS_LBR,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          KC_NO,   KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RA_RBR,
+       LS_LBR,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RA_RBR,
     //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                       LC_MIN,  KC_LGUI, RA_EQL,                    LW_SPC,  KC_ENT,  RS_DEL
                                   // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -46,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
        _______, _______, CT_DEL,  CT_INS,  ST_INS,  KC_LCBR, _______,          _______, KC_RCBR, KC_APP,  _______, _______, KC_END,  KC_PGDN,
     //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                      _______, _______, _______,                   KC_TRNS, _______, _______
+                                      _______, _______, _______,                   _______, _______, _______
                                   // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
     ),
 
@@ -54,11 +61,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
        KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
     //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-       RGB_TOG, _______, _______, _______, _______, _______,                            _______, _______, _______, _______, KC_PSCR, _______,
+       RGB_TOG, _______, _______, _______, RESET,   _______,                            _______, _______, _______, _______, KC_PSCR, _______,
     //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
        RGB_MOD, _______, _______, _______, _______, _______,                            _______, _______, RGB_HUI, RGB_SAI, RGB_VAI, KC_CAPS,
     //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-       RGB_RMOD,KC_MPRV, KC_MNXT, KC_CALC, _______, _______, _______,          _______, _______, _______, RGB_HUD, RGB_SAD, RGB_VAD, KC_TRNS,
+       RGB_RMOD,KC_MPRV, KC_MNXT, KC_CALC, _______, _______, _______,          _______, _______, _______, RGB_HUD, RGB_SAD, RGB_VAD, _______,
     //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                       _______, _______, _______,                   _______, _______, _______
                                   // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -84,7 +91,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed && keycode != TM_GRV) {
             uint8_t temp_mod = get_mods();
             clear_mods();
-            tap_code16(LCTL(KC_SPC));
+            tap_code16(TMUX_P);
             set_mods(temp_mod);
             wait_ms(10);
         }
