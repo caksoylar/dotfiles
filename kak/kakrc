@@ -24,15 +24,20 @@ define-command non-ascii -docstring "search for non-ascii characters" %{
 }
 
 # enable lsp for filetypes
-evaluate-commands %sh{kak-lsp --kakoune -s $kak_session}
+evaluate-commands %sh{kak-lsp --kakoune -s "$kak_session"}
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
     lsp-enable-window
     lsp-auto-hover-enable
     map window normal <F9> ': lsp-diagnostics<ret>'
 }
 
-# expand tabs
-hook global InsertChar \t %{execute-keys -draft h@}
+# smarttab
+hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl) expandtab
+hook global WinSetOption filetype=(makefile|gas) noexpandtab
+hook global WinSetOption filetype=(c|cpp) smarttab
+hook global ModuleLoaded smarttab %{
+    set-option global sofftabstop 4
+}
 
 colorscheme mysticaltutor
 
