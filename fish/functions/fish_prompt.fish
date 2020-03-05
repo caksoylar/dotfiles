@@ -45,7 +45,7 @@ function fish_prompt
     _print_in_color (whoami)"@"(hostname) cyan
     _print_in_color " "(prompt_pwd) blue
     if not type -q ignore_git; or not ignore_git
-        __fish_git_prompt " %s"
+        fish_git_prompt " %s"
     end
     _print_in_color "\n❯ " (_prompt_color_for_status $last_status)
 end
