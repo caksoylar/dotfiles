@@ -32,7 +32,7 @@ hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %
 }
 
 # smarttab
-hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl) expandtab
+hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl|yaml) expandtab
 hook global WinSetOption filetype=(makefile|gas) noexpandtab
 hook global WinSetOption filetype=(c|cpp) smarttab
 hook global ModuleLoaded smarttab %{
