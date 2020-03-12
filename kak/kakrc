@@ -33,10 +33,10 @@ hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %
 
 # smarttab
 hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl|yaml) expandtab
-hook global WinSetOption filetype=(makefile|gas) noexpandtab
+hook global WinSetOption filetype=(makefile) noexpandtab
 hook global WinSetOption filetype=(c|cpp) smarttab
 hook global ModuleLoaded smarttab %{
-    set-option global sofftabstop 4
+    set-option global softtabstop 4
 }
 
 colorscheme mysticaltutor
