@@ -1,9 +1,9 @@
+set fish_greeting
 if type -q kak
     set EDITOR kak
 else
     set EDITOR vim
 end
-set fish_greeting
 
 # add user bin and lib paths
 for dir in ~/miniconda3/bin ~/.cargo/bin ~/.local/bin ~/bin
@@ -17,6 +17,9 @@ for dir in ~/.local/lib ~/lib
         set LD_LIBRARY_PATH $dir
     end
 end
+
+# remove Windows paths
+set PATH (string split $PATH | grep -v '^/mnt/')
 
 # vim for manpager
 function vman
@@ -43,7 +46,8 @@ end
 
 alias rm="rm -I"
 alias sort="sort -S4G"
-alias start="explorer.exe"
+alias start="/mnt/c/Windows/explorer.exe"
+alias clip.exe="/mnt/c/Windows/System32/clip.exe"
 
 # some tmux shortcuts in addition to tm.fish
 alias tl="tmux list-sessions"
