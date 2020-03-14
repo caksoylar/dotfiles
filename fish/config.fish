@@ -19,7 +19,7 @@ for dir in ~/.local/lib ~/lib
 end
 
 # remove Windows paths
-set PATH (string split $PATH | grep -v '^/mnt/')
+set PATH (string split0 $PATH | grep -v '^/mnt/')
 
 # vim for manpager
 function vman
