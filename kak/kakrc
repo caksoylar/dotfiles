@@ -4,12 +4,6 @@ set-option global ui_options ncurses_wheel_down_button=64
 set-option global ui_options ncurses_assistant=off
 set-option global tabstop 4
 
-# switch some keys
-map global normal <backspace> <\>  # \ mapped to buffers mode
-map global normal <space> <semicolon>
-map global normal <semicolon> <space>
-# map global normal <ret> <:>
-
 # highlight delimiter matches
 add-highlighter global/match show-matching
 
@@ -66,8 +60,8 @@ tabnew -params .. -command-completion %{
 }
 
 # buffers
-map global normal <\>   ': enter-buffers-mode<ret>'            -docstring "buffers…"
-map global normal <a-\> ': enter-user-mode -lock buffers<ret>' -docstring "buffers (lock)…"
+map global normal <backspace>   ': enter-buffers-mode<ret>'            -docstring "buffers…"
+map global normal <a-backspace> ': enter-user-mode -lock buffers<ret>' -docstring "buffers (lock)…"
 alias global bd delete-buffer
 alias global bf buffer-first
 alias global bl buffer-last
