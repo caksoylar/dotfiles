@@ -37,11 +37,11 @@ colorscheme mysticaltutor
 
 # cursorline highlighting
 hook global -group cursorline NormalKey .* %{
-    remove-highlighter global/cursorline
-    add-highlighter global/cursorline line %val{cursor_line} CursorLine
+    remove-highlighter window/cursorline
+    add-highlighter window/cursorline line %val{cursor_line} CursorLine
 }
 define-command cursorline-disable %{
-    remove-highlighter global/cursorline
+    remove-highlighter window/cursorline
     remove-hooks global cursorline
 }
 
@@ -101,4 +101,12 @@ hook global KakEnd .* %{
     state-save-reg-save colon
     state-save-reg-save pipe
     state-save-reg-save slash
+}
+
+# set tools/jumpclient for tools
+define-command -params .. -docstring "create tool split" tool %{
+    rename-client main; set global jumpclient main
+    split rename-client tools; set global toolsclient tools
+
+    evaluate-commands -draft %arg{@}
 }
