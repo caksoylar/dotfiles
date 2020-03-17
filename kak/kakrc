@@ -22,7 +22,7 @@ evaluate-commands %sh{kak-lsp --kakoune -s "$kak_session"}
 hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
     lsp-enable-window
     lsp-auto-hover-enable
-    map window normal <F9> ': lsp-diagnostics<ret>'
+    map window normal <F9> ': tool lsp-diagnostics<ret>'
 }
 
 # smarttab
@@ -104,7 +104,7 @@ hook global KakEnd .* %{
 }
 
 # set tools/jumpclient for tools
-define-command -params .. -docstring "create tool split" tool %{
+define-command -params .. -command-completion -docstring "create tool split" tool %{
     rename-client main; set global jumpclient main
     split rename-client tools; set global toolsclient tools
 
