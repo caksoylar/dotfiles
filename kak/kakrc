@@ -18,11 +18,12 @@ define-command non-ascii -docstring "search for non-ascii characters" %{
 }
 
 # enable lsp for filetypes
-evaluate-commands %sh{kak-lsp --kakoune -s "$kak_session"}
-hook global WinSetOption filetype=(rust|python|go|javascript|typescript|c|cpp) %{
+hook global WinSetOption filetype=(rust|python|c|cpp) %{
+    evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
     lsp-enable-window
     lsp-auto-hover-enable
     map window normal <F9> ': tool lsp-diagnostics<ret>'
+    map window goto r '<esc>: tool lsp-references<ret>'
 }
 
 # smarttab
@@ -105,8 +106,14 @@ hook global KakEnd .* %{
 
 # set tools/jumpclient for tools
 define-command -params .. -command-completion -docstring "create tool split" tool %{
-    rename-client main; set global jumpclient main
-    split rename-client tools; set global toolsclient tools
+    evaluate-commands %sh{
+        if [ "$kak_client" != "main" ]; then
+            echo "rename-client main; set global jumpclient main"
+        fi
+        if [ "${kak_quoted_client_list#*'tools'}" = "$kak_quoted_client_list" ]; then
+            echo "split rename-client tools; set global toolsclient tools"
+        fi
+    }
 
     evaluate-commands -draft %arg{@}
 }
