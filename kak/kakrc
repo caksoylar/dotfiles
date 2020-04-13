@@ -60,6 +60,9 @@ tabnew -params .. -command-completion %{
     tmux-terminal-window kak -c %val{session} -e "%arg{@}"
 }
 
+# clipboard sync on explicit yank
+hook global NormalKey y clipboard-sync
+
 # buffers
 map global normal <backspace>   ': enter-buffers-mode<ret>'            -docstring "buffers…"
 map global normal <a-backspace> ': enter-user-mode -lock buffers<ret>' -docstring "buffers (lock)…"
@@ -105,7 +108,7 @@ hook global KakEnd .* %{
 }
 
 # set tools/jumpclient for tools
-define-command -params .. -command-completion -docstring "create tool split" tool %{
+define-command tool -params .. -command-completion -docstring "create tool split" %{
     evaluate-commands %sh{
         if [ "$kak_client" != "main" ]; then
             echo "rename-client main; set global jumpclient main"
@@ -114,7 +117,6 @@ define-command -params .. -command-completion -docstring "create tool split" too
             echo "split rename-client tools; set global toolsclient tools"
         fi
     }
-
     evaluate-commands -draft %arg{@}
 }
 

@@ -1,5 +1,5 @@
-define-command -docstring "yank selection to terminal clipboard using OSC 52" \
-clipboard-sync -hidden -override %{
+define-command -hidden clipboard-sync \
+-docstring "yank selection to terminal clipboard using OSC 52" %{
     nop %sh{
         eval set -- "$kak_quoted_selections"
         copy=$1
@@ -11,4 +11,3 @@ clipboard-sync -hidden -override %{
         printf "\e]52;;%s\e\\" "$encoded" >/dev/tty
     }
 }
-map global normal <a-y> ': clipboard-sync<ret>'

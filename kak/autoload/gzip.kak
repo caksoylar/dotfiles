@@ -3,7 +3,7 @@
 hook -group gzip global BufOpenFile .*\.gz %{
     evaluate-commands %sh{
         if ! command -v truncate >/dev/null; then
-            printf %s\\n 'fail "Need truncate tool to work with gzip files"'
+            printf %s\\n 'fail "Need truncate executable to work with gzip files"'
         fi
     }
     gzip-decompress
