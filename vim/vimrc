@@ -162,24 +162,15 @@ augroup HlYank
     autocmd TextYankPost * if v:event.operator ==# 'y' | call misc#hl_yank() | endif
 augroup END
 
-" WSL yank support
-let s:clip = '/mnt/c/Windows/System32/clip.exe'
-if executable(s:clip)
-    augroup WSLYank
-        autocmd!
-        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
-    augroup END
-endif
+" Yank with OSC 52
+augroup ClipboardSync
+    autocmd!
+    autocmd TextYankPost * if v:event.operator ==# 'y' | call misc#osc52_yank(@0) | endif
+augroup END
 
-" Tmux mouse and yank support
-if exists('$TMUX')
-    if !has('nvim')
-        set ttymouse=sgr
-    endif
-    augroup TmuxYank
-        autocmd!
-        autocmd TextYankPost * if v:event.operator ==# 'y' | call system('tmux set-buffer -- ' .. shellescape(@0)) | endif
-    augroup END
+" Tmux mouse support
+if exists('$TMUX') && !has('nvim')
+    set ttymouse=sgr
 endif
 
 " Disable netrw

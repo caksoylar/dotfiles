@@ -70,3 +70,9 @@ function misc#hl_yank() abort
     redraw!
     call timer_start(500, {t_id -> clearmatches()})
 endfunction
+
+function misc#osc52_yank(text) abort
+    let encoded = substitute(system("base64 -", a:text), "\n$', "", "")
+    let seq = "\e]52;c;" . encoded . "\x07"
+    call writefile([seq], "/dev/tty", "b")
+endfunction
