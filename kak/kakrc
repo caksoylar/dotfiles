@@ -110,7 +110,7 @@ hook global KakEnd .* %{
 # set tools/jumpclient for tools
 define-command tool -params .. -command-completion -docstring "create tool split and run command" %{
     evaluate-commands %sh{
-        if [ "${kak_client_list#*main}" = "$kak_client_list" ]; then  # if main client isn't renamed, set current as main
+        if [ "${kak_client_list#*main}" = "$kak_client_list" ]; then  # if main client doesn't exist, set current as main
             printf "%s\n" "rename-client main; set global jumpclient main"
         fi
         if [ "${kak_client_list#*tools}" = "$kak_client_list" ]; then  # create tools client and run
@@ -126,7 +126,8 @@ define-command tool -params .. -command-completion -docstring "create tool split
                 }
             }"
         else  # tools client exists, just run command
-            printf "%s\n" "try %{
+            printf "%s\n" \
+            "try %{
                 evaluate-commands -client main $*
             } catch %{
                 echo -debug %val{error}
