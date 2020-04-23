@@ -163,10 +163,12 @@ augroup HlYank
 augroup END
 
 " Yank with OSC 52
-augroup ClipboardSync
-    autocmd!
-    autocmd TextYankPost * if v:event.operator ==# 'y' | call misc#osc52_yank(@0) | endif
-augroup END
+if !has('gui_running') && has('unix')
+    augroup ClipboardSync
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call misc#osc52_yank(@0) | endif
+    augroup END
+endif
 
 " Tmux mouse support
 if exists('$TMUX') && !has('nvim')
