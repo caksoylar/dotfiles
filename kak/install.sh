@@ -7,4 +7,4 @@ mkdir -p ~/.config/kak/autoload/remote
 
 ln -s $(readlink -f "$(dirname $(type -p kak))"/../share/kak/autoload) ~/.config/kak/autoload/system
 
-~/.config/kak/plugins.sh
+~/.config/kak/kjp
