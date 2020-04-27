@@ -31,9 +31,9 @@ lib/libncurses.so: | $(DLDIR) $(SRC)
 
 tmux: bin/tmux
 bin/tmux: lib/libncurses.so lib/libevent.so
-	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.0a/tmux-3.0a.tar.gz -O $(DLDIR)/tmux.tar.gz \
+	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.1/tmux-3.1.tar.gz -O $(DLDIR)/tmux.tar.gz \
 	&& tar xzf $(DLDIR)/tmux.tar.gz -C $(SRC) \
-	&& cd $(SRC)/tmux-3.0a \
+	&& cd $(SRC)/tmux-3.1 \
 	&& ./configure -q --prefix="$(DIR)" \
 	&& make -s -j8 \
 	&& make -s install
