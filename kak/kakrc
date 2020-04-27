@@ -4,6 +4,9 @@ set-option global ui_options ncurses_wheel_down_button=64
 set-option global ui_options ncurses_assistant=off
 set-option global tabstop 4
 
+# clean selections and search highlight on Esc
+map global normal <esc> '<space><semicolon>: rmhl global/search<ret>'
+
 # highlight delimiter matches
 add-highlighter global/match show-matching
 
@@ -17,37 +20,9 @@ map global normal <a-#> ': comment-block<ret>' -docstring "comment block"
 # find non-ascii chars quickly
 define-command non-ascii -docstring "search for non-ascii characters" %{
     set-register / '[^\x00-\x7f]'
-    execute-keys n
-}
-
-# enable lsp for filetypes
-hook global WinSetOption filetype=(rust|python|c|cpp) %{
-    evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
-    lsp-enable-window
-    lsp-auto-hover-enable
-    map window normal <F9> ': tool lsp-diagnostics<ret>'
-    map window goto r '<esc>: tool lsp-references<ret>'
-}
-
-# smarttab
-hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl|yaml) expandtab
-hook global WinSetOption filetype=(makefile) noexpandtab
-hook global WinSetOption filetype=(c|cpp) smarttab
-hook global ModuleLoaded smarttab %{
-    set-option global softtabstop 4
 }
 
 colorscheme mysticaltutor
-
-# cursorline highlighting
-hook global -group cursorline NormalKey .* %{
-    remove-highlighter window/cursorline
-    add-highlighter window/cursorline line %val{cursor_line} CursorLine
-}
-define-command cursorline-disable %{
-    remove-highlighter window/cursorline
-    remove-hooks global cursorline
-}
 
 # tmux window management commands
 define-command -docstring "vsplit [<commands>]: split tmux vertically" \
@@ -65,6 +40,24 @@ tabnew -params .. -command-completion %{
 
 # clipboard sync on explicit yank
 hook global NormalKey y clipboard-sync
+
+## plugin settings
+# enable lsp for filetypes
+hook global WinSetOption filetype=(rust|python|c|cpp) %{
+    evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
+    lsp-enable-window
+    lsp-auto-hover-enable
+    map window normal <F9> ': tool lsp-diagnostics<ret>'
+    map window goto r '<esc>: tool lsp-references<ret>'
+}
+
+# smarttab
+hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl|yaml) expandtab
+hook global WinSetOption filetype=(makefile) noexpandtab
+hook global WinSetOption filetype=(c|cpp) smarttab
+hook global ModuleLoaded smarttab %{
+    set-option global softtabstop 4
+}
 
 # buffers
 map global normal <backspace>   ': enter-buffers-mode<ret>'            -docstring "buffers…"
@@ -108,36 +101,6 @@ hook global KakEnd .* %{
     state-save-reg-save colon
     state-save-reg-save pipe
     state-save-reg-save slash
-}
-
-# set tools/jumpclient for tools
-define-command tool -params .. -command-completion -docstring "create tool split and run command" %{
-    evaluate-commands %sh{
-        if [ "${kak_client_list#*main}" = "$kak_client_list" ]; then  # if main client doesn't exist, set current as main
-            printf "%s\n" "rename-client main; set global jumpclient main"
-        fi
-        if [ "${kak_client_list#*tools}" = "$kak_client_list" ]; then  # create tools client and run
-            printf "%s\n" \
-            "set global toolsclient tools
-            split %{
-                rename-client tools
-                try %{
-                    evaluate-commands -client main $*
-                } catch %{
-                    echo -debug %val{error}
-                    quit
-                }
-            }"
-        else  # tools client exists, just run command
-            printf "%s\n" \
-            "try %{
-                evaluate-commands -client main $*
-            } catch %{
-                echo -debug %val{error}
-                evaluate-commands -client tools quit
-            }"
-        fi
-    }
 }
 
 # pylint

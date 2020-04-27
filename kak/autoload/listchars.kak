@@ -1,4 +1,4 @@
-define-command -hidden -params 0 toggle-list %{
+define-command -hidden -params 0 listchars-toggle %{
     try %{
         add-highlighter global/listchars show-whitespaces -tab "»" -lf "↲" -nbsp "␣" -spc "·"
     } catch %{
@@ -6,4 +6,4 @@ define-command -hidden -params 0 toggle-list %{
     }
 }
 
-map global user l ': toggle-list<ret>' -docstring "toggle whitespace highlighting"
+map global user l ': listchars-toggle<ret>' -docstring "toggle whitespace highlighting"

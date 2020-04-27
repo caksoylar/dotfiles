@@ -16,13 +16,14 @@ which is configured with [QMK](https://qmk.fm).
   directories to ignore git prompt customizable with a `ignore_git` function
 
 ### Kakoune
-- [A crude emulation](kak/kakrc#L39) of Vim cursorline
+- [A crude emulation](kak/autoload/cursorline.kak) of Vim cursorline
 - [Kakoune version](kak/colors/mysticaltutor.kak) of
   [vim-mysticaltutor](https://github.com/caksoylar/vim-mysticaltutor)
 - [Plugin](kak/autoload/gzip.kak) to edit gzipped files
-- [Copy to clipboard](kak/autoload/clipboard.kak) for WSL and tmux
+- [Copy to clipboard](kak/autoload/clipboard.kak) using OSC 52
 
 ### Vim
+- [Copy to clipboard](vim/vimrc#L165) using OSC 52
 - [A small utility](vim/pack/self/start/vim-ipynb) to edit code blocks in ipynb
   files
 - A basic [scrollbar-in-your-statusline
