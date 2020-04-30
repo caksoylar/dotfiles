@@ -9,5 +9,5 @@ if executable('pyls') && g:lsp_loaded
     augroup END
     call lsp#enable()
 endif
-setlocal makeprg=pylint\ -d\ C0111\ -d\ C0301\ -d\ C0103\ -d\ E1101\ --output-format=parseable\ %:p
+setlocal makeprg=pylint\ -d\ C0111,C0301,C0103,E1101\ --output-format=parseable\ %:p
 setlocal errorformat=%f:%l:\ %m
