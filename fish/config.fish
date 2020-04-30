@@ -5,7 +5,7 @@ else
     set EDITOR vim
 end
 
-# add user bin and lib paths
+# add user bin, lib and man paths
 for dir in ~/miniconda3/bin ~/.cargo/bin ~/.local/bin ~/bin
     if test -d $dir; and not contains $dir $PATH
         set PATH $dir $PATH
@@ -15,6 +15,12 @@ end
 for dir in ~/.local/lib ~/lib
     if test -d $dir; and not contains $dir $LD_LIBRARY_PATH
         set LD_LIBRARY_PATH $dir
+    end
+end
+
+for dir in ~/.local/share/man ~/man
+    if test -d $dir; and not contains $dir $MANPATH
+        set MANPATH $dir
     end
 end
 
