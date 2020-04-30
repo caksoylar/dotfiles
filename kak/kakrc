@@ -105,5 +105,5 @@ hook global KakEnd .* %{
 
 # pylint
 hook global WinSetOption filetype=python %{
-    set window lintcmd %{ run() { pylint --msg-template='{path}:{line:}:{column}:{category}:{msg}' -rn -sn "$1" | awk '{split($0, a, ":"); printf("%s:%s:%s: %s: %s\n", a[1], a[2], a[3]+1, a[4], a[5])}'; } && run }
+    set window lintcmd %{ run() { pylint -d C0111,C0301,C0103,E1101 --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'; } && run }
 }
