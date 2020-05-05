@@ -1,5 +1,18 @@
-snippet_support = false
+snippet_support = true
 verbosity = 2
+
+[semantic_scopes]
+# Map textmate scopes to kakoune faces for semantic highlighting
+# the underscores are translated to dots, and indicate nesting.
+# That is, if variable_other_field is omitted, it will try the face for
+# variable_other and then variable
+#
+# To see a list of available scopes in the debug buffer, run lsp-semantic-available-scopes
+variable = "variable"
+entity_name_function = "function"
+entity_name_type = "type"
+variable_other_enummember = "variable"
+entity_name_namespace = "module"
 
 [server]
 # exit session if no requests were received during given period in seconds
@@ -19,7 +32,7 @@ command = "scry"
 
 [language.javascript]
 filetypes = ["javascript"]
-roots = ["package.json"]
+roots = [".flowconfig"]
 command = "flow"
 args = ["lsp"]
 
@@ -43,7 +56,7 @@ args = ["--stdio"]
 
 [language.ocaml]
 filetypes = ["ocaml"]
-roots = ["Makefile", "opam", "*.opam"]
+roots = ["Makefile", "opam", "*.opam", "dune"]
 command = "ocaml-language-server"
 args = ["--stdio"]
 
@@ -52,6 +65,12 @@ filetypes = ["reason"]
 roots = ["package.json", "Makefile", ".git", ".hg"]
 command = "ocaml-language-server"
 args = ["--stdio"]
+
+[language.ruby]
+filetypes = ["ruby"]
+roots = ["Gemfile"]
+command = "solargraph"
+args = ["stdio"]
 
 [language.python]
 filetypes = ["python"]
@@ -74,7 +93,7 @@ args = ["--lsp"]
 [language.go]
 filetypes = ["go"]
 roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
-command = "bingo"
+command = "gopls"
 offset_encoding = "utf-8"
 
 [language.bash]
@@ -84,9 +103,11 @@ command = "bash-language-server"
 args = ["start"]
 
 [language.dart]
+# start shell to find path to dart analysis server source
 filetypes = ["dart"]
 roots = ["pubspec.yaml", ".git"]
-command = "dart_language_server"
+command = "sh"
+args = ["-c", "dart $(dirname $(which dart))/snapshots/analysis_server.dart.snapshot --lsp"]
 
 [language.d]
 filetypes = ["d", "di"]
@@ -118,3 +139,8 @@ runtime = "node"
 elmPath = "elm"
 elmFormatPath = "elm-format"
 elmTestPath = "elm-test"
+
+[language.latex]
+filetypes = ["latex"]
+roots = [".git"]
+command = "texlab"
