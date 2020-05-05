@@ -49,6 +49,13 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     lsp-auto-hover-enable
     map window normal <F9> ': tool lsp-diagnostics<ret>'
     map window goto r '<esc>: tool lsp-references<ret>'
+
+    # mpls
+    set-option global lsp_server_configuration settings.python.analysis.logLevel="Information"
+    set-option global lsp_server_configuration settings.python.linting.pylintEnabled=true
+    set-option global lsp_server_initialization_options %sh{echo python.interpreter.properties.InterpreterPath=\"$(which python)\"}
+    set-option global lsp_server_initialization_options python.interpreter.properties.UseDefaultDatabase=true
+    set-option global lsp_server_initialization_options %sh{echo python.interpreter.properties.Version=\"$(python -V | sed 's/.* //')\"}
 }
 
 # smarttab

@@ -75,8 +75,25 @@ args = ["stdio"]
 [language.python]
 filetypes = ["python"]
 roots = ["requirements.txt", "setup.py", ".git", ".hg", "setup.cfg"]
-command = "pyls"
+# command = "pyls"
+command = "pyls-ms"
 offset_encoding = "utf-8"
+
+[language.python.initialization_options]
+analysisUpdates = true
+asyncStartup = true
+[language.python.settings.python.analysis]
+logLevel = "Information"
+[language.python.settings.analysis]
+logLevel = "Information"
+[language.python.initialization_options.analysis]
+logLevel = "Information"
+[language.python.initialization_options.python.analysis]
+logLevel = "Information"
+[language.python.initialization_options.settings.analysis]
+logLevel = "Information"
+[language.python.initialization_options.settings.python.analysis]
+logLevel = "Information"
 
 [language.c_cpp]
 filetypes = ["c", "cpp"]
