@@ -10,10 +10,11 @@ enum layers {
 
 // layer-tap and mod-tap definitions
 #define LT_SPC LT(_EXTR, KC_SPC)
+#define LT_DEL LT(_FUNC, KC_DEL)
 #define TM_GRV LT(_TMUX, KC_GRV)
 #define LC_MIN LCTL_T(KC_MINS)
 #define RA_EQL RALT_T(KC_EQL)
-#define LT_DEL LT(_FUNC, KC_DEL)
+#define LS_LBR LSFT_T(KC_LBRC)
 #define RS_ENT RSFT_T(KC_ENT)
 
 // shortcut definitions
@@ -37,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
        KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-       KC_LBRC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC,
+       LS_LBR,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC,
     //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                       KC_LGUI, LC_MIN,  RA_EQL,                    LT_SPC,  RS_ENT,  LT_DEL
                                   // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -53,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MPLY,          XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC,
     //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                      KC_LCTL, KC_LSFT, KC_SPC,                    KC_SPC,  KC_ENT,  MO(_FUNC)
+                                      KC_LCTL, KC_LSFT, KC_SPC,                    LT_SPC,  KC_ENT,  MO(_FUNC)
                                   // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
     ),
 
@@ -87,7 +88,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_FUNC] = LAYOUT(
     //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-       _______, DF(_BASE),DF(_GAME),_______,_______,_______,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
+       _______, DF(_BASE),DF(_GAME),_______,_______,_______,                            _______, _______, _______, _______, _______, _______,
     //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
        RGB_TOG, _______, _______, _______, RESET,   _______,                            _______, _______, _______, _______, KC_PSCR, _______,
     //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
@@ -133,12 +134,12 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             break;
         default:
             switch (get_highest_layer(default_layer_state)) {
-		        case _GAME:
-		            rgblight_sethsv_noeeprom(110, sat, val);
-		            break;
-	            default:
-			        rgblight_sethsv_noeeprom(150, sat, val);
-			        break;
+                case _GAME:
+                    rgblight_sethsv_noeeprom(110, sat, val);
+                    break;
+                default:
+                    rgblight_sethsv_noeeprom(150, sat, val);
+                    break;
             }
             break;
     }
