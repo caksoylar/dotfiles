@@ -18,11 +18,11 @@ for dir in ~/.local/lib ~/lib
     end
 end
 
-for dir in ~/.local/share/man ~/man
-    if test -d $dir; and not contains $dir $MANPATH
-        set MANPATH $dir
-    end
-end
+# for dir in ~/.local/share/man ~/man
+#     if test -d $dir; and not contains $dir $MANPATH
+#         set MANPATH $dir
+#     end
+# end
 
 # remove Windows paths
 set PATH (string split0 $PATH | grep -v '^/mnt/')
