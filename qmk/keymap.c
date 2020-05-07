@@ -29,6 +29,11 @@ enum layers {
 // prefix for tmux layer
 #define TMUX_P LCTL(KC_SPC)
 
+// for the combination dial
+#define PASSPHRASE "TA DA!"
+#define COMBINATION { 20, 10, 30 }
+#define TOLERANCE 3
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT(
     //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -148,6 +153,38 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #endif  // RGBLIGHT_ENABLE
 
 #ifdef ENCODER_ENABLE
+void update_dial(bool direction) {
+    const static uint8_t combo[3] = COMBINATION;
+    const static size_t combo_len = sizeof(combo);
+    static bool direction_to_go = true;
+    static uint8_t state = 0;
+    static uint8_t clicks = 0;
+    static uint8_t grace = 0;
+
+    if (direction == direction_to_go) {  // correct direction
+        clicks++;
+        if (clicks == combo[state] - TOLERANCE) {  // dialed just enough
+            clicks = 0;
+            grace = 0;
+            direction_to_go = !direction_to_go;
+            if (++state == combo_len) {  // increment state then check if we are at the end
+                state = 0;
+                direction_to_go = true;
+                SEND_STRING(PASSPHRASE);
+            }
+        }
+    } else {  // wrong direction, fail
+        if (clicks != 0 || ++grace > 2 * TOLERANCE) {  // a few extra ticks just after changing direction is acceptable
+            state = 0;
+            clicks = 0;
+            grace = 0;
+            direction_to_go = true;
+        }
+    }
+    /*char msg[4] = { state + 48, '-', clicks + 48, '\0' };
+    send_string(msg);*/
+}
+
 void encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
         switch (get_highest_layer(layer_state)) {
@@ -161,6 +198,7 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 break;
             case _FUNC:
                 clockwise ? tap_code(KC_MS_WH_RIGHT) : tap_code(KC_MS_WH_LEFT);
+                update_dial(clockwise);
                 break;
             default:
                 clockwise ? tap_code(KC_MS_WH_DOWN) : tap_code(KC_MS_WH_UP);
