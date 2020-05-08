@@ -154,35 +154,27 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 #ifdef ENCODER_ENABLE
 void update_dial(bool direction) {
-    const static uint8_t combo[3] = COMBINATION;
+    const static uint8_t combo[] = COMBINATION;
     const static size_t combo_len = sizeof(combo);
     static bool direction_to_go = true;
-    static uint8_t state = 0;
-    static uint8_t clicks = 0;
-    static uint8_t grace = 0;
+    static uint8_t state = 0, clicks = 0, grace = 0;
 
     if (direction == direction_to_go) {  // correct direction
-        clicks++;
-        if (clicks == combo[state] - TOLERANCE) {  // dialed just enough
-            clicks = 0;
-            grace = 0;
-            direction_to_go = !direction_to_go;
+        if (++clicks == combo[state] - TOLERANCE) {  // increment clicks and check if dialed enough
+            clicks = grace = 0;
+            direction_to_go = !direction_to_go;  // flip direction
             if (++state == combo_len) {  // increment state then check if we are at the end
-                state = 0;
+                state = 0;  // reset to start
                 direction_to_go = true;
-                SEND_STRING(PASSPHRASE);
+                SEND_STRING(PASSPHRASE);  // display passphrase
             }
         }
-    } else {  // wrong direction, fail
+    } else {  // wrong direction so fail, except...
         if (clicks != 0 || ++grace > 2 * TOLERANCE) {  // a few extra ticks just after changing direction is acceptable
-            state = 0;
-            clicks = 0;
-            grace = 0;
+            state = clicks = grace = 0;  // reset to start
             direction_to_go = true;
         }
     }
-    /*char msg[4] = { state + 48, '-', clicks + 48, '\0' };
-    send_string(msg);*/
 }
 
 void encoder_update_user(uint8_t index, bool clockwise) {
