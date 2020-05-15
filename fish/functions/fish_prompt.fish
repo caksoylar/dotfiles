@@ -42,7 +42,10 @@ function fish_prompt
     if test -n "$fish_private_mode"
         _print_in_color "private " brblack
     end
-    _print_in_color (whoami)"@"(hostname) cyan
+    _print_in_color (whoami) cyan
+    if test -n "$SSH_TTY"
+        _print_in_color "@"(hostname) cyan
+    end
     _print_in_color " "(prompt_pwd) blue
     if not type -q ignore_git; or not ignore_git
         fish_git_prompt " %s"
