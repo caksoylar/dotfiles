@@ -136,32 +136,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef RGBLIGHT_ENABLE
 void keyboard_post_init_user(void) {
-    rgblight_sethsv_noeeprom(150, 255, 255);
+    rgblight_sethsv_noeeprom(150, 137, 255);
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    uint8_t sat = rgblight_get_sat();
     uint8_t val = rgblight_get_val();
     switch (get_highest_layer(state)) {
         case _EXTR:
-            rgblight_sethsv_noeeprom(188, sat, val);
+            rgblight_sethsv_noeeprom(188, 160, val);
             break;
         case _TMUX:
-            rgblight_sethsv_noeeprom(67, sat, val);
+            rgblight_sethsv_noeeprom( 67, 140, val);
             break;
         case _FUNC:
-            rgblight_sethsv_noeeprom(242, sat, val);
+            rgblight_sethsv_noeeprom(242, 152, val);
             break;
         default:
             switch (get_highest_layer(default_layer_state)) {
                 case _GAME:
-                    rgblight_sethsv_noeeprom(110, sat, val);
+                    rgblight_sethsv_noeeprom(110, 158, val);
                     break;
                 case _COLE:
-                    rgblight_sethsv_noeeprom(119, sat, val);
+                    rgblight_sethsv_noeeprom(119,   0, val);
                     break;
                 default:
-                    rgblight_sethsv_noeeprom(150, sat, val);
+                    rgblight_sethsv_noeeprom(150, 164, val);
                     break;
             }
             break;
