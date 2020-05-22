@@ -41,8 +41,19 @@ tabnew -params .. -command-completion %{
 # clipboard sync on explicit yank
 hook global NormalKey y clipboard-sync
 
+# pylint
+hook global WinSetOption filetype=python %{
+    set window lintcmd %{ run() { pylint -d C0111,C0301,C0103,E1101 --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'; } && run }
+}
+
 ## plugin settings
-# enable lsp for filetypes
+source "%val{config}/plugins/plug.kak/rc/plug.kak"
+plug "andreyorst/plug.kak" noload
+
+plug "occivink/kakoune-find"
+plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
+
+# enable lsp for filetypes, kak-lsp not managed by plug
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
     evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
     lsp-enable-window
@@ -51,28 +62,30 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     map window goto r '<esc>: tool lsp-references<ret>'
 }
 
-# smarttab
-hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl|yaml) expandtab
-hook global WinSetOption filetype=(makefile) noexpandtab
-hook global WinSetOption filetype=(c|cpp) smarttab
-hook global ModuleLoaded smarttab %{
+plug "andreyorst/smarttab.kak" domain "gitlab.com" defer smarttab %{
     set-option global softtabstop 4
+} config %{
+    hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl|yaml) expandtab
+    hook global WinSetOption filetype=(makefile) noexpandtab
+    hook global WinSetOption filetype=(c|cpp) smarttab
 }
 
-# buffers
-map global normal <backspace>   ': enter-buffers-mode<ret>'            -docstring "buffers…"
-map global normal <a-backspace> ': enter-user-mode -lock buffers<ret>' -docstring "buffers (lock)…"
-alias global bd delete-buffer
-alias global bf buffer-first
-alias global bl buffer-last
-alias global bo buffer-only
-alias global bo! buffer-only-force
-hook global WinDisplay .* info-buffers
+plug "Delapouite/kakoune-buffers" config %{
+    map global normal <backspace>   ': enter-buffers-mode<ret>'            -docstring "buffers…"
+    map global normal <a-backspace> ': enter-user-mode -lock buffers<ret>' -docstring "buffers (lock)…"
+    alias global bd delete-buffer
+    alias global bf buffer-first
+    alias global bl buffer-last
+    alias global bo buffer-only
+    alias global bo! buffer-only-force
+    hook global WinDisplay .* info-buffers
+}
 
-# readline
-hook global WinCreate .* readline-enable
+plug "chambln/kakoune-readline" config %{
+    hook global WinCreate .* readline-enable
+}
 
-# kak-tree mode
+# kak-tree mode, not managed by plug
 declare-user-mode tree
 map global tree h ': tree-select-previous-node<ret>'  -docstring "select previous"
 map global tree l ': tree-select-next-node<ret>'      -docstring "select next"
@@ -81,29 +94,27 @@ map global tree j ': tree-select-children<ret>'       -docstring "select childre
 map global tree f ': tree-select-first-child<ret>'    -docstring "select first child"
 map global tree s ': tree-node-sexp<ret>'             -docstring "show info"
 
-map global user t ': enter-user-mode tree<ret>'       -docstring "tree sitter…"
-map global user T ': enter-user-mode -lock tree<ret>' -docstring "tree sitter… (lock)"
+map global user t ': enter-user-mode tree<ret>'       -docstring "enter tree mode"
+map global user T ': enter-user-mode -lock tree<ret>' -docstring "enter tree mode (lock)"
 
-# surround
-map global user s ': surround<ret>' -docstring 'enter surround mode'
-
-# vertical-selection
-map global normal ^     ': vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
-map global normal <a-^> ': vertical-selection-up<ret>'   -docstring "select matching pattern from the lines above"
-
-# state-save save command history
-hook global KakBegin .* %{
-    state-save-reg-load colon
-    state-save-reg-load pipe
-    state-save-reg-load slash
-}
-hook global KakEnd .* %{
-    state-save-reg-save colon
-    state-save-reg-save pipe
-    state-save-reg-save slash
+plug "alexherbo2/surround.kak" config %{
+    map global user s ': surround<ret>' -docstring 'enter surround mode'
 }
 
-# pylint
-hook global WinSetOption filetype=python %{
-    set window lintcmd %{ run() { pylint -d C0111,C0301,C0103,E1101 --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'; } && run }
+plug "occivink/kakoune-vertical-selection" config %{
+    map global normal ^     ': vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
+    map global normal <a-^> ': vertical-selection-up<ret>'   -docstring "select matching pattern from the lines above"
+}
+
+plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
+    hook global KakBegin .* %{
+        state-save-reg-load colon
+        state-save-reg-load pipe
+        state-save-reg-load slash
+    }
+    hook global KakEnd .* %{
+        state-save-reg-save colon
+        state-save-reg-save pipe
+        state-save-reg-save slash
+    }
 }

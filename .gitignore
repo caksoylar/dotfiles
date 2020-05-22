@@ -2,7 +2,7 @@
 /fish/functions/work
 /fish/work.fish
 /kak/autoload/system
-/kak/autoload/remote
+/kak/plugins
 /vim/vjp
 /vim/temp
 /vim/undo
