@@ -5,7 +5,7 @@ set-option global ui_options ncurses_assistant=off
 set-option global tabstop 4
 
 # clean selections and search highlight on Esc
-map global normal <esc> '<space><semicolon>: rmhl global/search<ret>'
+map global normal <esc> '<space><semicolon>: reg slash ""<ret>'
 
 # highlight delimiter matches
 add-highlighter global/match show-matching
@@ -104,6 +104,13 @@ plug "alexherbo2/surround.kak" config %{
 plug "occivink/kakoune-vertical-selection" config %{
     map global normal ^     ': vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
     map global normal <a-^> ': vertical-selection-up<ret>'   -docstring "select matching pattern from the lines above"
+}
+
+plug "occivink/kakoune-expand" config %{
+    map global normal + ": expand<ret>"
+    set-option -add global expand_commands %{
+        expand-impl %{ exec <a-i>p }
+    }
 }
 
 plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
