@@ -1,7 +1,6 @@
 # set-option -add global autoinfo normal
 set-option global scrolloff 3,3
-set-option global ui_options ncurses_wheel_down_button=64
-set-option global ui_options ncurses_assistant=off
+set-option global ui_options ncurses_assistant=none
 set-option global tabstop 4
 
 # clean selections and search highlight on Esc
@@ -38,15 +37,53 @@ tabnew -params .. -command-completion %{
     tmux-terminal-window kak -c %val{session} -e "%arg{@}"
 }
 
-# clipboard sync on explicit yank
-hook global NormalKey y clipboard-sync
-
 # pylint
 hook global WinSetOption filetype=python %{
     set window lintcmd %{ run() { pylint -d C0111,C0301,C0103,E1101 --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'; } && run }
 }
 
-## plugin settings
+# find-edit command
+define-command find-edit -params 1 -menu -shell-script-candidates 'fd --type file || rg --files' 'edit %arg(1)'
+map global user f ': find-edit ' -docstring "find and edit file"
+
+# unify next/prev
+hook global BufOpenFifo '\*make\*' %{ alias global next make-next-error; alias global prev make-previous-error }
+hook global BufOpenFifo '\*grep\*' %{ alias global next grep-next-match; alias global prev grep-previous-match }
+hook global BufCreate '\*find\*' %{ alias global next find-next-match; alias global prev find-previous-match }
+hook global BufOpenFifo '\*lint-output\*' %{ alias global next lint-next-message; alias global prev lint-previous-message }
+hook global BufCreate '\*references\*' %{ alias global next lsp-references-next-match; alias global prev lsp-references-previous-match }
+hook global BufCreate '\*diagnostics\*' %{ def next "lsp-find-error --include-warnings"; def prev "lsp-find-error --previous --include-warnings" }
+
+map global user n     ': next<ret>' -docstring "next message"
+map global user <a-n> ': prev<ret>' -docstring "previous message"
+
+## self plugin settings
+# options.kak
+map global user c ': cursorline-toggle<ret>'   -docstring "toggle cursorline highlighting"
+map global user l ': line-numbers-toggle<ret>' -docstring "toggle line-numbers"
+map global user s ': whitespaces-toggle<ret>'  -docstring "toggle whitespace highlighting"
+map global user w ': softwrap-toggle<ret>'     -docstring "toggle line soft wrap"
+hook global WinCreate ^[^*]+$ %{ line-numbers-toggle }
+hook global WinCreate .* %{
+    softwrap-toggle
+}
+
+# clipboard.kak: clipboard sync on explicit yank
+hook global NormalKey y clipboard-sync
+
+# percent.kak
+map global goto p '<esc>: percent<ret>' -docstring "buffer percentage"
+
+# inc-dec.kak
+declare-user-mode inc-dec
+map global inc-dec a ': inc-dec %val{count} + 0<ret>' -docstring "increment by count"
+map global inc-dec x ': inc-dec %val{count} - 0<ret>' -docstring "decrement by count"
+map global inc-dec A ': inc-dec %val{count} + 1<ret>' -docstring "increment by count times selection index"
+map global inc-dec X ': inc-dec %val{count} - 1<ret>' -docstring "decrement by count times selection index"
+map global user m ': enter-user-mode inc-dec<ret>'       -docstring "enter inc-dec mode"
+map global user M ': enter-user-mode -lock inc-dec<ret>' -docstring "enter inc-dec mode (lock)"
+
+## remote plugin settings
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "andreyorst/plug.kak" noload
 
@@ -85,20 +122,8 @@ plug "chambln/kakoune-readline" config %{
     hook global WinCreate .* readline-enable
 }
 
-# kak-tree mode, not managed by plug
-declare-user-mode tree
-map global tree h ': tree-select-previous-node<ret>'  -docstring "select previous"
-map global tree l ': tree-select-next-node<ret>'      -docstring "select next"
-map global tree k ': tree-select-parent-node<ret>'    -docstring "select parent"
-map global tree j ': tree-select-children<ret>'       -docstring "select children"
-map global tree f ': tree-select-first-child<ret>'    -docstring "select first child"
-map global tree s ': tree-node-sexp<ret>'             -docstring "show info"
-
-map global user t ': enter-user-mode tree<ret>'       -docstring "enter tree mode"
-map global user T ': enter-user-mode -lock tree<ret>' -docstring "enter tree mode (lock)"
-
 plug "alexherbo2/surround.kak" config %{
-    map global user s ': surround<ret>' -docstring 'enter surround mode'
+    map global normal <a-g> ': surround<ret>' -docstring "enter surround mode"
 }
 
 plug "occivink/kakoune-vertical-selection" config %{
@@ -107,7 +132,8 @@ plug "occivink/kakoune-vertical-selection" config %{
 }
 
 plug "occivink/kakoune-expand" config %{
-    map global normal + ": expand<ret>"
+    # try kak-tree, fall back to expand
+    map global normal + ": try %{ tree-select-parent-node } catch %{ expand }<ret>"
     set-option -add global expand_commands %{
         expand-impl %{ exec <a-i>p }
     }

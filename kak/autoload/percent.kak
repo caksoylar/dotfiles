@@ -10,5 +10,3 @@ define-command -hidden percent %{
         }
     }
 }
-
-map global goto p '<esc>: percent<ret>' -docstring "buffer percentage"
