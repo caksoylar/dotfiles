@@ -64,9 +64,7 @@ map global user l ': line-numbers-toggle<ret>' -docstring "toggle line-numbers"
 map global user s ': whitespaces-toggle<ret>'  -docstring "toggle whitespace highlighting"
 map global user w ': softwrap-toggle<ret>'     -docstring "toggle line soft wrap"
 hook global WinCreate ^[^*]+$ %{ line-numbers-toggle }
-hook global WinCreate .* %{
-    softwrap-toggle
-}
+hook global WinCreate .* %{ softwrap-toggle }
 
 # clipboard.kak: clipboard sync on explicit yank
 hook global NormalKey y clipboard-sync
@@ -107,7 +105,7 @@ plug "andreyorst/smarttab.kak" domain "gitlab.com" defer smarttab %{
     hook global WinSetOption filetype=(c|cpp) smarttab
 }
 
-plug "Delapouite/kakoune-buffers" config %{
+plug "caksoylar/kakoune-buffers" config %{
     map global normal <backspace>   ': enter-buffers-mode<ret>'            -docstring "buffers…"
     map global normal <a-backspace> ': enter-user-mode -lock buffers<ret>' -docstring "buffers (lock)…"
     alias global bd delete-buffer
