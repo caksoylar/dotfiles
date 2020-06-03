@@ -21,7 +21,7 @@ define-command non-ascii -docstring "search for non-ascii characters" %{
     set-register / '[^\x00-\x7f]'
 }
 
-colorscheme mysticaltutor
+colorscheme mysticaltutor-alpha
 
 # tmux window management commands
 define-command -docstring "vsplit [<commands>]: split tmux vertically" \
