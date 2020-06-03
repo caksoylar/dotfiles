@@ -36,8 +36,6 @@ face global builtin   rgb:B1A3DF
 # For markup
 face global title  rgb:5C8EC7
 face global header rgb:5CBE97
-face global bold   +b
-face global italic +i
 face global mono   rgb:8BBE67
 face global block  rgb:8B5FC7
 face global link   rgb:5CBE97
@@ -70,4 +68,3 @@ face global MatchingChar       +b
 face global Whitespace         rgb:A0A4AA+f
 face global BufferPadding      rgb:A0A4AA
 face global WrapMarker         rgb:A0A4AA+f
-face global CursorLine         default,rgb:30343C+g

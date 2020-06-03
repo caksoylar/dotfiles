@@ -1,6 +1,9 @@
 # cursorline highlighting
+declare-option str cursorline_bg rgba:7F7F7F16
+
 define-command cursorline-toggle %{
     try %{
+        set-face global CursorLine "default,%opt{cursorline_bg}"
         add-highlighter window/cursorline fill Normal  # dummy to throw error if enabled
         hook window -group cursorline NormalKey .* %{
             remove-highlighter window/cursorline
