@@ -83,7 +83,7 @@ map global user M ': enter-user-mode -lock inc-dec<ret>' -docstring "enter inc-d
 
 ## remote plugin settings
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
-plug "andreyorst/plug.kak" noload
+plug "andreyorst/plug.kak" domain "gitlab.com" noload
 
 plug "occivink/kakoune-find"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"

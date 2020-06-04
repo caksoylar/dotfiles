@@ -53,10 +53,10 @@ face global SecondaryCursorEol rgb:1E2227,rgb:8B5FC7+fg
 face global LineNumbers        rgb:A0A4AA@Default
 face global LineNumberCursor   +b@LineNumbers
 face global LineNumbersWrapped +d@LineNumbers
-face global MenuForeground     default,rgb:5C8EC7+b@MenuBackground
-face global MenuBackground     default,rgb:304A68@Default
+face global MenuForeground     rgb:5C8EC7,default+b@MenuBackground
+face global MenuBackground     default,rgb:30343C@Default
 face global MenuInfo           +i
-face global Information        default,rgb:304A68@Default
+face global Information        default,rgb:30343C@Default
 face global Error              rgb:E07093+b@Default
 face global StatusLine         @Default
 face global StatusLineMode     rgb:BB8E67@Default
