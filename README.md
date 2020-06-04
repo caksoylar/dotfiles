@@ -22,7 +22,8 @@ which is configured with [QMK](https://qmk.fm).
 - [Copy to clipboard](kak/autoload/clipboard.kak) using OSC 52
 - [Increment-decrement](kak/autoload/inc-dec.kak) like Vim's `<C-a>/<C-x>` and
   `g<C-a>/g<C-x>` in visual mode
-- [A crude emulation](kak/autoload/cursorline.kak) of Vim cursorline
+- [Emulating various Vim options](kak/autoload/options.kak) `cursorline`,
+  `number`, `list`, `wrap`
 - [A small utility](kak/autoload/ipynb.kak) to edit code blocks in ipynb
   files
 
@@ -34,4 +35,6 @@ which is configured with [QMK](https://qmk.fm).
   implementation](vim/pack/self/start/scrollbar)
 
 ### QMK
-- A ["tmux" layer](qmk/keymap.c#L83) which sends a prefix before any pressed key
+- A ["tmux" layer](qmk/keymap.c#L95) which sends a prefix before any pressed key
+- A [combination dial lock](qmk/keymap.c#L173) to emit a passphrase using the
+  rotary encoder
