@@ -100,7 +100,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
 plug "andreyorst/smarttab.kak" domain "gitlab.com" defer smarttab %{
     set-option global softtabstop 4
 } config %{
-    hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|perl|yaml) expandtab
+    hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml) expandtab
     hook global WinSetOption filetype=(makefile) noexpandtab
     hook global WinSetOption filetype=(c|cpp) smarttab
 }
