@@ -130,10 +130,13 @@ plug "occivink/kakoune-vertical-selection" config %{
 }
 
 plug "occivink/kakoune-expand" config %{
-    # try kak-tree, fall back to expand
-    map global normal + ": try %{ tree-select-parent-node } catch %{ expand }<ret>"
+    map global normal + ": expand<ret>"
     set-option -add global expand_commands %{
         expand-impl %{ exec <a-i>p }
+        # lower indent level
+        expand-impl %{ exec '<a-;>k<a-a>i' }
+        # expand to back to pythonic "...:" lines
+        expand-impl %{ exec '<a-i>i<a-:><a-;><a-?>^[^\n]+:<ret><a-;>' }
     }
 }
 
