@@ -91,8 +91,17 @@ plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
 # enable lsp for filetypes, kak-lsp not managed by plug
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
     evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
+
+    define-command lsp-restart %{ lsp-stop; lsp-start }
+    set-option global lsp_diagnostic_line_error_sign "!"
+    set-option global lsp_diagnostic_line_warning_sign "?"
+    set-face window DiagnosticError default+u
+    set-face window DiagnosticWarning default+u
+
     lsp-enable-window
     lsp-auto-hover-enable
+
+    map window user l ': enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window normal <F9> ': tool lsp-diagnostics<ret>'
     map window goto r '<esc>: tool lsp-references<ret>' -docstring "references"
 }
