@@ -1,7 +1,6 @@
 function lspconfig#config() abort
     " LSP config
     setlocal omnifunc=lsp#complete
-    let g:lsp_diagnostics_echo_cursor = 1
     nmap <buffer> gd <Plug>(lsp-definition)
     nmap <buffer> K <Plug>(lsp-hover)
     nmap <buffer> gr <Plug>(lsp-references)
