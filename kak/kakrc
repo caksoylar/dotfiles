@@ -86,6 +86,7 @@ source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "andreyorst/plug.kak" domain "gitlab.com" noload
 
 plug "occivink/kakoune-find"
+plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
 
 # enable lsp for filetypes, kak-lsp not managed by plug
