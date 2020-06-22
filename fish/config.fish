@@ -24,9 +24,6 @@ end
 #     end
 # end
 
-# remove Windows paths
-set PATH (string split0 $PATH | grep -v '^/mnt/')
-
 # vim for manpager
 function vman
     man $argv | col -b | vim --clean -c 'runtime! macros/less.vim' -c 'set ft=man ic' --not-a-term -
