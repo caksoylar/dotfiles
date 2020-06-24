@@ -10,7 +10,6 @@ start https://github.com/caksoylar/vim-fish
 opt   https://github.com/rickhowe/diffchar.vim
 opt   https://github.com/mbbill/undotree
 opt   https://github.com/AndrewRadev/linediff.vim
-start https://github.com/prabirshrestha/async.vim
 start https://github.com/prabirshrestha/vim-lsp
 start https://github.com/caksoylar/vim-smooth-scroll
 start https://github.com/caksoylar/vim-mysticaltutor
