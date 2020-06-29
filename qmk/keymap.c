@@ -206,8 +206,11 @@ void encoder_update_user(uint8_t index, bool clockwise) {
                 clockwise ? tap_code(KC_N) : tap_code(KC_P);
                 break;
             case _FUNC:
-                clockwise ? tap_code(KC_MS_WH_RIGHT) : tap_code(KC_MS_WH_LEFT);
-                update_dial(clockwise);
+                if (get_mods() & MOD_MASK_SHIFT) {
+                    clockwise ? rgblight_increase_val_noeeprom() : rgblight_decrease_val_noeeprom();
+                } else {
+                    update_dial(clockwise);
+                }
                 break;
             default:
                 clockwise ? tap_code(KC_MS_WH_DOWN) : tap_code(KC_MS_WH_UP);
