@@ -2,6 +2,7 @@ set-option global autoinfo command|onkey|normal
 set-option global scrolloff 5,10
 set-option global ui_options ncurses_assistant=none
 set-option global tabstop 4
+set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{context_info}} {green}%val{client}{default}@{cyan}%val{session}{default} %val{cursor_line}/%val{buf_line_count}:%val{cursor_char_column} '
 
 # clean selections and search highlight on Esc
 map global normal <esc> '<space><semicolon>: reg slash ""<ret>'
@@ -91,6 +92,9 @@ plug "andreyorst/plug.kak" domain "gitlab.com" noload
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
+plug "alexherbo2/out-of-view.kak" config %{
+    set-option global modelinefmt "{yellow}%%opt{out_of_view_status_line}{default} %opt{modelinefmt}"
+}
 
 # enable lsp for filetypes, kak-lsp not managed by plug
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
