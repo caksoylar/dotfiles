@@ -53,7 +53,7 @@ hook global BufOpenFifo '\*grep\*' %{ alias global next grep-next-match; alias g
 hook global BufCreate '\*find\*' %{ alias global next find-next-match; alias global prev find-previous-match }
 hook global BufOpenFifo '\*lint-output\*' %{ alias global next lint-next-message; alias global prev lint-previous-message }
 hook global BufCreate '\*references\*' %{ alias global next lsp-references-next-match; alias global prev lsp-references-previous-match }
-hook global BufCreate '\*diagnostics\*' %{ def next "lsp-find-error --include-warnings"; def prev "lsp-find-error --previous --include-warnings" }
+hook global BufCreate '\*diagnostics\*' %{ def -override next "lsp-find-error --include-warnings"; def -override prev "lsp-find-error --previous --include-warnings" }
 
 map global user n     ': next<ret>' -docstring "next message"
 map global user <a-n> ': prev<ret>' -docstring "previous message"
@@ -98,11 +98,13 @@ plug "alexherbo2/out-of-view.kak" config %{
 
 # enable lsp for filetypes, kak-lsp not managed by plug
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
-    evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
+    try %{
+        evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
+        define-command lsp-restart %{ lsp-stop; lsp-start }
+    }
 
-    define-command lsp-restart %{ lsp-stop; lsp-start }
-    set-option global lsp_diagnostic_line_error_sign "!"
-    set-option global lsp_diagnostic_line_warning_sign "?"
+    set-option window lsp_diagnostic_line_error_sign "!"
+    set-option window lsp_diagnostic_line_warning_sign "?"
     set-face window DiagnosticError default+u
     set-face window DiagnosticWarning default+u
 
