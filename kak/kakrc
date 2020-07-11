@@ -22,8 +22,6 @@ define-command non-ascii -docstring "search for non-ascii characters" %{
     set-register / '[^\x00-\x7f]'
 }
 
-colorscheme mysticaltutor-alpha
-
 # tmux window management commands
 define-command -docstring "vsplit [<commands>]: split tmux vertically" \
 vsplit -params .. -command-completion %{
@@ -89,6 +87,7 @@ map global user M ': enter-user-mode -lock inc-dec<ret>' -docstring "enter inc-d
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "andreyorst/plug.kak" domain "gitlab.com" noload
 
+plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
