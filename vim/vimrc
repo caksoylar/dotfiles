@@ -244,10 +244,10 @@ if !s:lite
     endif
 
     " Smooth scroll
-    nnoremap <silent> <C-u> :call smooth_scroll#scroll('u', &scroll, 10, 2)<CR>
-    nnoremap <silent> <C-d> :call smooth_scroll#scroll('d', &scroll, 10, 2)<CR>
-    nnoremap <silent> <C-b> :call smooth_scroll#scroll('u', &scroll*2, 10, 4)<CR>
-    nnoremap <silent> <C-f> :call smooth_scroll#scroll('d', &scroll*2, 10, 4)<CR>
+    nnoremap <silent> <C-u> :call smooth_scroll#scroll('u', &scroll, 5, 1)<CR>
+    nnoremap <silent> <C-d> :call smooth_scroll#scroll('d', &scroll, 5, 1)<CR>
+    nnoremap <silent> <C-b> :call smooth_scroll#scroll('u', &scroll*2, 2.5, 1)<CR>
+    nnoremap <silent> <C-f> :call smooth_scroll#scroll('d', &scroll*2, 2.5, 1)<CR>
 
     " do not auto-enable vim-lsp
     let g:lsp_auto_enable = 0
