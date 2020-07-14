@@ -59,6 +59,9 @@ map global user <a-n> ': prev<ret>' -docstring "previous message"
 # add case insensitive flag
 map global prompt <a-i> '<home>(?i)<end>' -docstring "case insensitive search"
 
+# select all occurrences of selection set
+map global normal <a-percent> '*%s<ret>' -docstring "select all occurrences of selection"
+
 ## self plugin settings
 # options.kak
 map global user c ': cursorline-toggle<ret>'   -docstring "toggle cursorline highlighting"
