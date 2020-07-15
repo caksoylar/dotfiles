@@ -137,7 +137,7 @@ plug "chambln/kakoune-readline" config %{
 }
 
 plug "alexherbo2/surround.kak" config %{
-    map global normal <a-g> ': surround<ret>' -docstring "enter surround mode"
+    map global normal "'" ': enter-user-mode surround<ret>' -docstring "enter surround mode"
 }
 
 plug "occivink/kakoune-vertical-selection" config %{
