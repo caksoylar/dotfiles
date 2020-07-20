@@ -91,6 +91,12 @@ source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "andreyorst/plug.kak" domain "gitlab.com" noload
 
 plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
+plug "caksoylar/kakoune-smooth-scroll" config %{
+    map global normal <c-d> ': smooth-scroll  0.5 20 0<ret>'
+    map global normal <c-u> ': smooth-scroll -0.5 20 0<ret>'
+    map global normal <c-f> ': smooth-scroll  1.0 10 0<ret>'
+    map global normal <c-b> ': smooth-scroll -1.0 10 0<ret>'
+}
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
