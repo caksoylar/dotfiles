@@ -11,7 +11,7 @@ map global normal <esc> '<space><semicolon>: reg slash ""<ret>'
 add-highlighter global/match show-matching
 
 # underline search matches
-add-highlighter global/search dynregex '%reg{/}' 0:+u
+hook global RegisterModified '/' %{ add-highlighter -override global/search regex "%reg{/}" 0:+u }
 
 # comment maps
 map global normal '#'   ': comment-line<ret>'  -docstring "comment line"
