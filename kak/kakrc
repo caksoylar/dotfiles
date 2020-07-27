@@ -88,14 +88,11 @@ map global user M ': enter-user-mode -lock inc-dec<ret>' -docstring "enter inc-d
 
 ## remote plugin settings
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
-plug "andreyorst/plug.kak" domain "gitlab.com" noload
+plug "andreyorst/plug.kak" noload
 
 plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
-plug "caksoylar/kakoune-smooth-scroll" config %{
-    map global normal <c-d> ': smooth-scroll  0.5 20 0<ret>'
-    map global normal <c-u> ': smooth-scroll -0.5 20 0<ret>'
-    map global normal <c-f> ': smooth-scroll  1.0 10 0<ret>'
-    map global normal <c-b> ': smooth-scroll -1.0 10 0<ret>'
+plug "caksoylar/kakoune-smooth-scroll" branch v2 config %{
+    hook global WinCreate .* %{ hook -once window WinDisplay .* smooth-scroll-enable }
 }
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
@@ -124,7 +121,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     map window goto r '<esc>: tool lsp-references<ret>' -docstring "references"
 }
 
-plug "andreyorst/smarttab.kak" domain "gitlab.com" defer smarttab %{
+plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option global softtabstop 4
 } config %{
     hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml) expandtab
