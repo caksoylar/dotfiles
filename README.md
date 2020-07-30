@@ -16,10 +16,12 @@ which is configured with [QMK](https://qmk.fm).
   directories to ignore git prompt customizable with a `ignore_git` function
 
 ### Kakoune
-- [Kakoune version](kak/colors/mysticaltutor.kak) of
-  [vim-mysticaltutor](https://github.com/caksoylar/vim-mysticaltutor)
+- ~~[Kakoune version](kak/colors/mysticaltutor.kak) of
+  [vim-mysticaltutor](https://github.com/caksoylar/vim-mysticaltutor)~~
+  Colorscheme moved to [kakoune-mysticaltutor](https://github.com/caksoylar/kakoune-mysticaltutor)
 - [Plugin](kak/autoload/gzip.kak) to edit gzipped files
-- [Copy to clipboard](kak/autoload/clipboard.kak) using OSC 52
+- [Copy to clipboard](kak/autoload/clipboard.kak) using
+  [OSC 52](https://discuss.kakoune.com/t/clipboard-integration-using-osc-52/)
 - [Increment-decrement](kak/autoload/inc-dec.kak) like Vim's `<C-a>/<C-x>` and
   `g<C-a>/g<C-x>` in visual mode
 - [Emulating various Vim options](kak/autoload/options.kak) `cursorline`,
