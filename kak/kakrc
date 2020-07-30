@@ -5,7 +5,7 @@ set-option global tabstop 4
 set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{context_info}} {green}%val{client}{default}@{cyan}%val{session}{default} %val{cursor_line}/%val{buf_line_count}:%val{cursor_char_column} '
 
 # clean selections and search highlight on Esc
-map global normal <esc> '<space><semicolon>: reg slash ""<ret>'
+map global normal <esc> '<space><semicolon>: set-register slash ""<ret>'
 
 # highlight delimiter matches
 add-highlighter global/match show-matching
@@ -19,7 +19,7 @@ map global normal <a-#> ': comment-block<ret>' -docstring "comment block"
 
 # find non-ascii chars quickly
 define-command non-ascii -docstring "search for non-ascii characters" %{
-    set-register / '[^\x00-\x7f]'
+    set-register slash '[^\x00-\x7f]'
 }
 
 # tmux window management commands
@@ -42,7 +42,7 @@ hook global WinSetOption filetype=python %{
 }
 
 # find-edit command
-define-command find-edit -params 1 -menu -shell-script-candidates 'fd --type file || rg --files' 'edit %arg(1)'
+define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
 map global user f ': find-edit ' -docstring "find and edit file"
 
 # unify next/prev
