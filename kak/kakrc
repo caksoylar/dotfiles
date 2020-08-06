@@ -5,7 +5,7 @@ set-option global tabstop 4
 set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{context_info}} {green}%val{client}{default}@{cyan}%val{session}{default} %val{cursor_line}/%val{buf_line_count}:%val{cursor_char_column} '
 
 # clean selections and search highlight on Esc
-map global normal <esc> '<space><semicolon>: set-register slash ""<ret>'
+map global normal <esc> '<space><semicolon>: rmhl global/search<ret>'
 
 # highlight delimiter matches
 add-highlighter global/match show-matching
