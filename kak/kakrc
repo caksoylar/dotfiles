@@ -50,8 +50,6 @@ hook global BufOpenFifo '\*make\*' %{ alias global next make-next-error; alias g
 hook global BufOpenFifo '\*grep\*' %{ alias global next grep-next-match; alias global prev grep-previous-match }
 hook global BufCreate '\*find\*' %{ alias global next find-next-match; alias global prev find-previous-match }
 hook global BufOpenFifo '\*lint-output\*' %{ alias global next lint-next-message; alias global prev lint-previous-message }
-hook global BufCreate '\*references\*' %{ alias global next lsp-references-next-match; alias global prev lsp-references-previous-match }
-hook global BufCreate '\*diagnostics\*' %{ def -override next "lsp-find-error --include-warnings"; def -override prev "lsp-find-error --previous --include-warnings" }
 
 map global user n     ': next<ret>' -docstring "next message"
 map global user <a-n> ': prev<ret>' -docstring "previous message"
@@ -68,8 +66,7 @@ map global user c ': cursorline-toggle<ret>'   -docstring "toggle cursorline hig
 map global user l ': line-numbers-toggle<ret>' -docstring "toggle line-numbers"
 map global user s ': whitespaces-toggle<ret>'  -docstring "toggle whitespace highlighting"
 map global user w ': softwrap-toggle<ret>'     -docstring "toggle line soft wrap"
-hook global WinCreate ^[^*]+$ %{ line-numbers-toggle }
-hook global WinCreate .* %{ softwrap-toggle }
+hook global WinCreate ^[^*]+$ %{ line-numbers-toggle; softwrap-toggle }
 
 # clipboard.kak: clipboard sync on explicit yank
 hook global NormalKey y clipboard-sync
@@ -119,6 +116,11 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     map window user l ': enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window normal <F9> ': tool lsp-diagnostics<ret>'
     map window goto r '<esc>: tool lsp-references<ret>' -docstring "references"
+
+    hook global BufCreate '\*references\*' %{ alias global next lsp-references-next-match; alias global prev lsp-references-previous-match }
+    hook global BufCreate '\*diagnostics\*' %{ def -override next "lsp-find-error --include-warnings"; def -override prev "lsp-find-error --previous --include-warnings" }
+
+    hook -always global KakEnd .* lsp-exit
 }
 
 plug "andreyorst/smarttab.kak" defer smarttab %{
