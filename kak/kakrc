@@ -85,7 +85,7 @@ map global user M ': enter-user-mode -lock inc-dec<ret>' -docstring "enter inc-d
 
 ## remote plugin settings
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
-plug "andreyorst/plug.kak" noload
+plug "robertmeta/plug.kak" noload
 
 plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
 plug "caksoylar/kakoune-smooth-scroll" config %{
