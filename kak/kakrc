@@ -45,17 +45,12 @@ hook global WinSetOption filetype=python %{
 define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
 map global user f ': find-edit ' -docstring "find and edit file"
 
-# unify next/prev
-hook global BufOpenFifo '\*make\*' %{ alias global next make-next-error; alias global prev make-previous-error }
-hook global BufOpenFifo '\*grep\*' %{ alias global next grep-next-match; alias global prev grep-previous-match }
-hook global BufCreate '\*find\*' %{ alias global next find-next-match; alias global prev find-previous-match }
-hook global BufOpenFifo '\*lint-output\*' %{ alias global next lint-next-message; alias global prev lint-previous-message }
+map global user n     ': tool-next-match<ret>' -docstring "next message"
+map global user <a-n> ': tool-previous-match<ret>' -docstring "previous message"
 
-map global user n     ': next<ret>' -docstring "next message"
-map global user <a-n> ': prev<ret>' -docstring "previous message"
-
-# add case insensitive flag
+# add search flags
 map global prompt <a-i> '<home>(?i)<end>' -docstring "case insensitive search"
+map global prompt <a-o> '<home>(?S)<end>' -docstring "dot doesn't match newline search"
 
 # select all occurrences of selection set
 map global normal <a-percent> '*%s<ret>' -docstring "select all occurrences of selection"
@@ -116,9 +111,6 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     map window user l ': enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window normal <F9> ': tool lsp-diagnostics<ret>'
     map window goto r '<esc>: tool lsp-references<ret>' -docstring "references"
-
-    hook global BufCreate '\*references\*' %{ alias global next lsp-references-next-match; alias global prev lsp-references-previous-match }
-    hook global BufCreate '\*diagnostics\*' %{ def -override next "lsp-find-error --include-warnings"; def -override prev "lsp-find-error --previous --include-warnings" }
 
     hook -always global KakEnd .* lsp-exit
 }
