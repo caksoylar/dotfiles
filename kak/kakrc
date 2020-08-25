@@ -164,4 +164,6 @@ plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
         state-save-reg-save pipe
         state-save-reg-save slash
     }
+    hook global FocusOut .* %{ state-save-reg-save dquote }
+    hook global FocusIn  .* %{ state-save-reg-load dquote }
 }
