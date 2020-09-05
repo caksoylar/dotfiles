@@ -15,6 +15,7 @@ define-command tool -params .. -command-completion -docstring "create tool split
                 try %{
                     evaluate-commands -client main $*
                     map window normal q ': quit<ret>'
+                    execute-keys <a-k>\\S<ret>
                 } catch %{
                     echo -debug %val{error}
                     quit
@@ -25,6 +26,7 @@ define-command tool -params .. -command-completion -docstring "create tool split
             "try %{
                 evaluate-commands -client main $*
                 map window normal q ': quit<ret>'
+                execute-keys <a-k>\\S<ret>
             } catch %{
                 echo -debug %val{error}
                 evaluate-commands -client tools quit
@@ -35,31 +37,34 @@ define-command tool -params .. -command-completion -docstring "create tool split
 
 # from https://discuss.kakoune.com/t/single-command-for-grep-next-match-in-similar-buffers-lsp-make-find/
 declare-option -hidden str tool_buffer
+
 hook -group tool global WinDisplay \
-	\*(?:grep|find|make|lint-output|references|diagnostics|implementations|symbols|cargo)\* %{
-	set-option global tool_buffer %val{bufname}
+    \*(?:grep|find|make|lint-output|references|diagnostics|implementations|symbols|cargo)\* %{
+    set-option global tool_buffer %val{bufname}
 }
+
 define-command tool-next-match \
-	-docstring 'Jump to the next match in a grep-like buffer' %{
-	evaluate-commands -try-client %opt{jumpclient} %{
-		buffer %opt{tool_buffer}
-		execute-keys "<a-l> /^[^:\n]+:\d+:<ret>"
-		grep-jump
-	}
-	try %{ evaluate-commands -client %opt{toolsclient} %{
-		buffer %opt{tool_buffer}
-		execute-keys gg %opt{grep_current_line}g
-	}}
+    -docstring 'Jump to the next match in a grep-like buffer' %{
+    evaluate-commands -try-client %opt{jumpclient} %{
+        buffer %opt{tool_buffer}
+        execute-keys "<a-l> /^[^:\n]+:\d+:<ret>"
+        grep-jump
+    }
+    try %{ evaluate-commands -client %opt{toolsclient} %{
+        buffer %opt{tool_buffer}
+        execute-keys gg %opt{grep_current_line}g
+    }}
 }
+
 define-command tool-previous-match \
-	-docstring 'Jump to the previous match in a grep-like buffer' %{
-	evaluate-commands -try-client %opt{jumpclient} %{
-		buffer %opt{tool_buffer}
-		execute-keys "g<a-h> <a-/>^[^:\n]+:\d+:<ret>"
-		grep-jump
-	}
-	try %{ evaluate-commands -client %opt{toolsclient} %{
-		buffer %opt{tool_buffer}
-		execute-keys gg %opt{grep_current_line}g
-	}}
+    -docstring 'Jump to the previous match in a grep-like buffer' %{
+    evaluate-commands -try-client %opt{jumpclient} %{
+        buffer %opt{tool_buffer}
+        execute-keys "g<a-h> <a-/>^[^:\n]+:\d+:<ret>"
+        grep-jump
+    }
+    try %{ evaluate-commands -client %opt{toolsclient} %{
+        buffer %opt{tool_buffer}
+        execute-keys gg %opt{grep_current_line}g
+    }}
 }

@@ -1,4 +1,4 @@
-set-option global autoinfo command|onkey|normal
+# set-option global autoinfo command|onkey|normal
 set-option global scrolloff 5,10
 set-option global ui_options ncurses_assistant=none terminal_assistant=none
 set-option global tabstop 4
@@ -36,10 +36,35 @@ tabnew -params .. -command-completion %{
     tmux-terminal-window kak -c %val{session} -e "%arg{@}"
 }
 
-# pylint
+# lint settings
+alias global lint-show-counters nop
+
 hook global WinSetOption filetype=python %{
-    set window lintcmd %{ run() { pylint -d C0111,C0301,C0103,E1101 --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'; } && run }
+    set window lintcmd %{ run() {
+        pylint -d C0111,C0301,C0103,E1101 --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'
+    } && run }
 }
+hook global WinSetOption filetype=(sh|kak|python) %{
+    hook -group lint window User BufChange %{ try lint }
+}
+map global user l ': tool lint<ret>' -docstring "lint buffer"
+
+# git show diff -- trigger update if inside git dir
+hook global BufOpenFile .* %{
+    evaluate-commands -draft %sh{
+        if [ "$(git -C "$(dirname "$kak_buffile")" rev-parse --git-dir 2>/dev/null)" ]; then
+            printf 'hook -once -group git-diff buffer WinDisplay .* "git show-diff"\n'
+            for hook in WinCreate BufReload BufWritePost; do
+                printf 'hook buffer -group git-diff %s .* "git update-diff"\n' "$hook"
+            done
+        fi
+    }
+}
+map global user u ': git update-diff<ret>' -docstring "update git diff"
+
+# shortcuts
+map global user g     ':tool grep ' -docstring "grep"
+map global user <a-f> ':tool find ' -docstring "find in buffers"
 
 # find-edit command
 define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
@@ -57,10 +82,10 @@ map global normal <a-percent> '*%s<ret>' -docstring "select all occurrences of s
 
 ## self plugin settings
 # options.kak
-map global user c ': cursorline-toggle<ret>'   -docstring "toggle cursorline highlighting"
-map global user l ': line-numbers-toggle<ret>' -docstring "toggle line-numbers"
-map global user s ': whitespaces-toggle<ret>'  -docstring "toggle whitespace highlighting"
-map global user w ': softwrap-toggle<ret>'     -docstring "toggle line soft wrap"
+map global user <a-c> ': cursorline-toggle<ret>'   -docstring "toggle cursorline highlighting"
+map global user <a-l> ': line-numbers-toggle<ret>' -docstring "toggle line-numbers"
+map global user <a-s> ': whitespaces-toggle<ret>'  -docstring "toggle whitespace highlighting"
+map global user <a-w> ': softwrap-toggle<ret>'     -docstring "toggle line soft wrap"
 hook global WinCreate ^[^*]+$ %{ line-numbers-toggle; softwrap-toggle }
 
 # clipboard.kak: clipboard sync on explicit yank
@@ -83,6 +108,7 @@ source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "robertmeta/plug.kak" noload
 
 plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
+plug "caksoylar/kakoune-snow" theme # %{ colorscheme snow-dark }
 plug "caksoylar/kakoune-smooth-scroll" config %{
     hook global WinCreate .* %{ hook -once window WinDisplay .* smooth-scroll-enable }
 }
@@ -109,7 +135,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     lsp-auto-hover-enable
 
     map window user l ': enter-user-mode lsp<ret>' -docstring "LSP mode"
-    map window normal <F9> ': tool lsp-diagnostics<ret>'
+    map window user d ': tool lsp-diagnostics<ret>' -docstring "LSP diagnostics"
     map window goto r '<esc>: tool lsp-references<ret>' -docstring "references"
 
     hook -always global KakEnd .* lsp-exit
