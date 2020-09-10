@@ -115,9 +115,9 @@ plug "caksoylar/kakoune-smooth-scroll" config %{
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
-plug "alexherbo2/out-of-view.kak" config %{
+plug "alexherbo2/out-of-view.kak" defer "out-of-view" %{
     set-option global modelinefmt "{yellow}%%opt{out_of_view_status_line}{default} %opt{modelinefmt}"
-}
+} demand
 
 # enable lsp for filetypes, kak-lsp not managed by plug
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
@@ -134,7 +134,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     lsp-enable-window
     lsp-auto-hover-enable
 
-    map window user l ': enter-user-mode lsp<ret>' -docstring "LSP mode"
+    map window user L ': enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window user d ': tool lsp-diagnostics<ret>' -docstring "LSP diagnostics"
     map window goto r '<esc>: tool lsp-references<ret>' -docstring "references"
 
@@ -159,9 +159,9 @@ plug "chambln/kakoune-readline" config %{
     hook global WinCreate .* readline-enable
 }
 
-plug "alexherbo2/surround.kak" config %{
+plug "alexherbo2/surround.kak" defer "surround" %{
     map global normal "'" ': enter-user-mode surround<ret>' -docstring "enter surround mode"
-}
+} demand
 
 plug "occivink/kakoune-vertical-selection" config %{
     map global normal ^     ': vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
