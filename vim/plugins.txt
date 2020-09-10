@@ -11,8 +11,9 @@ opt   https://github.com/rickhowe/diffchar.vim
 opt   https://github.com/mbbill/undotree
 opt   https://github.com/AndrewRadev/linediff.vim
 start https://github.com/prabirshrestha/vim-lsp
-start https://github.com/caksoylar/vim-smooth-scroll
+# start https://github.com/caksoylar/vim-smooth-scroll
 start https://github.com/caksoylar/vim-mysticaltutor
 # start https://github.com/romainl/Apprentice
 # opt   https://github.com/lifepillar/vim-colortemplate
 # opt   https://github.com/chrisbra/Colorizer
+start   https://github.com/joeytwiddle/sexy_scroller.vim
