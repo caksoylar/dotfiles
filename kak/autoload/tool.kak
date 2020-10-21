@@ -15,10 +15,6 @@ define-command tool -params .. -command-completion -docstring "create tool split
                 try %{
                     evaluate-commands -client main $*
                     map window normal q ': quit<ret>'
-                    execute-keys <a-k>\\S<ret>
-                } catch %{
-                    echo -debug %val{error}
-                    quit
                 }
             }"
         else  # tools client exists, just run command
@@ -26,10 +22,6 @@ define-command tool -params .. -command-completion -docstring "create tool split
             "try %{
                 evaluate-commands -client main $*
                 map window normal q ': quit<ret>'
-                execute-keys <a-k>\\S<ret>
-            } catch %{
-                echo -debug %val{error}
-                evaluate-commands -client tools quit
             }"
         fi
     }
