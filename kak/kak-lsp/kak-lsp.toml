@@ -74,7 +74,7 @@ args = ["stdio"]
 
 [language.python]
 filetypes = ["python"]
-roots = ["requirements.txt", "setup.py", ".git", ".hg", "setup.cfg"]
+roots = ["setup.cfg", "requirements.txt", "setup.py", ".git", ".hg"]
 command = "pyls"
 offset_encoding = "utf-8"
 
