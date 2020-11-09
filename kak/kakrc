@@ -82,11 +82,11 @@ map global normal <a-percent> '*%s<ret>' -docstring "select all occurrences of s
 
 ## self plugin settings
 # options.kak
-map global user <a-c> ': cursorline-toggle<ret>'   -docstring "toggle cursorline highlighting"
-map global user <a-l> ': line-numbers-toggle<ret>' -docstring "toggle line-numbers"
-map global user <a-s> ': whitespaces-toggle<ret>'  -docstring "toggle whitespace highlighting"
-map global user <a-w> ': softwrap-toggle<ret>'     -docstring "toggle line soft wrap"
-hook global WinCreate ^[^*]+$ %{ line-numbers-toggle; softwrap-toggle }
+map global user <a-c> ': cursorline-toggle<ret>'             -docstring "toggle cursorline highlighting"
+map global user <a-l> ': line-numbers-toggle -relative<ret>' -docstring "toggle line-numbers"
+map global user <a-s> ': whitespaces-toggle<ret>'            -docstring "toggle whitespace highlighting"
+map global user <a-w> ': softwrap-toggle<ret>'               -docstring "toggle line soft wrap"
+hook global WinCreate ^[^*]+$ %{ line-numbers-toggle -relative; softwrap-toggle }
 
 # clipboard.kak: clipboard sync on explicit yank
 hook global NormalKey y clipboard-sync

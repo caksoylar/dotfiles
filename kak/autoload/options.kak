@@ -16,9 +16,9 @@ define-command cursorline-toggle %{
 }
 
 # line-numbers highlighting
-define-command line-numbers-toggle %{
+define-command line-numbers-toggle -params .. %{
     try %{
-        add-highlighter window/line-numbers number-lines -hlcursor
+        add-highlighter window/line-numbers number-lines -hlcursor %arg{@}
     } catch %{
         remove-highlighter window/line-numbers
     }
