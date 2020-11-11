@@ -1,4 +1,5 @@
 /fish/fish_variables
+/fish/completions
 /fish/functions/work
 /fish/work.fish
 /kak/autoload/system
