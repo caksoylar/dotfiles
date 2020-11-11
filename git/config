@@ -1,0 +1,22 @@
+[core]
+	editor = kak
+	autocrlf = false
+	safecrlf = true
+[user]
+	name = Cem Aksoylar
+	email = caksoylar@gmail.com
+[push]
+	default = simple
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[alias]
+	st = status
+	co = checkout
+	ci = commit
+	br = branch
+	df = diff
+	dft = difftool
+	ydf = ydiff
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset %Cblue(%an)%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset' --abbrev-commit
