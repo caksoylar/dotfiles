@@ -1,4 +1,5 @@
 DIR := ${CURDIR}
+TMPDIR ?= "/tmp"
 
 PKG_CONFIG_PATH := $(DIR)/share/pkgconfig
 
@@ -6,8 +7,8 @@ CPPFLAGS = -Iinclude -Iinclude/ncurses
 LDFLAGS = -Llib
 LIBS = "-lncurses"
 
-DLDIR = dl
-SRC = src
+DLDIR = $(TMPDIR)/dl
+SRC = $(TMPDIR)/src
 
 all: tmux fish nvim kak
 
@@ -17,7 +18,7 @@ lib/libevent.so: | $(DLDIR) $(SRC)
 	&& tar xzf $(DLDIR)/libevent.tar.gz -C $(SRC) \
 	&& cd $(SRC)/libevent-*/ \
 	&& ./configure -q --prefix="$(DIR)" --enable-shared \
-	&& make -s -j8 \
+	&& make -s \
 	&& make -s install
 
 lib/libncurses.so: | $(DLDIR) $(SRC)
@@ -26,16 +27,16 @@ lib/libncurses.so: | $(DLDIR) $(SRC)
 	&& tar xzf $(DLDIR)/ncurses.tar.gz -C $(SRC) \
 	&& cd $(SRC)/ncurses-*/ \
 	&& ./configure -q --prefix="$(DIR)" --with-shared --enable-pc-files --with-pkg-config-libdir="$(PKG_CONFIG_PATH)" \
-	&& make -s -j8 \
+	&& make -s \
 	&& make -s install
 
 tmux: bin/tmux
 bin/tmux: lib/libncurses.so lib/libevent.so
-	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.1a/tmux-3.1a.tar.gz -O $(DLDIR)/tmux.tar.gz \
+	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.1c/tmux-3.1c.tar.gz -O $(DLDIR)/tmux.tar.gz \
 	&& tar xzf $(DLDIR)/tmux.tar.gz -C $(SRC) \
 	&& cd $(SRC)/tmux-*/ \
 	&& PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" ./configure -q --prefix="$(DIR)" \
-	&& make -s -j8 \
+	&& make -s \
 	&& make -s install
 
 fish: bin/fish
@@ -43,7 +44,7 @@ bin/fish: lib/libncurses.so
 	wget --hsts-file= -nv https://github.com/fish-shell/fish-shell/releases/download/3.1.2/fish-3.1.2.tar.gz -O $(DLDIR)/fish.tar.gz \
 	&& tar xzf $(DLDIR)/fish.tar.gz -C $(SRC) \
 	&& cd $(SRC)/fish-*/ \
-	&& PREFIX="$(DIR)" make -s -j8 \
+	&& PREFIX="$(DIR)" make -s \
 	&& make -s install
 
 nvim: bin/nvim
@@ -55,7 +56,7 @@ kak: bin/kak
 bin/kak: | $(SRC)
 	git clone --branch builtin-terminal-ui --quiet https://github.com/mawww/kakoune $(SRC)/kakoune \
 	&& cd $(SRC)/kakoune/ \
-	&& make -s -j8 \
+	&& make -s \
 	&& PREFIX="$(DIR)" make -s install
 
 kak-lsp: bin/kak-lsp

@@ -1,0 +1,64 @@
+DIR := ${CURDIR}
+TMPDIR ?= "/tmp"
+
+CPPFLAGS = -Iinclude -Iinclude/ncursesw
+LDFLAGS = -Llib
+LIBS = "-lncursesw"
+
+DLDIR = $(TMPDIR)/dl
+SRC = $(TMPDIR)/src
+
+all: tmux fish nvim kak
+
+libevent:
+	pkg-config --exists libevent || sudo apt-get -y install libevent-dev
+
+libncurses:
+	pkg-config --exists ncurses || sudo apt-get -y install libncurses5-dev
+
+libncursesw:
+	pkg-config --exists ncursesw || sudo apt-get -y install libncursesw5-dev
+
+tmux: libncurses libevent | $(DLDIR) $(SRC)
+	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.1c/tmux-3.1c.tar.gz -O $(DLDIR)/tmux.tar.gz \
+	&& tar xzf $(DLDIR)/tmux.tar.gz -C $(SRC) \
+	&& cd $(SRC)/tmux-3.1c \
+	&& ./configure -q \
+	&& make -s \
+	&& sudo make -s install
+
+fish: libncurses | $(DLDIR) $(SRC)
+	wget --hsts-file= -nv https://github.com/fish-shell/fish-shell/releases/download/3.1.2/fish-3.1.2.tar.gz -O $(DLDIR)/fish.tar.gz \
+	&& tar xzf $(DLDIR)/fish.tar.gz -C $(SRC) \
+	&& cd $(SRC)/fish-3.1.2/ \
+	&& ./configure -q \
+	&& make -s \
+	&& sudo make -s install
+
+nvim: | $(DLDIR) $(SRC)
+	wget --hsts-file= -nv https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz -O $(DLDIR)/nvim.tar.gz \
+	&& tar xzf $(DLDIR)/nvim.tar.gz --directory="$(DIR)" --strip-components=1
+
+kak: libncursesw | $(DLDIR) $(SRC)
+	git clone --quiet https://github.com/mawww/kakoune $(SRC)/kakoune \
+	&& cd $(SRC)/kakoune/ \
+	&& make -s \
+	&& sudo make -s install
+
+kak-lsp: | $(DLDIR) $(SRC)
+	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v8.0.0/kak-lsp-v8.0.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
+	&& mkdir -p $(SRC)/kak-lsp ~/bin \
+	&& tar xzf $(DLDIR)/kak-lsp.tar.gz -C $(SRC)/kak-lsp \
+	&& cp $(SRC)/kak-lsp/kak-lsp ~/bin/
+
+$(DLDIR):
+	mkdir $(DLDIR)
+
+$(SRC):
+	mkdir $(SRC)
+
+clean:
+	rm -rf $(DLDIR) $(SRC)
+
+.PHONY:
+	libevent libncurses libncursesw tmux fish nvim kak kak-lsp
