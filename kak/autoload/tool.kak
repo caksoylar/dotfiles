@@ -4,7 +4,7 @@ define-command tool -params .. -command-completion -docstring "create tool split
         # if main client doesn't exist, set current as main
         if [ "${kak_client_list#*main}" = "$kak_client_list" ]; then
             printf '%s\n' "rename-client main; set global jumpclient main"
-            printf '%s\n' "try %{ set-option window scroll_client main }"  # for kakoune-smooth-scroll
+            printf '%s\n' "try %{ smooth-scroll-enable }"  # for kakoune-smooth-scroll
         fi
         # create tools client and run
         if [ "${kak_client_list#*tools}" = "$kak_client_list" ]; then

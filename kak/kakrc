@@ -114,7 +114,7 @@ plug "robertmeta/plug.kak" noload
 plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
 plug "caksoylar/kakoune-snow" theme # %{ colorscheme snow-dark }
 plug "caksoylar/kakoune-smooth-scroll" config %{
-    hook global WinCreate .* %{ hook -once window WinDisplay .* smooth-scroll-enable }
+    hook global WinCreate (?!\*plug\*).* %{ hook -once window WinDisplay .* smooth-scroll-enable }
 }
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
