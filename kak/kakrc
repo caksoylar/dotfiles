@@ -11,7 +11,7 @@ map global normal <esc> '<space><semicolon>: rmhl global/search<ret>'
 add-highlighter global/match show-matching
 
 # underline search matches
-hook global RegisterModified '/' %{ add-highlighter -override global/search regex "%reg{/}" 0:+u }
+hook global RegisterModified '/' %{ add-highlighter -override global/search regex "%reg{/}" 0:+i }
 
 # comment maps
 map global normal '#'   ': comment-line<ret>'  -docstring "comment line"
@@ -138,6 +138,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
 
     lsp-enable-window
     lsp-auto-hover-enable
+    lsp-diagnostic-lines-disable window
 
     map window user L ': enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window user d ': tool lsp-diagnostics<ret>' -docstring "LSP diagnostics"
@@ -155,6 +156,8 @@ plug "andreyorst/smarttab.kak" defer smarttab %{
 }
 
 plug "Delapouite/kakoune-buffers" config %{
+    map global buffers L ': buffer *lint-output*<ret>' -docstring "lint output"
+    map global buffers D ': buffer *diagnostics*<ret>' -docstring "diagnostics"
     map global normal <backspace>   ': enter-buffers-mode<ret>'            -docstring "enter buffers mode"
     map global normal <a-backspace> ': enter-user-mode -lock buffers<ret>' -docstring "enter buffers mode (lock)"
     hook global WinDisplay .* info-buffers
