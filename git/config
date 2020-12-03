@@ -17,8 +17,10 @@
 	ci = commit
 	br = branch
 	df = diff
+	dfs = diff --staged
 	dft = difftool
 	ydf = ydiff
+	ydfs = ydiff --staged
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset %Cblue(%an)%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset' --abbrev-commit
 [pull]
 	ff = only
