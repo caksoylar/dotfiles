@@ -4,9 +4,7 @@ These are the configuration files for my work environment, where I use [fish
 shell](https://fishshell.com), [Kakoune](https://kakoune.org) and
 [Vim](https://www.vim.org) text editors, sometimes in
 [tmux](https://github.com/tmux/tmux/wiki), in a Ubuntu or Debian native install
-or [WSL](https://docs.microsoft.com/en-us/windows/wsl/about). I also use an
-[Iris keyboard](https://keeb.io/products/iris-keyboard-split-ergonomic-keyboard)
-which is configured with [QMK](https://qmk.fm).
+or [WSL](https://docs.microsoft.com/en-us/windows/wsl/about).
 
 ## Potentially interesting stuff
 ### fish
@@ -37,6 +35,4 @@ which is configured with [QMK](https://qmk.fm).
   implementation](vim/pack/self/start/scrollbar)
 
 ### QMK
-- A ["tmux" layer](qmk/keymap.c#L95) which sends a prefix before any pressed key
-- A [combination dial lock](qmk/keymap.c#L173) to emit a passphrase using the
-  rotary encoder
+- Moved to [caksoylar/qmk_firmware](https://github.com/caksoylar/qmk_firmware)
