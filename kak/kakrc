@@ -114,7 +114,12 @@ plug "robertmeta/plug.kak" noload
 plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
 plug "caksoylar/kakoune-snow" theme # %{ colorscheme snow-dark }
 plug "caksoylar/kakoune-smooth-scroll" config %{
-    hook global WinCreate (?!\*plug\*).* %{ hook -once window WinDisplay .* smooth-scroll-enable }
+    hook global WinCreate (?!\*plug\*).* %{
+        hook -once window WinDisplay .* %{
+            smooth-scroll-enable
+            smooth-scroll-map-key normal <a-percent> '*%s<ret>'
+        }
+    }
 }
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
@@ -150,9 +155,8 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
 plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option global softtabstop 4
 } config %{
-    hook global WinSetOption filetype=(python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml) expandtab
+    hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml) expandtab
     hook global WinSetOption filetype=(makefile) noexpandtab
-    hook global WinSetOption filetype=(c|cpp) smarttab
 }
 
 plug "Delapouite/kakoune-buffers" config %{
