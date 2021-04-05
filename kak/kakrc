@@ -109,7 +109,7 @@ hook global WinSetOption filetype=markdown %{
 
 ## remote plugin settings
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
-plug "robertmeta/plug.kak" noload
+plug "andreyorst/plug.kak" noload
 
 plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
 plug "caksoylar/kakoune-snow" theme # %{ colorscheme snow-dark }
