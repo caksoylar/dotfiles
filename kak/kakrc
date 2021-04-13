@@ -126,6 +126,7 @@ plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
 plug "alexherbo2/out-of-view.kak" defer "out-of-view" %{
     set-option global modelinefmt "{yellow}%%opt{out_of_view_status_line}{default} %opt{modelinefmt}"
+    hook global WinCreate .* %{ out-of-view-enable }
 } demand
 
 # enable lsp for filetypes, kak-lsp not managed by plug
@@ -202,6 +203,6 @@ plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
         state-save-reg-save pipe
         state-save-reg-save slash
     }
-    hook global FocusOut .* %{ state-save-reg-save dquote }
-    hook global FocusIn  .* %{ state-save-reg-load dquote }
+    # hook global FocusOut .* %{ state-save-reg-save dquote }
+    # hook global FocusIn  .* %{ state-save-reg-load dquote }
 }
