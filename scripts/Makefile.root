@@ -47,9 +47,16 @@ kak: libncursesw | $(DLDIR) $(SRC)
 
 kak-lsp: | $(DLDIR) $(SRC)
 	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v9.0.0/kak-lsp-v9.0.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
-	&& mkdir -p $(SRC)/kak-lsp ~/bin \
+	&& mkdir -p $(SRC)/kak-lsp ~/.local/bin \
 	&& tar xzf $(DLDIR)/kak-lsp.tar.gz -C $(SRC)/kak-lsp \
-	&& cp $(SRC)/kak-lsp/kak-lsp ~/bin/
+	&& cp $(SRC)/kak-lsp/kak-lsp ~/.local/bin/
+
+ydiff:
+	mkdir -p ~/.local/bin \
+	&& wget --hsts-file= -nv https://raw.githubusercontent.com/caksoylar/ydiff/master/ydiff -O ~/.local/bin/ydiff \
+	&& printf '%s\n\n%s\n' "#!/bin/sh" 'git diff "$$@" | ydiff | less -XRF' >~/.local/bin/git-ydiff \
+	&& printf '%s\n\n%s\n' "#!/bin/sh" 'git show "$$@" | ydiff | less -XRF' >~/.local/bin/git-yshow \
+	&& chmod +x ~/.local/bin/ydiff ~/.local/bin/git-ydiff ~/.local/bin/git-yshow
 
 $(DLDIR):
 	mkdir -p $(DLDIR)
@@ -61,4 +68,4 @@ clean:
 	rm -rf $(DLDIR) $(SRC)
 
 .PHONY:
-	libevent libncurses libncursesw tmux fish nvim kak kak-lsp
+	libevent libncurses libncursesw tmux fish nvim kak kak-lsp ydiff
