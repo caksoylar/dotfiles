@@ -20,9 +20,9 @@ libncursesw:
 	pkg-config --exists ncursesw || sudo apt-get -y install libncursesw5-dev
 
 tmux: libncurses libevent | $(DLDIR) $(SRC)
-	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.2-rc/tmux-3.2-rc3.tar.gz -O $(DLDIR)/tmux.tar.gz \
+	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.2/tmux-3.2.tar.gz -O $(DLDIR)/tmux.tar.gz \
 	&& tar xzf $(DLDIR)/tmux.tar.gz -C $(SRC) \
-	&& cd $(SRC)/tmux-3.2-rc3 \
+	&& cd $(SRC)/tmux-3.2 \
 	&& ./configure -q \
 	&& $(MAKE) -s \
 	&& sudo $(MAKE) -s install

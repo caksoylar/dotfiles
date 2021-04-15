@@ -32,7 +32,7 @@ lib/libncurses.so: | $(DLDIR) $(SRC)
 
 tmux: bin/tmux
 bin/tmux: lib/libncurses.so lib/libevent.so
-	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.1c/tmux-3.1c.tar.gz -O $(DLDIR)/tmux.tar.gz \
+	wget --hsts-file= -nv https://github.com/tmux/tmux/releases/download/3.2/tmux-3.2.tar.gz -O $(DLDIR)/tmux.tar.gz \
 	&& tar xzf $(DLDIR)/tmux.tar.gz -C $(SRC) \
 	&& cd $(SRC)/tmux-*/ \
 	&& PKG_CONFIG_PATH="$(PKG_CONFIG_PATH)" ./configure -q --prefix="$(DIR)" \
