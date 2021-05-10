@@ -48,6 +48,7 @@ if test -f ~/.config/fish/LS_COLORS
 end
 
 alias rm="rm -I"
+alias lt="ll -t"
 alias sort="sort -S4G"
 alias start="/mnt/c/Windows/explorer.exe"
 alias clip.exe="/mnt/c/Windows/System32/clip.exe"
