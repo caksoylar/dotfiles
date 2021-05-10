@@ -36,6 +36,10 @@ tabnew -params .. -command-completion %{
     tmux-terminal-window kak -c %val{session} -e "%arg{@}"
 }
 
+# repl maps
+map global normal <c-t> ': tmux-repl-vertical<ret>'
+map global normal <c-e> ': repl-send-text<ret>'
+
 # lint settings
 alias global lint-show-counters nop
 
@@ -65,6 +69,8 @@ map global user u ': git update-diff<ret>' -docstring "update git diff"
 # shortcuts
 map global user g     ':tool grep ' -docstring "grep"
 map global user <a-f> ':tool find ' -docstring "find in buffers"
+
+set-option global grepcmd 'rg --vimgrep'
 
 # find-edit command
 define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
