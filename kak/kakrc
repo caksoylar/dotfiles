@@ -212,3 +212,16 @@ plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
     # hook global FocusOut .* %{ state-save-reg-save dquote }
     # hook global FocusIn  .* %{ state-save-reg-load dquote }
 }
+
+plug "sawdust-and-diamonds/scrollbar.kak" config %{
+    hook global WinCreate .* %{
+        scrollbar-enable
+        hook window User ScrollStep %{ update-scrollbar }
+    }
+    set-face global Scrollbar rgb:30343c,default
+    set-face global ScrollbarSel rgb:5c8ec7,rgb:30343c
+    set-face global ScrollbarHL rgb:e07093,default
+    set-option global scrollbar_char "█"
+    set-option global scrollbar_sel_char "•"
+    # set-option global selection_chars " •:∴⠶⠷⢷⢿⣿▒"
+}
