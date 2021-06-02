@@ -7,6 +7,13 @@ set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{c
 # clean selections and search highlight on Esc
 map global normal <esc> '<space><semicolon>: rmhl global/search<ret>'
 
+# repurpose visual mode keys for object selection
+map global normal v <a-i>
+map global normal V <a-a>
+
+# redundant mapping for <a-space> for Windows Terminal
+map global normal <minus> <a-space>
+
 # highlight delimiter matches
 add-highlighter global/match show-matching
 
