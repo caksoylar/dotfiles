@@ -195,7 +195,7 @@ plug "occivink/kakoune-vertical-selection" config %{
 }
 
 plug "occivink/kakoune-expand" config %{
-    map global normal + ": expand<ret>"
+    map global normal <plus> ": expand<ret>"
     set-option -add global expand_commands %{
         expand-impl %{ exec <a-i>p }
         # lower indent level
