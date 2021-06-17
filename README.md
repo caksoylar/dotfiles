@@ -25,7 +25,8 @@ or [WSL](https://docs.microsoft.com/en-us/windows/wsl/about).
 - [Emulating various Vim options](kak/autoload/options.kak) `cursorline`,
   `number`, `list`, `wrap`
 - [A small utility](kak/autoload/ipynb.kak) to edit code blocks in ipynb
-  files
+- [A most-recently-used files plugin](kak/autoload/mru.kak) like `mru.vim`, dependent
+  on [`kakoune-state-save`](https://gitlab.com/Screwtapello/kakoune-state-save)
 
 ### Vim
 - [Copy to clipboard](vim/vimrc#L165) using OSC 52
@@ -33,6 +34,3 @@ or [WSL](https://docs.microsoft.com/en-us/windows/wsl/about).
   files
 - A basic [scrollbar-in-your-statusline
   implementation](vim/pack/self/start/scrollbar)
-
-### QMK
-- Moved to [caksoylar/qmk_firmware](https://github.com/caksoylar/qmk_firmware)
