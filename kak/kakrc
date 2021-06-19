@@ -14,10 +14,7 @@ map global normal V <a-a>
 # redundant mapping for <a-space> for Windows Terminal
 map global normal <minus> <a-space>
 
-# highlight delimiter matches
-add-highlighter global/match show-matching
-
-# underline search matches
+# highlight search matches
 hook global RegisterModified '/' %{ add-highlighter -override global/search regex "%reg{/}" 0:+i }
 
 # comment maps
@@ -60,28 +57,15 @@ hook global WinSetOption filetype=(sh|kak|python) %{
 }
 map global user l ': tool lint<ret>' -docstring "lint buffer"
 
-# git show diff -- trigger update if inside git dir
-hook global BufOpenFile .* %{
-    evaluate-commands -draft %sh{
-        if [ "$(git -C "$(dirname "$kak_buffile")" rev-parse --git-dir 2>/dev/null)" ]; then
-            printf 'hook -once -group git-diff buffer WinDisplay .* "git show-diff"\n'
-            for hook in WinCreate BufReload BufWritePost; do
-                printf 'hook buffer -group git-diff %s .* "git update-diff"\n' "$hook"
-            done
-        fi
-    }
-}
-map global user u ': git update-diff<ret>' -docstring "update git diff"
-
-# shortcuts
-map global user g     ':tool grep ' -docstring "grep"
-map global user <a-f> ':tool find ' -docstring "find in buffers"
-
-set-option global grepcmd 'rg --vimgrep'
-
 # find-edit command
 define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
 map global user f ': find-edit ' -docstring "find and edit file"
+
+# shortcuts
+map global user g ':tool grep ' -docstring "grep"
+map global user F ':tool find ' -docstring "find in buffers"
+
+set-option global grepcmd 'rg --vimgrep'
 
 map global user n     ': tool-next-match<ret>' -docstring "next message"
 map global user <a-n> ': tool-previous-match<ret>' -docstring "previous message"
@@ -94,13 +78,6 @@ map global prompt <a-o> '<home>(?S)<end>' -docstring "dot doesn't match newline 
 map global normal <a-percent> '*%s<ret>' -docstring "select all occurrences of selection"
 
 ## self plugin settings
-# options.kak
-map global user <a-c> ': cursorline-toggle<ret>'             -docstring "toggle cursorline highlighting"
-map global user <a-l> ': line-numbers-toggle -relative<ret>' -docstring "toggle line-numbers"
-map global user <a-s> ': whitespaces-toggle<ret>'            -docstring "toggle whitespace highlighting"
-map global user <a-w> ': softwrap-toggle<ret>'               -docstring "toggle line soft wrap"
-hook global WinCreate ^[^*]+$ %{ line-numbers-toggle -relative; softwrap-toggle }
-
 # clipboard.kak: clipboard sync on explicit yank
 hook global NormalKey y clipboard-sync
 
@@ -137,10 +114,6 @@ plug "caksoylar/kakoune-smooth-scroll" config %{
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
-plug "alexherbo2/out-of-view.kak" demand "out-of-view" %{
-    set-option global modelinefmt "{yellow}%%opt{out_of_view_status_line}{default} %opt{modelinefmt}"
-    hook global WinCreate .* %{ out-of-view-enable }
-}
 
 # enable lsp for filetypes, kak-lsp not managed by plug
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
@@ -164,6 +137,24 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     map window goto r '<esc>: tool lsp-references<ret>' -docstring "references"
 
     hook -always global KakEnd .* lsp-exit
+}
+
+plug "kkga/ui.kak" config %{
+    map global user o ": enter-user-mode ui<ret>" -docstring "toggle UI options"
+    set-option global ui_line_numbers_flags -hlcursor -relative
+    set-option global ui_whitespaces_flags -tab "»" -lf "↲" -nbsp "␣" -spc "·"
+    set-option global ui_wrap_flags -marker "…"
+    set-face global TrailingSpace default,red
+    hook global WinCreate [^*].* %{
+        ui-line-numbers-toggle
+        ui-wrap-toggle
+        ui-matching-toggle
+        evaluate-commands %sh{
+            if [ "$(git -C "$(dirname "$kak_buffile")" rev-parse --git-dir 2>/dev/null)" ]; then
+                printf 'ui-git-diff-toggle\n'
+            fi
+        }
+    }
 }
 
 plug "andreyorst/smarttab.kak" defer smarttab %{

@@ -22,8 +22,6 @@ or [WSL](https://docs.microsoft.com/en-us/windows/wsl/about).
   [OSC 52](https://discuss.kakoune.com/t/clipboard-integration-using-osc-52/)
 - [Increment-decrement](kak/autoload/inc-dec.kak) like Vim's `<C-a>/<C-x>` and
   `g<C-a>/g<C-x>` in visual mode
-- [Emulating various Vim options](kak/autoload/options.kak) `cursorline`,
-  `number`, `list`, `wrap`
 - [A small utility](kak/autoload/ipynb.kak) to edit code blocks in ipynb
 - [A most-recently-used files plugin](kak/autoload/mru.kak) like `mru.vim`, dependent
   on [`kakoune-state-save`](https://gitlab.com/Screwtapello/kakoune-state-save)
