@@ -176,8 +176,8 @@ plug "chambln/kakoune-readline" config %{
     hook global WinCreate .* readline-enable
 }
 
-plug "alexherbo2/surround.kak" demand "surround" %{
-    map global normal "'" ': enter-user-mode surround<ret>' -docstring "enter surround mode"
+plug 'delapouite/kakoune-mirror' %{
+    map global normal "'" ': enter-user-mode mirror<ret>'
 }
 
 plug "occivink/kakoune-vertical-selection" config %{
