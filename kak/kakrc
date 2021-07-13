@@ -1,6 +1,6 @@
 # set-option global autoinfo command|onkey|normal
 set-option global scrolloff 5,10
-set-option global ui_options ncurses_assistant=none terminal_assistant=none
+set-option global ui_options terminal_assistant=none
 set-option global tabstop 4
 set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{context_info}} {green}%val{client}{default}@{cyan}%val{session}{default} %val{cursor_line}/%val{buf_line_count}:%val{cursor_char_column} (%val{selection_length}) '
 
