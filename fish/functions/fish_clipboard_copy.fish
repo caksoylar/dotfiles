@@ -2,7 +2,7 @@ function fish_clipboard_copy
     # Copy the current selection, or the entire commandline if that is empty.
     set -l cmdline (commandline --current-selection)
     test -n "$cmdline"; or set cmdline (commandline)
-    printf "\e]52;;%s\e\\" (echo $cmdline | base64 - | string trim --right) >/dev/tty
+    printf "\e]52;;%s\e\\" (printf '%s\n' $cmdline | perl -0777 -pe 's/\n$//' | base64 -w 0 -) >/dev/tty
     if type -q pbcopy
         printf '%s\n' $cmdline | pbcopy
     else if type -q clip.exe
