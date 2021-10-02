@@ -1,6 +1,6 @@
 # set-option global autoinfo command|onkey|normal
 set-option global scrolloff 5,10
-set-option global ui_options terminal_assistant=none
+set-option global ui_options terminal_assistant=none terminal_synchronized=yes
 set-option global tabstop 4
 set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{context_info}} {green}%val{client}{default}@{cyan}%val{session}{default} %val{cursor_line}/%val{buf_line_count}:%val{cursor_char_column} (%val{selection_length}) '
 
@@ -212,6 +212,7 @@ plug "sawdust-and-diamonds/scrollbar.kak" config %{
     hook global WinCreate .* %{
         scrollbar-enable
         hook window User ScrollStep %{ update-scrollbar }
+        hook window User ui-hl-changed %{ move-scrollbar-to-left }
     }
     set-face global Scrollbar rgb:30343c,default
     set-face global ScrollbarSel rgb:5c8ec7,rgb:30343c
@@ -222,5 +223,5 @@ plug "sawdust-and-diamonds/scrollbar.kak" config %{
 }
 
 plug "caksoylar/kakoune-focus" config %{
-    map global user <space> ': focus-toggle<ret>' -docstring "toggle focus"
+    map global user <space> ': ui-wrap-toggle; focus-toggle<ret>' -docstring "toggle focus"
 }
