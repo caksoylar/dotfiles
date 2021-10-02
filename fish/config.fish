@@ -53,6 +53,9 @@ alias sort="sort -S4G"
 alias start="/mnt/c/Windows/explorer.exe"
 alias clip.exe="/mnt/c/Windows/System32/clip.exe"
 alias glow="glow -pw (tput cols)"
+if not type -q fd
+    alias fd="fdfind"
+end
 
 # some tmux shortcuts in addition to tm.fish
 alias tl="tmux list-sessions"
