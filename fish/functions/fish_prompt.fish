@@ -39,6 +39,7 @@ function fish_prompt
     # end
 
     printf "\n"
+    _print_in_color (date +%H:%M:%S)" " magenta
     if test -n "$fish_private_mode"
         _print_in_color "private " brblack
     end
