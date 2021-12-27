@@ -128,12 +128,12 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     set-option global lsp_server_configuration pyls.plugins.pyls_mypy.enabled=true
 
     lsp-enable-window
-    lsp-auto-hover-enable
     lsp-diagnostic-lines-disable window
 
     map window user L ': enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window user d ': tool lsp-diagnostics<ret>' -docstring "LSP diagnostics"
     map window goto r '<esc>: tool lsp-references<ret>' -docstring "references"
+    map window normal <c-h> ': lsp-hover<ret>' -docstring "LSP hover"
 }
 
 plug "kkga/ui.kak" config %{
