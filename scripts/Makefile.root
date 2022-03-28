@@ -46,7 +46,7 @@ kak: | $(DLDIR) $(SRC)
 	&& sudo $(MAKE) -s install
 
 kak-lsp: | $(DLDIR) $(SRC)
-	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v11.1.0/kak-lsp-v11.1.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
+	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v12.1.0/kak-lsp-v12.1.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
 	&& mkdir -p $(SRC)/kak-lsp ~/.local/bin \
 	&& tar xzf $(DLDIR)/kak-lsp.tar.gz -C $(SRC)/kak-lsp \
 	&& cp $(SRC)/kak-lsp/kak-lsp ~/.local/bin/
