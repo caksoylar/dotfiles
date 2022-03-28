@@ -28,10 +28,11 @@ tmux: libncurses libevent | $(DLDIR) $(SRC)
 	&& sudo $(MAKE) -s install
 
 fish: libncurses | $(DLDIR) $(SRC)
-	wget --hsts-file= -nv https://github.com/fish-shell/fish-shell/releases/download/3.4.1/fish-3.4.1.tar.gz -O $(DLDIR)/fish.tar.gz \
-	&& tar xzf $(DLDIR)/fish.tar.gz -C $(SRC) \
-	&& cd $(SRC)/fish-*/ \
-	&& ./configure -q \
+	wget --hsts-file= -nv https://github.com/fish-shell/fish-shell/releases/download/3.4.1/fish-3.4.1.tar.xz -O $(DLDIR)/fish.tar.xz \
+	&& tar xJf $(DLDIR)/fish.tar.xz -C $(SRC) \
+	&& cd $(SRC)/fish-* \
+	&& mkdir build && cd build \
+	&& cmake .. \
 	&& $(MAKE) -s \
 	&& sudo $(MAKE) -s install
 
