@@ -55,6 +55,7 @@ alias glow="glow -pw (tput cols)"
 if not type -q fd
     alias fd="fdfind"
 end
+alias kg="kak-grep"
 
 # some tmux shortcuts in addition to tm.fish
 alias tl="tmux list-sessions"

@@ -1,6 +1,9 @@
 function kak-grep
-    kak -e "grep "(string join -- " " (string escape -- $argv))
+    set -l grepargs
+    for x in $argv
+        set -a grepargs (echo $x | sed -e "s/'/''/g" -e "s/^/'/" -e "s/\$/'/")
+    end
+    kak -e "grep $(string join -- " " $grepargs)"
 end
 
-alias kg kak-grep
 complete -c kak-grep -w rg
