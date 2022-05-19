@@ -2,6 +2,9 @@
 	editor = kak
 	autocrlf = false
 	safecrlf = true
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
 [user]
 	name = Cem Aksoylar
 	email = caksoylar@gmail.com
@@ -16,13 +19,30 @@
 	st = status
 	co = checkout
 	ci = commit
+	cia = commit --amend
 	br = branch
 	df = diff
 	dfs = diff --staged
 	dft = difftool
-	ydf = ydiff
-	ydfs = ydiff --staged
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset %Cblue(%an)%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset' --abbrev-commit
 	sw = switch
+	pushf = push --force-with-lease
 [pull]
 	ff = only
+[merge]
+	tool = kakmerge
+	conflictstyle = diff3
+[mergetool "kakmerge"]
+	trustExitCode = true
+	cmd = env LOCAL=\"${LOCAL}\" BASE=\"${BASE}\" REMOTE=\"${REMOTE}\" MERGED=\"${MERGED}\" kakmerge
+[delta]
+	line-numbers = true
+	syntax-theme = none
+	plus-style = green
+	plus-emph-style = green reverse
+	minus-style = red
+	minus-emph-style = red reverse
+	commit-decoration-style = box
+	file-decoration-style = white ul ol
+	hunk-header-style = none
+	hunk-header-decoration-style = white box
