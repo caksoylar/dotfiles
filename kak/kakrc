@@ -187,7 +187,7 @@ plug "occivink/kakoune-expand" config %{
     set-option -add global expand_commands %{
         expand-impl %{ exec <a-i>p }
         # lower indent level
-        expand-impl %{ exec '<a-;>k<a-a>i' }
+        # expand-impl %{ exec '<a-:><a-;>k<a-a>i' }
         # expand back to pythonic "...:" lines
         expand-impl %{ exec '<a-i>i<a-:><a-;><a-?>^[^\n]+:<ret><a-;>' }
     }

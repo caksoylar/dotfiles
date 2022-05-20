@@ -52,12 +52,9 @@ kak-lsp: | $(DLDIR) $(SRC)
 	&& tar xzf $(DLDIR)/kak-lsp.tar.gz -C $(SRC)/kak-lsp \
 	&& cp $(SRC)/kak-lsp/kak-lsp ~/.local/bin/
 
-ydiff:
-	mkdir -p ~/.local/bin \
-	&& wget --hsts-file= -nv https://raw.githubusercontent.com/caksoylar/ydiff/master/ydiff -O ~/.local/bin/ydiff \
-	&& printf '%s\n\n%s\n' "#!/bin/sh" 'git diff "$$@" | ydiff | less -XRF' >~/.local/bin/git-ydiff \
-	&& printf '%s\n\n%s\n' "#!/bin/sh" 'git show "$$@" | ydiff | less -XRF' >~/.local/bin/git-yshow \
-	&& chmod +x ~/.local/bin/ydiff ~/.local/bin/git-ydiff ~/.local/bin/git-yshow
+delta:
+	wget --hsts-file= -nv https://github.com/dandavison/delta/releases/download/0.13.0/git-delta_0.13.0_amd64.deb -O $(DLDIR)/git-delta.deb \
+	&& sudo dpkg -i $(DLDIR)/git-delta.deb
 
 $(DLDIR):
 	mkdir -p $(DLDIR)
