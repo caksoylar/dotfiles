@@ -55,6 +55,11 @@ hook global WinSetOption filetype=python %{
 hook global WinSetOption filetype=(sh|kak|python) %{
     hook -group lint window User BufChange %{ try lint }
 }
+hook global WinSetOption filetype=openscad %{
+    set-option window lintcmd %{ run() {
+        openscad-linter --only-file "$1" 2>&1 | perl -pe 's/ / error:/'
+    } && run }
+}
 map global user l ': tool lint<ret>' -docstring "lint buffer"
 
 # find-edit command
@@ -114,6 +119,7 @@ plug "caksoylar/kakoune-smooth-scroll" config %{
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
+plug "caksoylar/openscad.kak"
 
 # enable lsp for filetypes, kak-lsp not managed by plug
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
