@@ -19,7 +19,7 @@ define-command mru -docstring "Display most recently used files, press return to
     edit -scratch *mru*
     evaluate-commands -save-regs b %{
         set-register b %opt{mru_buffers}
-        execute-keys '"b<a-P><a-space>a<ret><esc>gj'
+        execute-keys '"b<a-P><a-space><a-,>a<ret><esc>gj'
     }
-    map buffer normal <ret> "<a-x>_: edit <c-r>.<ret>"
+    map buffer normal <ret> "<semicolon>x_: edit <c-r>.<ret>"
 }
