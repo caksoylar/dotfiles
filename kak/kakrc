@@ -214,18 +214,15 @@ plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
     # hook global FocusIn  .* %{ state-save-reg-load dquote }
 }
 
-plug "sawdust-and-diamonds/scrollbar.kak" config %{
+plug "Screwtapello/scrollbar.kak" branch "my-cool-rewrite" config %{
     hook global WinCreate .* %{
         scrollbar-enable
         hook window User ScrollStep %{ update-scrollbar }
         hook window User ui-hl-changed %{ move-scrollbar-to-left }
     }
-    set-face global Scrollbar rgb:30343c,default
-    set-face global ScrollbarSel rgb:5c8ec7,rgb:30343c
-    set-face global ScrollbarHL rgb:e07093,default
-    set-option global scrollbar_char "█"
-    set-option global scrollbar_sel_char "•"
-    # set-option global selection_chars " •:∴⠶⠷⢷⢿⣿▒"
+    set-face global Scrollbar rgb:8b5fc7,default
+    set-face global ScrollThumb rgb:5c8ec7,rgb:30343c
+    set-option global selection_chars " • : ∴ ⠶ ⠷ ⢷ ⢿ ⣿"
 }
 
 plug "caksoylar/kakoune-focus" branch "kak-master" config %{
