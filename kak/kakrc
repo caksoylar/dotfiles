@@ -116,7 +116,7 @@ plug "caksoylar/kakoune-smooth-scroll" config %{
         }
     }
 }
-plug "occivink/kakoune-find"
+plug "caksoylar/kakoune-find"
 plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
 plug "caksoylar/openscad.kak"
@@ -228,6 +228,6 @@ plug "sawdust-and-diamonds/scrollbar.kak" config %{
     # set-option global selection_chars " •:∴⠶⠷⢷⢿⣿▒"
 }
 
-plug "caksoylar/kakoune-focus" config %{
+plug "caksoylar/kakoune-focus" branch "kak-master" config %{
     map global user <space> ': ui-wrap-toggle; focus-toggle<ret>' -docstring "toggle focus"
 }
