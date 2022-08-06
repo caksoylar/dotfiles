@@ -10,7 +10,7 @@ hook -group ipynb global WinSetOption filetype=ipynb %{
     hook -once -always window WinSetOption filetype=.* %{ remove-highlighter window/ipynb }
 
     set-option window formatcmd "jq ."
-    map window normal <ret> ": decode-field<ret>"
+    map window normal <ret> ":decode-field<ret>"
 }
 
 provide-module ipynb %{
@@ -21,7 +21,7 @@ provide-module ipynb %{
                 edit -scratch "*ipynb-cell*"
                 set-option buffer filetype python
                 execute-keys -draft <">jP ggI{<">text<">:<esc>gea}<esc> <%> | jq<space>-r<space>'.text|join("")' <ret>
-                map buffer normal <ret> ": replace-field<ret>"
+                map buffer normal <ret> ":replace-field<ret>"
             }
         }
     }

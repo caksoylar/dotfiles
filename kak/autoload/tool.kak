@@ -14,14 +14,14 @@ define-command tool -params .. -command-completion -docstring "create tool split
                 rename-client tools
                 try %{
                     evaluate-commands -client main $*
-                    map window normal q ': quit<ret>'
+                    map window normal q ':quit<ret>'
                 }
             }"
         else  # tools client exists, just run command
             printf '%s\n' \
             "try %{
                 evaluate-commands -client main $*
-                map window normal q ': quit<ret>'
+                map window normal q ':quit<ret>'
             }"
         fi
     }

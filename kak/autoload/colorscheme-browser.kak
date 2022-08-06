@@ -22,6 +22,6 @@ def -hidden colorscheme-change -params 1 %{ eval %sh{
 }}
 
 declare-user-mode colorscheme-browser
-map global colorscheme-browser [ ': colorscheme-change prev<ret>' -docstring 'previous'
-map global colorscheme-browser ] ': colorscheme-change next<ret>' -docstring 'next'
+map global colorscheme-browser [ ':colorscheme-change prev<ret>' -docstring 'previous'
+map global colorscheme-browser ] ':colorscheme-change next<ret>' -docstring 'next'
 def colorscheme-browser %{ enter-user-mode -lock colorscheme-browser }

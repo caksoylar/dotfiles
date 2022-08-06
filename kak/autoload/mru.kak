@@ -21,5 +21,5 @@ define-command mru -docstring "Display most recently used files, press return to
         set-register b %opt{mru_buffers}
         execute-keys '"b<a-P><a-space><a-,>a<ret><esc>gj'
     }
-    map buffer normal <ret> "<semicolon>x_: edit <c-r>.<ret>"
+    map buffer normal <ret> "<semicolon>x_:edit <c-r>.<ret>"
 }
