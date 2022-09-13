@@ -181,6 +181,8 @@ plug "chambln/kakoune-readline" config %{
 
 plug 'delapouite/kakoune-mirror' %{
     map global normal "'" ':enter-user-mode mirror<ret>'
+    map global mirror <space> 'a <esc>i <esc>H<a-;>' -docstring "<space>surround<space>"
+    map global mirror <backspace> ':execute-keys "<lt>a-:>Z<semicolon>dz<lt>a-;><lt>semicolon>dz"<ret>H'
 }
 
 plug "caksoylar/kakoune-vertical-selection" config %{
