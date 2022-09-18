@@ -185,7 +185,7 @@ plug 'delapouite/kakoune-mirror' %{
     map global mirror <backspace> ':execute-keys "<lt>a-:>Z<semicolon>dz<lt>a-;><lt>semicolon>dz"<ret>H'
 }
 
-plug "caksoylar/kakoune-vertical-selection" config %{
+plug "occivink/kakoune-vertical-selection" config %{
     map global normal ^     ':vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
     map global normal <a-^> ':vertical-selection-up<ret>'   -docstring "select matching pattern from the lines above"
 }
