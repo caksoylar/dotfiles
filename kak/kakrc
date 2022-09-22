@@ -116,7 +116,7 @@ plug "caksoylar/kakoune-smooth-scroll" config %{
         }
     }
 }
-plug "caksoylar/kakoune-find"
+plug "krobelus/kakoune-find"
 plug "Delapouite/kakoune-registers"
 plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
 plug "caksoylar/openscad.kak"
@@ -179,7 +179,7 @@ plug "chambln/kakoune-readline" config %{
     hook global WinCreate .* readline-enable
 }
 
-plug 'delapouite/kakoune-mirror' %{
+plug 'Delapouite/kakoune-mirror' %{
     map global normal "'" ':enter-user-mode mirror<ret>'
     map global mirror <space> 'a <esc>i <esc>H<a-;>' -docstring "<space>surround<space>"
     map global mirror <backspace> ':execute-keys "<lt>a-:>Z<semicolon>dz<lt>a-;><lt>semicolon>dz"<ret>H'
