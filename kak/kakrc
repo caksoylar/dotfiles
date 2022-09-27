@@ -149,12 +149,12 @@ plug "kkga/ui.kak" config %{
     set-option global ui_wrap_flags -marker "…"
     set-face global TrailingSpace default,red
     hook global WinCreate [^*].* %{
-        ui-line-numbers-toggle
-        ui-wrap-toggle
-        ui-matching-toggle
+        ui-line-numbers-enable
+        # ui-wrap-enable
+        ui-matching-enable
         evaluate-commands %sh{
             if [ "$(git -C "$(dirname "$kak_buffile")" rev-parse --git-dir 2>/dev/null)" ]; then
-                printf 'ui-git-diff-toggle\n'
+                printf 'ui-git-diff-enable\n'
             fi
         }
     }
@@ -217,10 +217,16 @@ plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
 }
 
 plug "Screwtapello/scrollbar.kak" branch "my-cool-rewrite" config %{
-    hook global WinCreate .* %{
-        scrollbar-enable
-        hook window User ScrollStep %{ update-scrollbar }
-        hook window User ui-hl-changed %{ move-scrollbar-to-left }
+    hook global WinResize .* %{
+        evaluate-commands %sh{
+            if [ "${kak_hook_param%.*}" -lt "$kak_buf_line_count" ]; then
+                printf '%s\n' "scrollbar-enable
+                hook window User ScrollStep %{ update-scrollbar }
+                hook window User ui-hl-changed %{ move-scrollbar-to-left }"
+            else
+                printf "scrollbar-disable\n"
+            fi
+        }
     }
     set-face global Scrollbar rgb:8b5fc7,default
     set-face global ScrollThumb rgb:5c8ec7,rgb:30343c
