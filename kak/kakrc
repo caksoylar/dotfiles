@@ -49,7 +49,7 @@ alias global lint-show-counters nop
 
 hook global WinSetOption filetype=python %{
     set window lintcmd %{ run() {
-        pylint -d C0111,C0301,C0103,E1101 --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'
+        pylint --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'
     } && run }
 }
 hook global WinSetOption filetype=(sh|kak|python) %{
