@@ -56,6 +56,7 @@ if not type -q fd
     alias fd="fdfind"
 end
 alias kg="kak-grep"
+alias dc="echo 1 | sudo tee /proc/sys/vm/drop_caches"
 
 # some tmux shortcuts in addition to tm.fish
 alias tl="tmux list-sessions"
