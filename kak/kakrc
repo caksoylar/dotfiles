@@ -233,6 +233,6 @@ plug "Screwtapello/scrollbar.kak" branch "my-cool-rewrite" config %{
     set-option global selection_chars " • : ∴ ⠶ ⠷ ⢷ ⢿ ⣿"
 }
 
-plug "caksoylar/kakoune-focus" branch "kak-master" config %{
+plug "caksoylar/kakoune-focus" config %{
     map global user <space> ':ui-wrap-toggle; focus-toggle<ret>' -docstring "toggle focus"
 }
