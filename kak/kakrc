@@ -106,12 +106,16 @@ hook global WinSetOption filetype=markdown %{
 }
 
 ## remote plugin settings
-source "%val{config}/plugins/plug.kak/rc/plug.kak"
-plug "andreyorst/plug.kak" noload
+source "%val{config}/bundle/kak-bundle/rc/kak-bundle.kak"
+bundle-noload kak-bundle "https://codeberg.org/jdugan6240/kak-bundle"
 
-plug "caksoylar/kakoune-mysticaltutor" theme %{ colorscheme mysticaltutor }
-plug "caksoylar/kakoune-snow" theme # %{ colorscheme snow-dark }
-plug "caksoylar/kakoune-smooth-scroll" config %{
+bundle-noload kakoune-mysticaltutor "https://github.com/caksoylar/kakoune-mysticaltutor" '' %{
+    mkdir -p "${kak_config}/colors"
+    ln -sf "${kak_opt_bundle_path}/kakoune-mysticaltutor/mysticaltutor.kak" "${kak_config}/colors/"
+}
+try %{ colorscheme mysticaltutor }
+
+bundle kakoune-smooth-scroll "https://github.com/caksoylar/kakoune-smooth-scroll" %{
     hook global WinCreate (?!\*plug\*).* %{
         hook -once window WinDisplay .* %{
             smooth-scroll-enable
@@ -119,12 +123,12 @@ plug "caksoylar/kakoune-smooth-scroll" config %{
         }
     }
 }
-plug "krobelus/kakoune-find"
-plug "Delapouite/kakoune-registers"
-plug "Screwtapello/kakoune-shellcheck" domain "gitlab.com"
-plug "caksoylar/openscad.kak"
+bundle kakoune-find "https://github.com/krobelus/kakoune-find"
+bundle kakoune-registers "https://github.com/Delapouite/kakoune-registers"
+bundle kakoune-shellcheck "https://gitlab.com/Screwtapello/kakoune-shellcheck"
+bundle openscad.kak "https://github.com/caksoylar/openscad.kak"
 
-# enable lsp for filetypes, kak-lsp not managed by plug
+# enable lsp for filetypes, kak-lsp not managed by bundle
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
     try %{
         evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
@@ -145,7 +149,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     map window normal <c-h> ':lsp-hover<ret>' -docstring "LSP hover"
 }
 
-plug "kkga/ui.kak" config %{
+bundle ui.kak "https://github.com/kkga/ui.kak" %{
     map global user o ":enter-user-mode ui<ret>" -docstring "toggle UI options"
     set-option global ui_line_numbers_flags -hlcursor -relative
     set-option global ui_whitespaces_flags -tab "»" -lf "↲" -nbsp "␣" -spc "·"
@@ -163,14 +167,15 @@ plug "kkga/ui.kak" config %{
     }
 }
 
-plug "andreyorst/smarttab.kak" defer smarttab %{
+bundle smarttab.kak "https://github.com/andreyorst/smarttab.kak" %{
+    require-module smarttab
     set-option global softtabstop 4
-} config %{
+
     hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml) expandtab
     hook global WinSetOption filetype=(makefile) noexpandtab
 }
 
-plug "Delapouite/kakoune-buffers" config %{
+bundle kakoune-buffers "https://github.com/Delapouite/kakoune-buffers" %{
     map global buffers L ':buffer *lint-output*<ret>' -docstring "lint output"
     map global buffers D ':buffer *diagnostics*<ret>' -docstring "diagnostics"
     map global normal <backspace>   ':enter-buffers-mode<ret>'            -docstring "enter buffers mode"
@@ -178,22 +183,22 @@ plug "Delapouite/kakoune-buffers" config %{
     hook global WinDisplay .* info-buffers
 }
 
-plug "chambln/kakoune-readline" config %{
+bundle kakoune-readline "https://github.com/chambln/kakoune-readline" %{
     hook global WinCreate .* readline-enable
 }
 
-plug 'Delapouite/kakoune-mirror' %{
+bundle kakoune-mirror 'https://github.com/Delapouite/kakoune-mirror' %{
     map global normal "'" ':enter-user-mode mirror<ret>'
     map global mirror <space> 'a <esc>i <esc>H<a-;>' -docstring "<space>surround<space>"
     map global mirror <backspace> ':execute-keys "<lt>a-:>Z<semicolon>dz<lt>a-;><lt>semicolon>dz"<ret>H'
 }
 
-plug "occivink/kakoune-vertical-selection" config %{
+bundle kakoune-vertical-selection "https://github.com/occivink/kakoune-vertical-selection" %{
     map global normal ^     ':vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
     map global normal <a-^> ':vertical-selection-up<ret>'   -docstring "select matching pattern from the lines above"
 }
 
-plug "occivink/kakoune-expand" config %{
+bundle kakoune-expand "https://github.com/occivink/kakoune-expand" %{
     map global normal <plus> ":expand<ret>"
     set-option -add global expand_commands %{
         expand-impl %{ exec <a-i>p }
@@ -204,7 +209,7 @@ plug "occivink/kakoune-expand" config %{
     }
 }
 
-plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
+bundle kakoune-state-save "https://gitlab.com/Screwtapello/kakoune-state-save" %{
     hook global KakBegin .* %{
         state-save-reg-load colon
         state-save-reg-load pipe
@@ -219,7 +224,7 @@ plug "Screwtapello/kakoune-state-save" domain "gitlab.com" config %{
     # hook global FocusIn  .* %{ state-save-reg-load dquote }
 }
 
-plug "Screwtapello/scrollbar.kak" branch "my-cool-rewrite" config %{
+bundle scrollbar.kak "git clone -b my-cool-rewrite https://github.com/Screwtapello/scrollbar.kak --single-branch --no-tags" %{
     hook global WinResize .* %{
         evaluate-commands %sh{
             if [ "${kak_hook_param%.*}" -lt "$kak_buf_line_count" ]; then
@@ -236,6 +241,6 @@ plug "Screwtapello/scrollbar.kak" branch "my-cool-rewrite" config %{
     set-option global selection_chars " • : ∴ ⠶ ⠷ ⢷ ⢿ ⣿"
 }
 
-plug "caksoylar/kakoune-focus" config %{
+bundle kakoune-focus "https://github.com/caksoylar/kakoune-focus" %{
     map global user <space> ':ui-wrap-toggle; focus-toggle<ret>' -docstring "toggle focus"
 }
