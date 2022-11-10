@@ -107,7 +107,7 @@ hook global WinSetOption filetype=markdown %{
 
 ## remote plugin settings
 source "%val{config}/bundle/kak-bundle/rc/kak-bundle.kak"
-bundle-noload kak-bundle "https://codeberg.org/jdugan6240/kak-bundle"
+# bundle-noload kak-bundle "https://codeberg.org/jdugan6240/kak-bundle"
 
 bundle-noload kakoune-mysticaltutor "https://github.com/caksoylar/kakoune-mysticaltutor" '' %{
     mkdir -p "${kak_config}/colors"
