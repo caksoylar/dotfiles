@@ -54,7 +54,7 @@ kak-lsp: | $(DLDIR) $(SRC)
 	&& cp $(SRC)/kak-lsp/kak-lsp ~/.local/bin/
 
 delta:
-	wget --hsts-file= -nv https://github.com/dandavison/delta/releases/download/0.13.0/git-delta_0.13.0_amd64.deb -O $(DLDIR)/git-delta.deb \
+	wget --hsts-file= -nv https://github.com/dandavison/delta/releases/download/0.14.0/git-delta_0.14.0_amd64.deb -O $(DLDIR)/git-delta.deb \
 	&& sudo dpkg -i $(DLDIR)/git-delta.deb
 
 $(DLDIR):
