@@ -3,7 +3,7 @@
 ln -s "$(readlink -f $(dirname $0))" ~/.config/kak
 ln -s "$(readlink -f ~/.config/kak/kak-lsp)" ~/.config/kak-lsp
 
-mkdir -p ~/.config/kak/bundle/plugins
+mkdir -p ~/.config/kak/bundle
 
 git clone https://codeberg.org/jdugan6240/kak-bundle ~/.config/kak/bundle/kak-bundle
 git -C ~/.config/kak/bundle/kak-bundle switch big-rewrite
