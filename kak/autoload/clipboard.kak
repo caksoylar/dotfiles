@@ -8,6 +8,8 @@ define-command -hidden clipboard-sync \
             copy=$(printf '%s\n%s' "$copy" "$sel")
         done
         encoded=$(printf %s "$copy" | base64 | tr -d '\n')
-        printf "\e]52;;%s\e\\" "$encoded" >/dev/tty
+
+        [ -n "$TMUX" ] && tty=$(tmux display-message -p '#{pane_tty}') || tty=/dev/tty
+        printf "\e]52;;%s\e\\" "$encoded" >"$tty"
     }
 }
