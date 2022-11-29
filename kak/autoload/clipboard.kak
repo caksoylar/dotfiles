@@ -9,7 +9,6 @@ define-command -hidden clipboard-sync \
         done
         encoded=$(printf %s "$copy" | base64 | tr -d '\n')
 
-        [ -n "$TMUX" ] && tty=$(tmux display-message -p '#{pane_tty}') || tty=/dev/tty
-        printf "\e]52;;%s\e\\" "$encoded" >"$tty"
+        printf "\e]52;;%s\e\\" "$encoded" >"/proc/$kak_client_pid/fd/0"
     }
 }
