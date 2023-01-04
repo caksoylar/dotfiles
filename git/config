@@ -7,7 +7,7 @@
 	diffFilter = delta --color-only
 [user]
 	name = Cem Aksoylar
-	email = caksoylar@gmail.com
+	email = caksoylar@users.noreply.github.com
 [push]
 	default = simple
 [diff]
