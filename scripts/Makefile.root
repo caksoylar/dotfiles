@@ -48,13 +48,13 @@ kak: | $(DLDIR) $(SRC)
 	&& sudo $(MAKE) -s install
 
 kak-lsp: | $(DLDIR) $(SRC)
-	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v14.0.0/kak-lsp-v14.0.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
+	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v14.1.0/kak-lsp-v14.1.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
 	&& mkdir -p $(SRC)/kak-lsp ~/.local/bin \
 	&& tar xzf $(DLDIR)/kak-lsp.tar.gz -C $(SRC)/kak-lsp \
 	&& cp $(SRC)/kak-lsp/kak-lsp ~/.local/bin/
 
 delta:
-	wget --hsts-file= -nv https://github.com/dandavison/delta/releases/download/0.14.0/git-delta_0.14.0_amd64.deb -O $(DLDIR)/git-delta.deb \
+	wget --hsts-file= -nv https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_amd64.deb -O $(DLDIR)/git-delta.deb \
 	&& sudo dpkg -i $(DLDIR)/git-delta.deb
 
 $(DLDIR):
