@@ -193,12 +193,16 @@ bundle kakoune-mirror 'https://github.com/Delapouite/kakoune-mirror' %{
     map global mirror <backspace> ':execute-keys "<lt>a-:>Z<semicolon>dz<lt>a-;><lt>semicolon>dz"<ret>H'
 }
 
-bundle kakoune-vertical-selection "https://github.com/occivink/kakoune-vertical-selection" %{
+bundle-customload kakoune-vertical-selection "https://github.com/occivink/kakoune-vertical-selection" %{
+    source "%opt{bundle_path}/kakoune-vertical-selection/vertical-selection.kak"
+
     map global normal ^     ':vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
     map global normal <a-^> ':vertical-selection-up<ret>'   -docstring "select matching pattern from the lines above"
 }
 
-bundle kakoune-expand "https://github.com/occivink/kakoune-expand" %{
+bundle-customload kakoune-expand "https://github.com/occivink/kakoune-expand" %{
+    source "%opt{bundle_path}/kakoune-expand/expand.kak"
+
     map global normal <plus> ":expand<ret>"
     set-option -add global expand_commands %{
         expand-impl %{ exec <a-i>p }
