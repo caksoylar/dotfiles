@@ -50,7 +50,7 @@ map global normal <c-e> ':repl-send-text<ret>'
 # lint settings
 alias global lint-show-counters nop
 
-hook global WinSetOption filetype=markdown %{ set-option window indentwidth 2 }
+hook global WinSetOption filetype=(markdown|yaml) %{ set-option window indentwidth 2 }
 
 hook global WinSetOption filetype=python %{
     set window lintcmd %{ run() {
