@@ -95,13 +95,14 @@ hook global NormalKey y clipboard-sync
 map global goto p '<esc>:percent<ret>' -docstring "buffer percentage"
 
 # inc-dec.kak
-declare-user-mode inc-dec
-map global inc-dec a ':inc-dec %val{count} + 0<ret>' -docstring "increment by count"
-map global inc-dec x ':inc-dec %val{count} - 0<ret>' -docstring "decrement by count"
-map global inc-dec A ':inc-dec %val{count} + 1<ret>' -docstring "increment by count times selection index"
-map global inc-dec X ':inc-dec %val{count} - 1<ret>' -docstring "decrement by count times selection index"
-map global normal = ':enter-user-mode inc-dec<ret>'       -docstring "enter inc-dec mode"
-map global user   m ':enter-user-mode -lock inc-dec<ret>' -docstring "enter inc-dec mode (lock)"
+declare-user-mode math
+map global math <ret> %{_|xargs -I@ fish -Nc "builtin math '@'"<ret>} -docstring "evaluate selected math expression"
+map global math a ':inc-dec %val{count} + 0<ret>' -docstring "increment by count"
+map global math x ':inc-dec %val{count} - 0<ret>' -docstring "decrement by count"
+map global math A ':inc-dec %val{count} + 1<ret>' -docstring "increment by count times selection index"
+map global math X ':inc-dec %val{count} - 1<ret>' -docstring "decrement by count times selection index"
+map global normal = ':enter-user-mode math<ret>'       -docstring "enter math mode"
+map global user   m ':enter-user-mode -lock math<ret>' -docstring "enter math mode (lock)"
 
 hook global WinSetOption filetype=markdown %{
     map window normal <c-y> ':tmux-terminal-horizontal glow -pw $(tput cols) $kak_buffile<ret>'
