@@ -14,8 +14,15 @@ map global normal V <a-a>
 # easier access <a-,>
 map global normal <minus> <a-,>
 
-# selection undo keys to <c-l>/<c-k>
-map global normal <c-l> <c-h><c-l>
+# arrow keys for goto mode
+map global goto <left> h -docstring "line begin"
+map global goto <right> l -docstring "line end"
+
+# selection undo and jump list keys to arrows
+map global normal <c-left> <c-h> -docstring "undo selection"
+map global normal <c-right> <c-k> -docstring "redo selection"
+map global normal <c-up> <c-o> -docstring "jump back"
+map global normal <c-down> <c-i> -docstring "jump forward"
 
 # highlight search matches
 hook global RegisterModified '/' %{ add-highlighter -override global/search regex "%reg{/}" 0:+i }
