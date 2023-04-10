@@ -61,7 +61,7 @@ bin/kak: | $(SRC)
 
 kak-lsp: bin/kak-lsp
 bin/kak-lsp: | $(DLDIR) $(SRC)
-	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v14.0.0/kak-lsp-v14.0.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
+	wget --hsts-file= -nv https://github.com/ul/kak-lsp/releases/download/v14.2.0/kak-lsp-v14.2.0-x86_64-unknown-linux-musl.tar.gz -O $(DLDIR)/kak-lsp.tar.gz \
 	&& mkdir -p $(SRC)/kak-lsp bin \
 	&& tar xzf $(DLDIR)/kak-lsp.tar.gz -C $(SRC)/kak-lsp \
 	&& cp $(SRC)/kak-lsp/kak-lsp bin/
