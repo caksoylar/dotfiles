@@ -14,6 +14,12 @@ map global normal V <a-a>
 # easier access <a-,>
 map global normal <minus> <a-,>
 
+# disable hjkl
+map global normal h ""
+map global normal j ""
+map global normal k ""
+map global normal l ""
+
 # arrow keys for goto mode
 map global goto <left> h -docstring "line begin"
 map global goto <right> l -docstring "line end"
