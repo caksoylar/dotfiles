@@ -47,23 +47,28 @@ if test -f ~/.config/fish/LS_COLORS
     eval (dircolors -c ~/.config/fish/LS_COLORS)
 end
 
-alias rm="rm -I"
-alias lt="ll -t"
-alias sort="sort -S4G"
-alias clip.exe="/mnt/c/Windows/System32/clip.exe"
-alias glow="glow -pw (tput cols)"
+# aliases (not necessarily all interactive use)
 if not type -q fd
-    alias fd="fdfind"
+    alias fd "fdfind"
 end
-alias kg="kak-grep"
-alias dc="echo 1 | sudo tee /proc/sys/vm/drop_caches"
+alias sort "sort -S4G"
+alias clip.exe "/mnt/c/Windows/System32/clip.exe"
+alias dc "echo 1 | sudo tee /proc/sys/vm/drop_caches"
+alias glow "glow -pw (tput cols)"
+
+# abbreviations (for interactive use)
+abbr --add k kak
+abbr --add g git
+abbr --add rm "rm -I"
+abbr --add lt "ll -t"
+abbr --add kg "kak-grep"
 
 # some tmux shortcuts in addition to tm.fish
-alias tl="tmux list-sessions"
-alias ta="tmux attach-session"
+abbr --add tl "tmux list-sessions"
+abbr --add ta "tmux attach-session"
 
 # fugitive
-alias gst="vim '+G | only'"
+abbr --add gst "vim '+G | only'"
 
 # old-style highlighting
 fish_config theme choose termcolors
