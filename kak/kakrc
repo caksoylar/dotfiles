@@ -17,6 +17,8 @@ map global normal <minus> <a-,>
 # arrow keys for goto mode
 map global goto <left> h -docstring "line begin"
 map global goto <right> l -docstring "line end"
+map global goto <down> j -docstring "buffer bottom"
+map global goto <up> k -docstring "buffer top"
 
 # selection undo and jump list keys to arrows
 map global normal <c-left> <c-h> -docstring "undo selection"
@@ -126,6 +128,7 @@ bundle-noload kakoune-mysticaltutor "https://github.com/caksoylar/kakoune-mystic
 try %{ colorscheme mysticaltutor }
 
 bundle kakoune-smooth-scroll "https://github.com/caksoylar/kakoune-smooth-scroll" %{
+    set-option global scroll_keys_goto g e . <down>=j <up>=k
     hook global WinCreate (?!\*plug\*).* %{
         hook -once window WinDisplay .* %{
             smooth-scroll-enable
