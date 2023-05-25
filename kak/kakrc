@@ -19,6 +19,8 @@ map global goto <left> h -docstring "line begin"
 map global goto <right> l -docstring "line end"
 map global goto <down> j -docstring "buffer bottom"
 map global goto <up> k -docstring "buffer top"
+map global normal <a-left> <a-h>
+map global normal <a-right> <a-l>
 
 # selection undo and jump list keys to arrows
 map global normal <c-left> <a-u> -docstring "undo selection"
