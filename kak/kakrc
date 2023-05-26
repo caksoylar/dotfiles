@@ -3,6 +3,7 @@ set-option global scrolloff 5,10
 set-option global ui_options terminal_assistant=none terminal_synchronized=yes
 set-option global tabstop 4
 set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{context_info}} {green}%val{client}{default}@{cyan}%val{session}{default} %val{cursor_line}/%val{buf_line_count}:%val{cursor_char_column} (%val{selection_length}) '
+set-option global grepcmd 'rg --vimgrep'
 
 # clean selections and search highlight on Esc
 map global normal <esc> ',<semicolon>:rmhl global/search<ret>'
@@ -15,18 +16,18 @@ map global normal V <a-a>
 map global normal <minus> <a-,>
 
 # arrow keys for goto mode
-map global goto <left> h -docstring "line begin"
+map global goto <left>  h -docstring "line begin"
 map global goto <right> l -docstring "line end"
-map global goto <down> j -docstring "buffer bottom"
-map global goto <up> k -docstring "buffer top"
+map global goto <down>  j -docstring "buffer bottom"
+map global goto <up>    k -docstring "buffer top"
 map global normal <a-left> <a-h>
 map global normal <a-right> <a-l>
 
 # selection undo and jump list keys to arrows
-map global normal <c-left> <a-u> -docstring "undo selection"
+map global normal <c-left>  <a-u> -docstring "undo selection"
 map global normal <c-right> <a-U> -docstring "redo selection"
-map global normal <c-up> <c-o> -docstring "jump back"
-map global normal <c-down> <c-i> -docstring "jump forward"
+map global normal <c-up>    <c-o> -docstring "jump back"
+map global normal <c-down>  <c-i> -docstring "jump forward"
 
 # highlight search matches
 hook global RegisterModified '/' %{ add-highlighter -override global/search regex "%reg{/}" 0:+i }
@@ -76,29 +77,25 @@ hook global WinSetOption filetype=openscad %{
         openscad-linter --only-file "$1" 2>&1 | perl -pe 's/ / error:/'
     } && run }
 }
-map global user l ':tool lint<ret>' -docstring "lint buffer"
 
-# find-edit command
+# user mode shortcuts
+map global user g ':grep ' -docstring "grep"
+map global user F ':find ' -docstring "find in buffers"
+
 define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
 map global user f ':find-edit ' -docstring "find and edit file"
 
-# shortcuts
-map global user g ':tool grep ' -docstring "grep"
-map global user F ':tool find ' -docstring "find in buffers"
-
-set-option global grepcmd 'rg --vimgrep'
-
-map global user n     ':tool-next-match<ret>' -docstring "next message"
-map global user <a-n> ':tool-previous-match<ret>' -docstring "previous message"
+map global user n     ':grep-next-match<ret>'     -docstring "next message"
+map global user <a-n> ':grep-previous-match<ret>' -docstring "previous message"
 
 # add search flags
 map global prompt <a-i> '<home>(?i)<end>' -docstring "case insensitive search"
-map global prompt <a-o> '<home>(?S)<end>' -docstring "dot doesn't match newline search"
+map global prompt <a-s> '<home>(?S)<end>' -docstring "dot doesn't match newline search"
 
 # select all occurrences of selection set
 map global normal <a-percent> '*%s<ret>' -docstring "select all occurrences of selection"
 
-## self plugin settings
+## self plugin (autoload) settings
 # clipboard.kak: clipboard sync on explicit yank
 hook global NormalKey y clipboard-sync
 
@@ -157,10 +154,10 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
 
     lsp-enable-window
     lsp-diagnostic-lines-disable window
+    lsp-inline-diagnostics-disable window
 
-    map window user L ':enter-user-mode lsp<ret>' -docstring "LSP mode"
-    map window user d ':tool lsp-diagnostics<ret>' -docstring "LSP diagnostics"
-    map window goto r '<esc>:tool lsp-references<ret>' -docstring "references"
+    map window user l ':enter-user-mode lsp<ret>' -docstring "LSP mode"
+    map window user d ':lsp-diagnostics<ret>' -docstring "LSP diagnostics"
     map window normal <c-h> ':lsp-hover<ret>' -docstring "LSP hover"
 }
 
@@ -176,7 +173,7 @@ bundle ui.kak "https://github.com/kkga/ui.kak" %{
         ui-matching-enable
         evaluate-commands %sh{
             if [ "$(git -C "$(dirname "$kak_buffile")" rev-parse --git-dir 2>/dev/null)" ]; then
-                printf 'ui-git-diff-enable\n'
+                printf "ui-git-diff-enable\n"
             fi
         }
     }
@@ -221,8 +218,10 @@ bundle-customload kakoune-expand "https://github.com/occivink/kakoune-expand" %{
     map global normal <plus> ":expand<ret>"
     set-option -add global expand_commands %{
         expand-impl %{ exec <a-i>p }
+
         # lower indent level
         # expand-impl %{ exec '<a-:><a-;>k<a-a>i' }
+
         # expand back to pythonic "...:" lines
         expand-impl %{ exec '<a-i>i<a-:><a-;><a-?>^[^\n]+:<ret><a-;>' }
     }
@@ -239,19 +238,17 @@ bundle kakoune-state-save "https://gitlab.com/Screwtapello/kakoune-state-save" %
         state-save-reg-save pipe
         state-save-reg-save slash
     }
-    # hook global FocusOut .* %{ state-save-reg-save dquote }
-    # hook global FocusIn  .* %{ state-save-reg-load dquote }
 }
 
 bundle scrollbar.kak "git clone -b my-cool-rewrite https://github.com/Screwtapello/scrollbar.kak --single-branch --no-tags" %{
     hook global WinResize .* %{
         evaluate-commands %sh{
             if [ "${kak_hook_param%.*}" -lt "$kak_buf_line_count" ]; then
-                printf '%s\n' "scrollbar-enable
-                hook window User ScrollStep %{ update-scrollbar }
-                hook window User ui-hl-changed %{ move-scrollbar-to-left }"
+                printf "scrollbar-enable
+                hook window User ScrollStep update-scrollbar
+                hook window User ui-hl-changed move-scrollbar-to-left"
             else
-                printf "scrollbar-disable\n"
+                printf "scrollbar-disable"
             fi
         }
     }
