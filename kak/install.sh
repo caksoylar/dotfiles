@@ -5,7 +5,6 @@ ln -s "$(readlink -f ~/.config/kak/kak-lsp)" ~/.config/kak-lsp
 
 mkdir -p ~/.config/kak/bundle
 
-git clone https://codeberg.org/jdugan6240/kak-bundle ~/.config/kak/bundle/kak-bundle
-git -C ~/.config/kak/bundle/kak-bundle switch big-rewrite
+git clone https://git.sr.ht/~jdugan6240/kak-bundle ~/.config/kak/bundle/kak-bundle
 
 ln -s $(readlink -f "$(dirname $(type -p kak))"/../share/kak/autoload) ~/.config/kak/autoload/system
