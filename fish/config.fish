@@ -61,7 +61,8 @@ abbr --add k kak
 abbr --add g git
 abbr --add rm "rm -I"
 abbr --add lt "ll -t"
-abbr --add kg "kak-grep"
+abbr --add kg kak-grep
+abbr --add kf kak-find
 
 # some tmux shortcuts in addition to tm.fish
 abbr --add tl "tmux list-sessions"
