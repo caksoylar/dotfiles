@@ -189,11 +189,15 @@ let g:undotree_SetFocusWhenToggle = 1
 nnoremap <Space>u :packadd undotree <Bar> UndotreeToggle<CR>
 
 " DiffChar settings
-let g:DiffModeSync = 0
 let g:DiffUnit = 'Word1'
-let g:DiffSplitTime = 1000
-nnoremap <Space>dc :packadd diffchar.vim <Bar> %TDChar<CR>
-xnoremap <Space>dc :<C-u>packadd diffchar.vim <Bar> '<,'>TDChar<CR>
+let g:DiffColors = 0
+let g:DiffPairVisible = 3
+let g:NoDiffChar = 1
+function! DiffToggle()
+    let g:NoDiffChar = g:NoDiffChar ? 0: 1
+    windo diffoff | windo diffthis
+endfunction
+nnoremap <Space>dc :call DiffToggle()<CR>
 
 " Tab and CR behavior when completing
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
