@@ -57,7 +57,8 @@ tabnew -params .. -command-completion %{
 
 # repl maps
 map global normal <c-t> ':tmux-repl-vertical<ret>'
-map global normal <c-e> ':repl-send-text<ret>'
+map global normal <c-e> ':tmux-send-selection<ret>'
+map global normal <c-a-t> ':tmux-repl-set-pane-by-index<ret>'
 
 # lint settings
 alias global lint-show-counters nop
