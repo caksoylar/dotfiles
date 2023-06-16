@@ -29,11 +29,15 @@ map global normal <c-right> <a-U> -docstring "redo selection"
 map global normal <c-up>    <c-o> -docstring "jump back"
 map global normal <c-down>  <c-i> -docstring "jump forward"
 
+# easier line extensions
+map global normal X     '<a-:>Jx'      -docstring "extend lines downwards"
+map global normal <a-X> '<a-:><a-;>Kx' -docstring "extend lines upwards"
+
 # highlight search matches
 hook global RegisterModified '/' %{ add-highlighter -override global/search regex "%reg{/}" 0:+i }
 
 # comment maps
-map global normal '#'   ':comment-line<ret>'  -docstring "comment line"
+map global normal <#>   ':comment-line<ret>'  -docstring "comment line"
 map global normal <a-#> ':comment-block<ret>' -docstring "comment block"
 
 # find non-ascii chars quickly
@@ -56,8 +60,8 @@ tabnew -params .. -command-completion %{
 }
 
 # repl maps
-map global normal <c-t> ':tmux-repl-vertical<ret>'
-map global normal <c-e> ':tmux-send-selection<ret>'
+map global normal <c-t>   ':tmux-repl-vertical<ret>'
+map global normal <c-e>   ':tmux-send-selection<ret>'
 map global normal <c-a-t> ':tmux-repl-set-pane-by-index<ret>'
 
 # lint settings
