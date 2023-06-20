@@ -133,7 +133,7 @@ try %{ colorscheme mysticaltutor }
 
 bundle kakoune-smooth-scroll "https://github.com/caksoylar/kakoune-smooth-scroll" %{
     set-option global scroll_keys_goto g e . <down>=j <up>=k
-    hook global WinCreate (?!\*plug\*).* %{
+    hook global WinCreate [^*].* %{
         hook -once window WinDisplay .* %{
             smooth-scroll-enable
             smooth-scroll-map-key normal <a-percent> '*%s<ret>'
@@ -250,7 +250,7 @@ bundle scrollbar.kak "git clone -b my-cool-rewrite https://github.com/Screwtapel
         evaluate-commands %sh{
             if [ "${kak_hook_param%.*}" -lt "$kak_buf_line_count" ]; then
                 printf "scrollbar-enable
-                hook window User ScrollStep update-scrollbar
+                # hook window User ScrollStep update-scrollbar
                 hook window User ui-hl-changed move-scrollbar-to-left"
             else
                 printf "scrollbar-disable"
