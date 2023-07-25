@@ -168,7 +168,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
 
 bundle ui.kak "https://github.com/kkga/ui.kak" %{
     map global user o ":enter-user-mode ui<ret>" -docstring "toggle UI options"
-    set-option global ui_line_numbers_flags -hlcursor -relative
+    set-option global ui_line_numbers_flags -hlcursor
     set-option global ui_whitespaces_flags -tab "»" -lf "↲" -nbsp "␣" -spc "·"
     set-option global ui_wrap_flags -marker "…"
     set-face global TrailingSpace default,red
@@ -210,16 +210,12 @@ bundle kakoune-mirror 'https://github.com/Delapouite/kakoune-mirror' %{
     map global mirror <backspace> ':execute-keys "<lt>a-:>Z<semicolon>dz<lt>a-;><lt>semicolon>dz"<ret>H'
 }
 
-bundle-customload kakoune-vertical-selection "https://github.com/occivink/kakoune-vertical-selection" %{
-    source "%opt{bundle_path}/kakoune-vertical-selection/vertical-selection.kak"
-
+bundle kakoune-vertical-selection "https://github.com/occivink/kakoune-vertical-selection" %{
     map global normal ^     ':vertical-selection-down<ret>' -docstring "select matching pattern from the lines below"
     map global normal <a-^> ':vertical-selection-up<ret>'   -docstring "select matching pattern from the lines above"
 }
 
-bundle-customload kakoune-expand "https://github.com/occivink/kakoune-expand" %{
-    source "%opt{bundle_path}/kakoune-expand/expand.kak"
-
+bundle kakoune-expand "https://github.com/occivink/kakoune-expand" %{
     map global normal <plus> ":expand<ret>"
     set-option -add global expand_commands %{
         expand-impl %{ exec <a-i>p }
