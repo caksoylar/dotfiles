@@ -4,6 +4,11 @@ hook global BufCreate .*[.](dts|dtsi|keymap) %{
 
 hook global WinSetOption filetype=dts %{
     require-module dts
+
+    set-option window comment_block_begin '/*'
+    set-option window comment_block_end '*/'
+    set-option window comment_line '//'
+
 }
 
 hook -group dts-highlight global WinSetOption filetype=dts %{
