@@ -17,6 +17,7 @@ or [WSL](https://docs.microsoft.com/en-us/windows/wsl/about).
 - ~~[Kakoune version](kak/colors/mysticaltutor.kak) of
   [vim-mysticaltutor](https://github.com/caksoylar/vim-mysticaltutor)~~
   Colorscheme moved to [kakoune-mysticaltutor](https://github.com/caksoylar/kakoune-mysticaltutor)
+- A lightweight [plugin cloner/updater](kak/kjp), adapted from [`vim-jetpack`](https://github.com/caksoylar/vim-jetpack)
 - [Plugin](kak/autoload/gzip.kak) to edit gzipped files
 - [Copy to clipboard](kak/autoload/clipboard.kak) using
   [OSC 52](https://discuss.kakoune.com/t/clipboard-integration-using-osc-52/)

@@ -1,0 +1,16 @@
+colors          https://github.com/caksoylar/kakoune-mysticaltutor
+autoload/remote https://github.com/caksoylar/kakoune-smooth-scroll
+autoload/remote https://github.com/krobelus/kakoune-find
+autoload/remote https://github.com/Delapouite/kakoune-registers
+autoload/remote https://gitlab.com/Screwtapello/kakoune-shellcheck
+autoload/remote https://github.com/caksoylar/openscad.kak
+autoload/remote https://github.com/kkga/ui.kak
+autoload/remote https://github.com/andreyorst/smarttab.kak
+autoload/remote https://github.com/Delapouite/kakoune-buffers
+autoload/remote https://github.com/chambln/kakoune-readline
+autoload/remote https://github.com/Delapouite/kakoune-mirror
+autoload/remote https://github.com/occivink/kakoune-vertical-selection
+autoload/remote https://github.com/occivink/kakoune-expand
+autoload/remote https://gitlab.com/Screwtapello/kakoune-state-save
+autoload/remote https://github.com/Screwtapello/scrollbar.kak my-cool-rewrite
+autoload/remote https://github.com/caksoylar/kakoune-focus
