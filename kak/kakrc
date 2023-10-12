@@ -118,6 +118,8 @@ map global normal = ':enter-user-mode math<ret>'       -docstring "enter math mo
 map global user   m ':enter-user-mode -lock math<ret>' -docstring "enter math mode (lock)"
 
 hook global WinSetOption filetype=markdown %{
+    set-option window comment_block_begin '<!--'
+    set-option window comment_block_end '-->'
     map window normal <c-y> ':tmux-terminal-horizontal glow -pw $(tput cols) $kak_buffile<ret>'
 }
 
