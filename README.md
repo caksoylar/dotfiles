@@ -12,6 +12,7 @@ or [WSL](https://docs.microsoft.com/en-us/windows/wsl/about).
   with tab-completion
 - A [simplified pure-like prompt](fish/functions/fish_prompt.fish), with
   directories to ignore git prompt customizable with a `ignore_git` function
+- A [simple theme](fish/themes/termcolors.theme) utilizing 16 terminal colors
 
 ### Kakoune
 - ~~[Kakoune version](kak/colors/mysticaltutor.kak) of
