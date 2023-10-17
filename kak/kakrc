@@ -64,24 +64,30 @@ map global normal <c-t>   ':tmux-repl-vertical<ret>'
 map global normal <c-e>   ':tmux-send-selection<ret>'
 map global normal <c-a-t> ':tmux-repl-set-pane-by-index<ret>'
 
-# lint settings
-alias global lint-show-counters nop
-
+# filetype settings
 hook global WinSetOption filetype=(markdown|yaml) %{ set-option window indentwidth 2 }
 
+hook global WinSetOption filetype=(sh|kak|python) %{
+    hook -group lint window BufWritePost .* %{ try lint }
+}
+
 hook global WinSetOption filetype=python %{
-    set window lintcmd %{ run() {
+    set-option window lintcmd %{ run() {
         pylint --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'
-        mypy --show-column-numbers "$1" 2>/dev/null # || true
+        mypy --show-column-numbers "$1" 2>/dev/null
     } && run }
 }
-hook global WinSetOption filetype=(sh|kak|python) %{
-    hook -group lint window User BufChange %{ try lint }
-}
+
 hook global WinSetOption filetype=openscad %{
     set-option window lintcmd %{ run() {
         openscad-linter --only-file "$1" 2>&1 | perl -pe 's/ / error:/'
     } && run }
+}
+
+hook global WinSetOption filetype=markdown %{
+    set-option window comment_block_begin '<!--'
+    set-option window comment_block_end '-->'
+    map window normal <c-y> ':tmux-terminal-horizontal glow -pw $(tput cols) $kak_buffile<ret>'
 }
 
 # user mode shortcuts
@@ -118,12 +124,6 @@ map global math X ':inc-dec %val{count} - 1<ret>' -docstring "decrement by count
 map global normal = ':enter-user-mode math<ret>'       -docstring "enter math mode"
 map global user   m ':enter-user-mode -lock math<ret>' -docstring "enter math mode (lock)"
 
-hook global WinSetOption filetype=markdown %{
-    set-option window comment_block_begin '<!--'
-    set-option window comment_block_end '-->'
-    map window normal <c-y> ':tmux-terminal-horizontal glow -pw $(tput cols) $kak_buffile<ret>'
-}
-
 ## remote plugin settings
 # kakoune-mysticaltutor
 try %{ colorscheme mysticaltutor } catch %{ echo -debug "Error configuring kakoune-mysticaltutor!" }
@@ -158,6 +158,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     lsp-enable-window
     lsp-diagnostic-lines-disable window
     lsp-inline-diagnostics-disable window
+    lsp-auto-signature-help-enable
 
     map window user l ':enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window user d ':lsp-diagnostics<ret>' -docstring "LSP diagnostics"
@@ -173,7 +174,6 @@ try %{
     set-face global TrailingSpace default,red
     hook global WinCreate [^*].* %{
         ui-line-numbers-enable
-        # ui-wrap-enable
         ui-matching-enable
         evaluate-commands %sh{
             if [ "$(git -C "$(dirname "$kak_buffile")" rev-parse --git-dir 2>/dev/null)" ]; then
