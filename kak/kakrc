@@ -163,6 +163,7 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     map window user l ':enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window user d ':lsp-diagnostics<ret>' -docstring "LSP diagnostics"
     map window normal <c-h> ':lsp-hover<ret>' -docstring "LSP hover"
+    map window insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring "Select next snippet placeholder"
 }
 
 # ui.kak
@@ -208,7 +209,7 @@ try %{
 
 # kakoune-mirror
 try %{
-    map global normal "'" ':enter-user-mode mirror<ret>'
+    map global normal <'> ':enter-user-mode mirror<ret>'
     map global mirror <space> 'a <esc>i <esc>H<a-;>' -docstring "<space>surround<space>"
     map global mirror <backspace> ':execute-keys "<lt>a-:>Z<semicolon>dz<lt>a-;><lt>semicolon>dz"<ret>H'
 } catch %{ echo -debug "Error configuring kakoune-mirror!" }
