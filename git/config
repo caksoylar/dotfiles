@@ -3,13 +3,15 @@
 	autocrlf = false
 	safecrlf = true
 	pager = delta
+[init]
+	defaultBranch = main
 [interactive]
 	diffFilter = delta --color-only
 [user]
 	name = Cem Aksoylar
 	email = caksoylar@users.noreply.github.com
 [push]
-	default = simple
+	default = current
 [diff]
 	tool = vimdiff
 	algorithm = histogram
@@ -29,14 +31,17 @@
 	pushf = push --force-with-lease
 	rc = rebase --continue
 	rs = rebase --show-current-patch
+	cp = cherry-pick
+[commit]
+	verbose = true
 [pull]
 	ff = only
+[rebase]
+	autosquash = true
 [merge]
-	tool = kakmerge
-	conflictstyle = diff3
-[mergetool "kakmerge"]
-	trustExitCode = true
-	cmd = env LOCAL=\"${LOCAL}\" BASE=\"${BASE}\" REMOTE=\"${REMOTE}\" MERGED=\"${MERGED}\" kakmerge
+	conflictstyle = zdiff3
+[rerere]
+	enabled = true
 [delta]
 	line-numbers = true
 	syntax-theme = none
