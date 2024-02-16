@@ -1,6 +1,5 @@
 # set-option global autoinfo command|onkey|normal
-set-option global scrolloff 5,10
-set-option global ui_options terminal_assistant=none terminal_synchronized=yes
+set-option global ui_options terminal_assistant=none #terminal_synchronized=yes
 set-option global tabstop 4
 set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{context_info}} {green}%val{client}{default}@{cyan}%val{session}{default} %val{cursor_line}/%val{buf_line_count}:%val{cursor_char_column} (%val{selection_length}) '
 set-option global grepcmd 'rg --vimgrep'
@@ -63,6 +62,17 @@ tabnew -params .. -command-completion %{
 map global normal <c-t>   ':tmux-repl-vertical<ret>'
 map global normal <c-e>   ':tmux-send-selection<ret>'
 map global normal <c-a-t> ':tmux-repl-set-pane-by-index<ret>'
+
+# dynamic scrolloff
+hook global WinResize .* %{
+    evaluate-commands %sh{
+        if [ "${kak_hook_param%.*}" -lt 40 ]; then
+            printf "set-option window scrolloff 0,10"
+        else
+            printf "set-option window scrolloff 5,10"
+        fi
+    }
+}
 
 # filetype settings
 hook global WinSetOption filetype=(markdown|yaml) %{ set-option window indentwidth 2 }
