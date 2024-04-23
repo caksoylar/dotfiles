@@ -54,6 +54,12 @@ kak-lsp: | $(DLDIR) $(SRC)
 	&& tar xzf $(DLDIR)/kak-lsp.tar.gz -C $(SRC)/kak-lsp \
 	&& cp $(SRC)/kak-lsp/kak-lsp ~/.local/bin/
 
+kak-tree-sitter:
+	mkdir -p ~/.local/bin \
+	&& wget --hsts-file= -nv https://github.com/hadronized/kak-tree-sitter/releases/download/ktsctl-v0.4.0/ktsctl.Linux-x86_64 -O ~/.local/bin/ktsctl \
+	&& wget --hsts-file= -nv https://github.com/hadronized/kak-tree-sitter/releases/download/kak-tree-sitter-v0.6.0/kak-tree-sitter.Linux-x86_64 -O ~/.local/bin/kak-tree-sitter \
+	&& chmod +x ~/.local/bin/ktsctl ~/.local/bin/kak-tree-sitter
+
 delta:
 	wget --hsts-file= -nv https://github.com/dandavison/delta/releases/download/0.15.1/git-delta_0.15.1_amd64.deb -O $(DLDIR)/git-delta.deb \
 	&& sudo dpkg -i $(DLDIR)/git-delta.deb
@@ -68,4 +74,4 @@ clean:
 	rm -rf $(DLDIR) $(SRC)
 
 .PHONY:
-	libevent libncurses libncursesw tmux fish nvim kak kak-lsp ydiff
+	libevent libncurses libncursesw tmux fish nvim kak kak-lsp kak-tree-sitter delta
