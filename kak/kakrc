@@ -44,6 +44,12 @@ define-command non-ascii -docstring "search for non-ascii characters" %{
     set-register slash '[^\x00-\x7f]'
 }
 
+# git maps
+map global user b     ':git blame<ret>'     -docstring "git blame"
+map global user h     ':git next-hunk<ret>' -docstring "git next-hunk"
+map global user <a-h> ':git prev-hunk<ret>' -docstring "git prev-hunk"
+map global user s     ':git show %sh{git log --format=format:%H -n 1 -- <c-r>%} -- <c-r>%<ret>' -docstring "git show (current buffer)"
+
 # tmux window management commands
 define-command -docstring "vsplit [<commands>]: split tmux vertically" \
 vsplit -params .. -command-completion %{
