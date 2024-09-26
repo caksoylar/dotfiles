@@ -29,6 +29,7 @@
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset %Cblue(%an)%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)%Creset' --abbrev-commit
 	sw = switch
 	pushf = push --force-with-lease
+	rb = rebase
 	rc = rebase --continue
 	rs = rebase --show-current-patch
 	cp = cherry-pick
