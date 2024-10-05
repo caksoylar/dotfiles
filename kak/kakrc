@@ -109,6 +109,7 @@ hook global WinSetOption filetype=markdown %{
 # user mode shortcuts
 map global user g ':grep ' -docstring "grep"
 map global user F ':find ' -docstring "find in buffers"
+map global user t ':edit -scratch *tmp*<ret>' -docstring "temp buffer"
 
 define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
 map global user f ':find-edit ' -docstring "find and edit file"
