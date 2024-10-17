@@ -74,6 +74,8 @@ abbr --add gst "vim '+G | only'"
 # old-style highlighting
 fish_config theme choose termcolors
 
+abbr --add mm micromamba
+
 # work stuff
 if test -f ~/.config/fish/work.fish
     source ~/.config/fish/work.fish

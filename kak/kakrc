@@ -5,7 +5,7 @@ set-option global modelinefmt '{{mode_info}} {magenta}%val{bufname}{default} {{c
 set-option global grepcmd 'rg --vimgrep'
 
 # clean selections and search highlight on Esc
-map global normal <esc> ',<semicolon>:rmhl global/search<ret>'
+map global normal <esc> ',<semicolon>:try "rmhl global/search"<ret>'
 
 # repurpose visual mode keys for object selection
 map global normal v <a-i>
@@ -90,7 +90,7 @@ hook global WinSetOption filetype=(sh|kak|python) %{
 hook global WinSetOption filetype=python %{
     set-option window lintcmd %{ run() {
         pylint --msg-template='{path}:{line}:{column}: {category}: {msg_id}: {msg} ({symbol})' "$1" | awk -F: 'BEGIN { OFS=":" } { if (NF == 6) { $3 += 1; print } }'
-        mypy --show-column-numbers "$1" 2>/dev/null
+        # mypy --show-column-numbers "$1" 2>/dev/null
     } && run }
 }
 
@@ -114,8 +114,8 @@ map global user t ':edit -scratch *tmp*<ret>' -docstring "temp buffer"
 define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
 map global user f ':find-edit ' -docstring "find and edit file"
 
-map global user n     ':grep-next-match<ret>'     -docstring "next message"
-map global user <a-n> ':grep-previous-match<ret>' -docstring "previous message"
+map global user n     ':jump-next<ret>'     -docstring "next message"
+map global user <a-n> ':jump-previous<ret>' -docstring "previous message"
 
 # add search flags
 map global prompt <a-i> '<home>(?i)<end>' -docstring "case insensitive search"
@@ -160,17 +160,21 @@ try %{
 # kakoune-shellcheck
 # openscad.kak
 
-# enable lsp for filetypes, kak-lsp not managed by bundle
+# enable lsp for filetypes
 hook global WinSetOption filetype=(rust|python|c|cpp) %{
-    try %{
-        evaluate-commands %sh{ kak-lsp --kakoune -s "$kak_session" }
-    }
+    try %{ evaluate-commands %sh{ kak-lsp } }
 
+    set-option buffer lsp_language_id %opt{filetype}
     set-option window lsp_diagnostic_line_error_sign "!"
     set-option window lsp_diagnostic_line_warning_sign "?"
     set-face window DiagnosticError default+u
     set-face window DiagnosticWarning default+u
-    set-option global lsp_server_configuration pylsp.plugins.pylsp_mypy.enabled=true
+    # set-option global lsp_server_configuration pylsp.plugins.pylsp_mypy.enabled=true
+    # set-option buffer lsp_servers %{
+    #     [pylsp.plugins]
+    #     "pylsp_mypy.enabled" = true
+    #     "jedi_completion.include_params" = true
+    # }
 
     lsp-enable-window
     lsp-diagnostic-lines-disable window
@@ -274,7 +278,7 @@ try %{
                 # hook window User ScrollStep update-scrollbar
                 hook window User ui-hl-changed move-scrollbar-to-left"
             else
-                printf "scrollbar-disable"
+                printf "try scrollbar-disable"
             fi
         }
     }
