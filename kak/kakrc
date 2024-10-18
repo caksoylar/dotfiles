@@ -169,17 +169,16 @@ hook global WinSetOption filetype=(rust|python|c|cpp) %{
     set-option window lsp_diagnostic_line_warning_sign "?"
     set-face window DiagnosticError default+u
     set-face window DiagnosticWarning default+u
-    # set-option global lsp_server_configuration pylsp.plugins.pylsp_mypy.enabled=true
-    # set-option buffer lsp_servers %{
-    #     [pylsp.plugins]
-    #     "pylsp_mypy.enabled" = true
-    #     "jedi_completion.include_params" = true
-    # }
 
     lsp-enable-window
     lsp-diagnostic-lines-disable window
     lsp-inline-diagnostics-disable window
     lsp-auto-signature-help-enable
+
+    set-option -add buffer lsp_servers %{
+        [pylsp.settings._.pylsp.plugins.pylsp_mypy]
+        enabled = true
+    }
 
     map window user l ':enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window user d ':lsp-diagnostics<ret>' -docstring "LSP diagnostics"
