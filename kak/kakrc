@@ -142,7 +142,7 @@ map global normal = ':enter-user-mode math<ret>'       -docstring "enter math mo
 map global user   m ':enter-user-mode -lock math<ret>' -docstring "enter math mode (lock)"
 
 # ts-objects.kak
-hook global KakEnd .* %{ nop %{ rm -f ${TMPDIR:-/tmp}/kak.pts.* } }
+hook global KakEnd .* %{ nop %sh{ rm -f "${TMPDIR:-/tmp}/kak.tsobj.*" } }
 
 ## remote plugin settings
 # kakoune-mysticaltutor
