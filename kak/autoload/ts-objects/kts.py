@@ -19,6 +19,10 @@ from pathlib import Path
 
 from tree_sitter import Language, Parser, Node, Point
 
+# in loose (non-strict) mode, the movements don't obey all Kakoune objects rules.
+# namely, if you aren't inside an object already then it can find the next valid object instead
+LOOSE_MODE = os.environ.get("KTS_LOOSE", "false") == "true"
+
 
 def get_parser_and_queries(language: str) -> tuple[Language, str]:
     """Construct the TS parser and fetch the object queries for given language string."""
@@ -77,17 +81,17 @@ def get_captures(language: str, source: str, obj: str, extent: str) -> tuple[lis
     return ts_queries.captures(tree.root_node).get(tag, []), tag
 
 
-def find_best_node(to_end: bool, cursor: int, nodes: list[Node]) -> list[Node] | None:
+def find_best_node(to_end: bool, cursor: int, nodes: list[Node]) -> tuple[list[Node] | None, bool]:
     """
     For a coordinate at byte offset `cursor`, find the "nearest" node among `nodes`.
     This will be the smallest node that either contains the cursor or the next/previous
-    node depending on `to_end`.
+    node depending on `to_end`. Also return whether cursor is inside the found node.
     """
     candidates = [
         node for node in nodes if (node.end_byte >= cursor if to_end else node.start_byte <= cursor)
     ]
     if not candidates:
-        return None
+        return None, False
 
     if to_end:
         containing_node = max(
@@ -102,16 +106,19 @@ def find_best_node(to_end: bool, cursor: int, nodes: list[Node]) -> list[Node] |
             default=None,
         )
     if containing_node is not None:  # cursor is inside a node
-        return containing_node
+        return containing_node, True
+
+    if not LOOSE_MODE:  # if not inside a node, fail in strict mode
+        return None, False
 
     # cursor not in a node, find closest node after/before cursor
     if to_end:
-        return min(candidates, key=lambda node: node.start_byte)
-    return max(candidates, key=lambda node: node.end_byte)
+        return min(candidates, key=lambda node: node.start_byte), False
+    return max(candidates, key=lambda node: node.end_byte), False
 
 
 def get_new_selection(
-    selection: str, node: Node | None, extend: bool, to_begin: bool, to_end: bool
+    selection: str, node: Node | None, inside: bool, extend: bool, to_begin: bool, to_end: bool
 ) -> str:
     """
     Given current selection, captured node, selection mode and boundary flags, return a kak-style
@@ -127,7 +134,10 @@ def get_new_selection(
         return f"{p2c(node.start_point)},{p2c(node.end_point)}"
 
     anchor, cursor = selection.split(",", maxsplit=1)
-    new_anchor = anchor if extend else cursor
+    if inside:
+        new_anchor = anchor if extend else cursor
+    else:
+        new_anchor = p2c(node.end_point) if to_begin else p2c(node.start_point)
     new_cursor = p2c(node.start_point) if to_begin else p2c(node.end_point)
     return f"{new_anchor},{new_cursor}"
 
@@ -158,18 +168,20 @@ def main():
     capture_nodes = []
     for cursor_byte in args.cursor_bytes:
         try:
-            node = find_best_node(to_end, cursor_byte, captures)
+            node, inside = find_best_node(to_end, cursor_byte, captures)
         except StopIteration:
             sys.stderr.write(f"kts.py: No appropriate capture found for {tag}\n")
-            node = None
-        capture_nodes.append(node)
+            node, inside = None, False
+        capture_nodes.append((node, inside))
 
-    if capture_nodes:
+    if any(node for node, inside in capture_nodes):
         print("select", end="")
-    for selection, node in zip(current_selections, capture_nodes):
+    else:
+        print('fail "kts: no selections remaining"')
+    for selection, (node, inside) in zip(current_selections, capture_nodes):
         print(" ", end="")
         print(
-            get_new_selection(selection, node, args.select_mode == "extend", to_begin, to_end),
+            get_new_selection(selection, node, inside, args.select_mode == "extend", to_begin, to_end),
             end="",
         )
 

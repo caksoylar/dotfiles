@@ -1,7 +1,8 @@
-declare-option -hidden int-list tsobj_offsets                                               # cursor byte offsets
-declare-option -hidden str tsobj_buf                                                        # temporary file with buffer contents
-declare-option -hidden str-list tsobj_selections                                            # selections
-declare-option -hidden int tsobj_prev_timestamp 0                                           # track timestamp changes
+declare-option bool tsobj_loose false  # use non-strict mode where closest objects are selected if cursor is not in one
+
+declare-option -hidden int-list tsobj_offsets      # cursor byte offsets
+declare-option -hidden str tsobj_buf               # temporary file with buffer contents
+declare-option -hidden int tsobj_prev_timestamp 0  # track timestamp changes
 declare-option -hidden str tsobj_script %sh{printf "%s/kts.py" "$(dirname "$kak_source")"}  # python script path
 
 define-command ts-objects-select -params 2 %{
@@ -21,23 +22,9 @@ define-command ts-objects-select -params 2 %{
         fi
     }
 
-    # save selections to restore later if selection fails
-    evaluate-commands -save-regs o %{
-        execute-keys -draft <">oZ
-        set-option window tsobj_selections %reg{o}
-    }
-
-    # run the query to try to get selections
-    evaluate-commands -save-regs p %{
-        try %{
-            evaluate-commands %sh{
-                # kak_selections_desc is used in script
-                pipx run "$kak_opt_tsobj_script" $1 $2 $kak_object_flags $kak_select_mode $kak_opt_tsobj_offsets <"$kak_opt_tsobj_buf"
-            }
-        } catch %{
-            set-register p %opt{tsobj_selections}
-            execute-keys <">pz
-        }
+    evaluate-commands %sh{
+        # kak_selections_desc is used in script
+        KTS_LOOSE=$kak_opt_tsobj_loose pipx run "$kak_opt_tsobj_script" $1 $2 $kak_object_flags $kak_select_mode $kak_opt_tsobj_offsets <"$kak_opt_tsobj_buf"
     }
 }
 

@@ -142,6 +142,7 @@ map global normal = ':enter-user-mode math<ret>'       -docstring "enter math mo
 map global user   m ':enter-user-mode -lock math<ret>' -docstring "enter math mode (lock)"
 
 # ts-objects.kak
+set-option global tsobj_loose true
 hook global KakEnd .* %{ nop %sh{ rm -f "${TMPDIR:-/tmp}/kak.tsobj.*" } }
 
 ## remote plugin settings
