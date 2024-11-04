@@ -1,15 +1,17 @@
-declare-option -hidden int-list tsobj_offsets
-declare-option -hidden str tsobj_buf
-declare-option -hidden str-list tsobj_selections
-declare-option -hidden int tsobj_prev_timestamp 0
+declare-option -hidden int-list tsobj_offsets                                               # cursor byte offsets
+declare-option -hidden str tsobj_buf                                                        # temporary file with buffer contents
+declare-option -hidden str-list tsobj_selections                                            # selections
+declare-option -hidden int tsobj_prev_timestamp 0                                           # track timestamp changes
 declare-option -hidden str tsobj_script %sh{printf "%s/kts.py" "$(dirname "$kak_source")"}  # python script path
 
 define-command ts-objects-select -params 2 %{
+    # convert cursors to byte offsets
     set-option window tsobj_offsets
     evaluate-commands -itersel %{
         set-option -add window tsobj_offsets %val{cursor_byte_offset}
     }
 
+    # create temp file to write to buffer, but only if buffer timestamp changed
     evaluate-commands -no-hooks %sh{
         if [ "$kak_timestamp" -gt "$kak_opt_tsobj_prev_timestamp" ] || [ ! -e "$kak_opt_tsobj_buf" ]; then
             printf 'set-option window tsobj_buf %s\n' "$(mktemp -q -t kak.tsobj.XXXXXXXX)"
@@ -19,16 +21,15 @@ define-command ts-objects-select -params 2 %{
         fi
     }
 
+    # save selections to restore later if selection fails
     evaluate-commands -save-regs o %{
         execute-keys -draft <">oZ
         set-option window tsobj_selections %reg{o}
     }
 
+    # run the query to try to get selections
     evaluate-commands -save-regs p %{
         try %{
-            echo -debug %sh{
-                echo pipx run "$kak_opt_tsobj_script" $1 $2 $kak_object_flags $kak_select_mode $kak_opt_tsobj_offsets '<'"$kak_opt_tsobj_buf"
-            }
             evaluate-commands %sh{
                 # kak_selections_desc is used in script
                 pipx run "$kak_opt_tsobj_script" $1 $2 $kak_object_flags $kak_select_mode $kak_opt_tsobj_offsets <"$kak_opt_tsobj_buf"
