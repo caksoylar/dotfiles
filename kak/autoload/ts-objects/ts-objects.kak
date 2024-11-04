@@ -4,7 +4,7 @@ declare-option -hidden str-list tsobj_selections
 declare-option -hidden int tsobj_prev_timestamp 0
 declare-option -hidden str tsobj_script %sh{printf "%s/kts.py" "$(dirname "$kak_source")"}  # python script path
 
-define-command ts-objects-select -params 3 %{
+define-command ts-objects-select -params 2 %{
     set-option window tsobj_offsets
     evaluate-commands -itersel %{
         set-option -add window tsobj_offsets %val{cursor_byte_offset}
@@ -27,10 +27,11 @@ define-command ts-objects-select -params 3 %{
     evaluate-commands -save-regs p %{
         try %{
             echo -debug %sh{
-                echo pipx run "$kak_opt_tsobj_script" $1 $2 $3 $kak_opt_tsobj_offsets '<'"$kak_opt_tsobj_buf"
+                echo pipx run "$kak_opt_tsobj_script" $1 $2 $kak_object_flags $kak_select_mode $kak_opt_tsobj_offsets '<'"$kak_opt_tsobj_buf"
             }
             evaluate-commands %sh{
-                pipx run "$kak_opt_tsobj_script" $1 $2 $3 $kak_opt_tsobj_offsets <"$kak_opt_tsobj_buf"
+                # kak_selections_desc is used in script
+                pipx run "$kak_opt_tsobj_script" $1 $2 $kak_object_flags $kak_select_mode $kak_opt_tsobj_offsets <"$kak_opt_tsobj_buf"
             }
         } catch %{
             set-register p %opt{tsobj_selections}
@@ -39,15 +40,9 @@ define-command ts-objects-select -params 3 %{
     }
 }
 
-declare-user-mode ts-objects
-map global ts-objects f ':ts-objects-select %opt{filetype} function inside<ret>'  -docstring "function inside"
-map global ts-objects F ':ts-objects-select %opt{filetype} function around<ret>'  -docstring "function around"
-map global ts-objects c ':ts-objects-select %opt{filetype} class inside<ret>'     -docstring "class inside"
-map global ts-objects C ':ts-objects-select %opt{filetype} class around<ret>'     -docstring "class around"
-map global ts-objects t ':ts-objects-select %opt{filetype} test inside<ret>'      -docstring "test inside"
-map global ts-objects T ':ts-objects-select %opt{filetype} test around<ret>'      -docstring "test around"
-map global ts-objects p ':ts-objects-select %opt{filetype} parameter inside<ret>' -docstring "parameter inside"
-map global ts-objects o ':ts-objects-select %opt{filetype} comment inside<ret>'   -docstring "comment inside"
-map global ts-objects O ':ts-objects-select %opt{filetype} comment around<ret>'   -docstring "comment around"
-map global ts-objects e ':ts-objects-select %opt{filetype} entry inside<ret>'     -docstring "entry inside"
-map global ts-objects E ':ts-objects-select %opt{filetype} entry around<ret>'     -docstring "entry around"
+map global object f '<a-semicolon>ts-objects-select %opt{filetype} function<ret>'  -docstring "tree-sitter function"
+map global object c '<a-semicolon>ts-objects-select %opt{filetype} class<ret>'     -docstring "tree-sitter class"
+map global object t '<a-semicolon>ts-objects-select %opt{filetype} test<ret>'      -docstring "tree-sitter test"
+map global object m '<a-semicolon>ts-objects-select %opt{filetype} parameter<ret>' -docstring "tree-sitter parameter"
+map global object o '<a-semicolon>ts-objects-select %opt{filetype} comment<ret>'   -docstring "tree-sitter comment"
+map global object e '<a-semicolon>ts-objects-select %opt{filetype} entry<ret>'     -docstring "tree-sitter entry"
