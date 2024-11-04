@@ -141,6 +141,10 @@ map global math X ':inc-dec %val{count} - 1<ret>' -docstring "decrement by count
 map global normal = ':enter-user-mode math<ret>'       -docstring "enter math mode"
 map global user   m ':enter-user-mode -lock math<ret>' -docstring "enter math mode (lock)"
 
+# ts-objects.kak
+map global normal ¿ ':enter-user-mode ts-objects<ret>'
+hook global KakEnd .* %{ nop %{ rm -f ${TMPDIR:-/tmp}/kak.pts.* } }
+
 ## remote plugin settings
 # kakoune-mysticaltutor
 try %{ colorscheme mysticaltutor } catch %{ echo -debug "Error configuring kakoune-mysticaltutor!" }
