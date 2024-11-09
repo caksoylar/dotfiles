@@ -127,18 +127,24 @@ def get_new_selection(
     if node is None:
         return selection
 
+    start, end = node.start_point, node.end_point
+    if end.column > 0:  # tree-sitter end points are exclusive
+        end = Point(end.row, end.column - 1)
+    else:
+        end = Point(end.row - 1, end.column)
+
     def p2c(point: Point) -> str:
         return f"{point.row + 1}.{point.column + 1}"
 
     if to_begin and to_end:  # select object mode (<a-i>, <a-a>)
-        return f"{p2c(node.start_point)},{p2c(node.end_point)}"
+        return f"{p2c(start)},{p2c(end)}"
 
     anchor, cursor = selection.split(",", maxsplit=1)
     if inside:
         new_anchor = anchor if extend else cursor
     else:
-        new_anchor = p2c(node.end_point) if to_begin else p2c(node.start_point)
-    new_cursor = p2c(node.start_point) if to_begin else p2c(node.end_point)
+        new_anchor = p2c(end) if to_begin else p2c(start)
+    new_cursor = p2c(start) if to_begin else p2c(end)
     return f"{new_anchor},{new_cursor}"
 
 
