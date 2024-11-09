@@ -18,7 +18,7 @@ define-command ts-objects-select -params 2 %{
             printf 'set-option window tsobj_buf %s\n' "$(mktemp -q -t kak.tsobj.XXXXXXXX)"
             printf 'write -force %s\n' "%opt{tsobj_buf}"
             printf 'echo -debug "%s"\n' "created temp file %opt{tsobj_buf}"
-            printf 'set-option buffer prev_timestamp %s\n' "$kak_timestamp"
+            printf 'set-option buffer tsobj_prev_timestamp %s\n' "$kak_timestamp"
         fi
     }
 
