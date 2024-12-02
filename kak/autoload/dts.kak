@@ -1,4 +1,4 @@
-hook global BufCreate .*[.](dts|dtsi|keymap) %{
+hook global BufCreate .*[.](dts|dtsi|overlay|keymap) %{
     set-option buffer filetype dts
 }
 

@@ -81,7 +81,7 @@ hook global WinResize .* %{
 }
 
 # filetype settings
-hook global WinSetOption filetype=(markdown|yaml) %{ set-option window indentwidth 2 }
+hook global WinSetOption filetype=(markdown|yaml|javascript|typescript) %{ set-option window indentwidth 2 }
 
 hook global WinSetOption filetype=(sh|kak|python) %{
     hook -group lint window BufWritePost .* %{ try lint }
@@ -165,7 +165,7 @@ try %{
 # openscad.kak
 
 # enable lsp for filetypes
-hook global WinSetOption filetype=(rust|python|c|cpp) %{
+hook global WinSetOption filetype=(rust|python|c|cpp|typescript) %{
     try %{ evaluate-commands %sh{ kak-lsp } }
 
     set-option buffer lsp_language_id %opt{filetype}
@@ -213,7 +213,8 @@ try %{
     require-module smarttab
     set-option global softtabstop 4
 
-    hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml) expandtab
+    hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml|typescript) expandtab
+    hook global WinSetOption filetype=(markdown|yaml|javascript|typescript) set-option window softtabstop 2
     hook global WinSetOption filetype=(makefile) noexpandtab
 } catch %{ echo -debug "Error configuring smarttab.kak!" }
 
