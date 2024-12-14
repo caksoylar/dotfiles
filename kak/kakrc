@@ -179,10 +179,10 @@ hook global WinSetOption filetype=(rust|python|c|cpp|typescript) %{
     lsp-inline-diagnostics-disable window
     lsp-auto-signature-help-enable
 
-    set-option -add buffer lsp_servers %{
-        [pylsp.settings._.pylsp.plugins.pylsp_mypy]
-        enabled = true
-    }
+    # set-option -add buffer lsp_servers %{
+    #     [pylsp.settings._.pylsp.plugins.pylsp_mypy]
+    #     enabled = true
+    # }
 
     map window user l ':enter-user-mode lsp<ret>' -docstring "LSP mode"
     map window user d ':lsp-diagnostics<ret>' -docstring "LSP diagnostics"
@@ -214,7 +214,7 @@ try %{
     set-option global softtabstop 4
 
     hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml|typescript) expandtab
-    hook global WinSetOption filetype=(markdown|yaml|javascript|typescript) set-option window softtabstop 2
+    hook global WinSetOption filetype=(markdown|yaml|javascript|typescript) %{ set-option window softtabstop 2 }
     hook global WinSetOption filetype=(makefile) noexpandtab
 } catch %{ echo -debug "Error configuring smarttab.kak!" }
 
