@@ -98,6 +98,8 @@ hook global WinSetOption filetype=kql %{
     hook -once -always window WinSetOption filetype=.* %{
         remove-highlighter window/kqlsyntax
     }
+
+    set-option window comment_line '//'
 }
 
 # Lastly, when a buffer is created for a new or existing file,
