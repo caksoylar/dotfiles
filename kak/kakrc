@@ -165,10 +165,10 @@ try %{
 # openscad.kak
 
 # enable lsp for filetypes
-hook global WinSetOption filetype=(rust|python|c|cpp|typescript) %{
+hook global WinSetOption filetype=(rust|python|c|cpp|javascript|typescript) %{
     try %{ evaluate-commands %sh{ kak-lsp } }
 
-    set-option buffer lsp_language_id %opt{filetype}
+    try %{ set-option buffer lsp_language_id %opt{filetype} }
     set-option window lsp_diagnostic_line_error_sign "!"
     set-option window lsp_diagnostic_line_warning_sign "?"
     set-face window DiagnosticError default+u
@@ -213,8 +213,8 @@ try %{
     require-module smarttab
     set-option global softtabstop 4
 
-    hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml|typescript) expandtab
-    hook global WinSetOption filetype=(markdown|yaml|javascript|typescript) %{ set-option window softtabstop 2 }
+    hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml|javascript|typescript|html) expandtab
+    hook global WinSetOption filetype=(markdown|yaml|javascript|typescript|html) %{ set-option window softtabstop 2 }
     hook global WinSetOption filetype=(makefile) noexpandtab
 } catch %{ echo -debug "Error configuring smarttab.kak!" }
 

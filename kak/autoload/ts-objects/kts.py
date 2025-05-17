@@ -5,6 +5,7 @@
 # dependencies = [
 #     "tree-sitter",
 #     "tree-sitter-c",
+#     "tree-sitter-devicetree",
 #     "tree-sitter-json",
 #     "tree-sitter-python",
 #     "tree-sitter-yaml",
@@ -56,6 +57,12 @@ def get_parser_and_queries(language: str) -> tuple[Language, str]:
         case "c":
             try:
                 import tree_sitter_c as ts  # pylint: disable=import-outside-toplevel
+            except ImportError as exc:
+                raise RuntimeError(f"Could not import bindings for language {language}") from exc
+            ts_lang = Language(ts.language())
+        case "dts":
+            try:
+                import tree_sitter_devicetree as ts  # pylint: disable=import-outside-toplevel
             except ImportError as exc:
                 raise RuntimeError(f"Could not import bindings for language {language}") from exc
             ts_lang = Language(ts.language())
@@ -151,7 +158,7 @@ def get_new_selection(
 def main():
     """Parse args and find the objects."""
     ap = ArgumentParser()
-    ap.add_argument("language", choices=["python", "yaml", "json", "c"])
+    ap.add_argument("language", choices=["python", "yaml", "json", "c", "dts"])
     ap.add_argument(
         "object", choices=["function", "class", "test", "parameter", "comment", "entry"]
     )
