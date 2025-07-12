@@ -55,6 +55,7 @@ alias sort "sort -S4G"
 alias clip.exe "/mnt/c/Windows/System32/clip.exe"
 alias dc "echo 1 | sudo tee /proc/sys/vm/drop_caches"
 alias glow "glow -pw (tput cols)"
+alias pact "eval (poetry env activate)"
 
 # abbreviations (for interactive use)
 abbr --add k kak
