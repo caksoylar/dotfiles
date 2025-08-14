@@ -3,7 +3,7 @@
 # /// script
 # requires-python = ">=3.10"
 # dependencies = [
-#     "tree-sitter",
+#     "tree-sitter==0.24.0",
 #     "tree-sitter-c",
 #     "tree-sitter-devicetree",
 #     "tree-sitter-json",
