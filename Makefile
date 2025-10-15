@@ -37,7 +37,7 @@ fish: libncurses | $(DLDIR) $(SRC)
 kak: | $(DLDIR) $(SRC)
 	git clone --quiet https://github.com/mawww/kakoune $(SRC)/kakoune \
 	&& cd $(SRC)/kakoune/ \
-	&& curl -sL https://raw.githubusercontent.com/caksoylar/kakoune-smooth-scroll/master/revert_9787756.patch | git am \
+	&& curl -sL https://raw.githubusercontent.com/caksoylar/kakoune-smooth-scroll/master/revert_9787756_master.patch | git am \
 	&& $(MAKE) -s \
 	&& sudo $(MAKE) -s install
 
