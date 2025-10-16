@@ -114,8 +114,10 @@ map global user t ':edit -scratch *tmp*<ret>' -docstring "temp buffer"
 define-command find-edit -params 1 -menu -shell-script-candidates %{ fd --type file || rg --files || find . -type f -not -regex '.*/\..*' } 'edit %arg(1)'
 map global user f ':find-edit ' -docstring "find and edit file"
 
-map global user n     ':jump-next<ret>'     -docstring "next message"
-map global user <a-n> ':jump-previous<ret>' -docstring "previous message"
+# smarter jump shortcuts from krobelus
+declare-option str my_jump_buffers \*(grep|find|callers|callees|diagnostics|goto|symbols|gdb-backtrace)\b.*\*
+map global normal <c-n> %{:jump-next -matching %opt{my_jump_buffers}<ret>}     -docstring "next location"
+map global normal <c-p> %{:jump-previous -matching %opt{my_jump_buffers}<ret>} -docstring "previous location"
 
 # add search flags
 map global prompt <a-i> '<home>(?i)<end>' -docstring "case insensitive search"
