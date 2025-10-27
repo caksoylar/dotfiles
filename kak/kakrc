@@ -7,6 +7,17 @@ set-option global grepcmd 'rg --vimgrep'
 # clean selections and search highlight on Esc
 map global normal <esc> ',<semicolon>:try "rmhl global/search"<ret>'
 
+# smarter selection for single cursors
+define-command -hidden smart-star %{
+    try %{
+        execute-keys s.{2,}<ret>
+    } catch %{
+        execute-keys <a-i>w
+    }
+    execute-keys -save-regs '' -with-hooks _ *
+}
+map global normal * ':smart-star<ret>'
+
 # repurpose visual mode keys for object selection
 map global normal v <a-i>
 map global normal V <a-a>
