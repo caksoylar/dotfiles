@@ -18,12 +18,6 @@ for dir in ~/.local/lib ~/lib
     end
 end
 
-# for dir in ~/.local/share/man ~/man
-#     if test -d $dir; and not contains $dir $MANPATH
-#         set MANPATH $dir
-#     end
-# end
-
 # vim for manpager
 function vman
     man $argv | col -b | vim --clean -c 'runtime! macros/less.vim' -c 'set ft=man ic' --not-a-term -
@@ -32,10 +26,11 @@ end
 # more legible symlink folder highlighting
 set -x LS_COLORS "ow=01;34"
 
-# function fish_user_key_bindings
-    # bind --erase \cx
-    # bind --erase \cv
-# end
+# replace old alt shortcuts
+bind alt-right nextd-or-forward-word
+bind alt-left prevd-or-backward-word
+bind alt-backspace backward-kill-word
+bind alt-delete kill-word
 
 # fix conda venv
 if type -q conda >/dev/null
