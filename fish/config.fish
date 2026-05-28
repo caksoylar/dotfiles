@@ -1,8 +1,8 @@
 set fish_greeting
 if type -q kak
-    set EDITOR kak
+    set -x EDITOR kak
 else
-    set EDITOR vim
+    set -x EDITOR vim
 end
 
 # add user bin, lib and man paths
