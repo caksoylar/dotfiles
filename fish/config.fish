@@ -58,6 +58,7 @@ abbr --add g git
 abbr --add rm "rm -I"
 abbr --add lt "ll -t"
 abbr --add kg kak-grep
+abbr --add kgg kak-grep-git
 abbr --add kf kak-find
 abbr --add kd kak-diff-changed
 
