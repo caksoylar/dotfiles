@@ -92,7 +92,7 @@ hook global WinResize .* %{
 }
 
 # filetype settings
-hook global WinSetOption filetype=(markdown|yaml|javascript|typescript) %{ set-option window indentwidth 2 }
+hook global WinSetOption filetype=(markdown|yaml|javascript|typescript|html|css) %{ set-option window indentwidth 2 }
 
 hook global WinSetOption filetype=(sh|kak|python) %{
     hook -group lint window BufWritePost .* %{ try lint }
@@ -226,8 +226,8 @@ try %{
     require-module smarttab
     set-option global softtabstop 4
 
-    hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml|javascript|typescript|html|kql) expandtab
-    hook global WinSetOption filetype=(markdown|yaml|javascript|typescript|html) %{ set-option window softtabstop 2 }
+    hook global WinSetOption filetype=(c|cpp|python|rust|markdown|kak|lisp|scheme|sh|fish|perl|yaml|javascript|typescript|kql|html|css) expandtab
+    hook global WinSetOption filetype=(markdown|yaml|javascript|typescript|html|css) %{ set-option window softtabstop 2 }
     hook global WinSetOption filetype=(makefile) noexpandtab
 } catch %{ echo -debug "Error configuring smarttab.kak!" }
 
