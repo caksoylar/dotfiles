@@ -5,6 +5,8 @@ else
     set -x EDITOR vim
 end
 
+set -x LESS "-XRF --use-color --mouse --wheel-lines=3"
+
 # add user bin, lib and man paths
 for dir in ~/miniconda3/bin ~/.cargo/bin ~/.local/bin ~/bin
     if test -d $dir; and not contains $dir $PATH
