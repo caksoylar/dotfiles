@@ -137,6 +137,18 @@ map global prompt <a-s> '<home>(?S)<end>' -docstring "dot doesn't match newline 
 # select all occurrences of selection set
 map global normal <a-percent> '*%s<ret>' -docstring "select all occurrences of selection"
 
+hook global WinCreate .*\.json[lc] %{ set-option window filetype json }
+
+hook global ModuleLoaded json %{
+  remove-highlighter shared/json
+  add-highlighter shared/json regions
+  add-highlighter shared/json/comment region '//' '\n' fill comment
+  add-highlighter shared/json/other default-region group
+  add-highlighter shared/json/other/literal regex \b(true|false|null|\d+(?:\.\d+)?(?:[eE][+-]?\d*)?)\b 0:value
+  add-highlighter shared/json/other/string regex (?<!\\)("(?:[^"]|\\")*(?<!\\)") 1:string
+  add-highlighter shared/json/other/key regex (?<!\\)("(?:[^"]|\\")*(?<!\\)")\s*: 1:keyword
+}
+
 ## self plugin (autoload) settings
 # clipboard.kak: clipboard sync on explicit yank
 hook global NormalKey y clipboard-sync
