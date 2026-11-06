@@ -53,7 +53,7 @@ kak-tree-sitter: | $(BINDIR)
 	&& chmod +x $(BINDIR)/ktsctl $(BINDIR)/kak-tree-sitter
 
 delta:
-	wget --hsts-file= -nv https://github.com/dandavison/delta/releases/download/0.18.2/git-delta_0.18.2_amd64.deb -O $(DLDIR)/git-delta.deb \
+	wget --hsts-file= -nv https://github.com/dandavison/delta/releases/download/0.19.2/git-delta_0.19.2_amd64.deb -O $(DLDIR)/git-delta.deb \
 	&& sudo dpkg -i $(DLDIR)/git-delta.deb
 
 $(DLDIR):
